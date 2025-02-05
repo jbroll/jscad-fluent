@@ -42,7 +42,7 @@ export default class Geom2Wrapper extends GeometryWrapper<Geom2Like> {
     return this;
   }
 
-  expand(delta: number, corners?: Corners): this {
+  expand(delta: number, corners: Corners = 'round'): this {
     this.geometry = expansions.expand({ delta, corners }, this.geometry) as Geom2Like;
     return this;
   }

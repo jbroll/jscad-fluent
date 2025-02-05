@@ -25,7 +25,7 @@ export default abstract class GeometryWrapper<T extends GeometryLike> extends Tr
   }
 
   measureDimensions(): [number, number, number] | [number, number, number][] {
-    return measurements.measureBoundingBox(this.geometry);
+    return measurements.measureDimensions(this.geometry);
   }
 
   setColor(color: RGB | RGBA): this {

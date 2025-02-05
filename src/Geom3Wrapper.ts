@@ -31,13 +31,15 @@ export default class Geom3Wrapper extends GeometryWrapper<Geom3Like> {
     return this;
   }
 
-  expand(delta: number, corners?: Corners): this {
+ 
+  expand(delta: number, corners: Corners = 'round'): this {
     this.geometry = expansions.expand({ delta, corners }, this.geometry) as Geom3Like;
     return this;
   }
 
   offset(delta: number): this {
-    this.geometry = expansions.offset({ delta }, this.geometry) as Geom3Like;
+    const actualDelta = delta + (delta > 0 ? 0.01 : -0.01);
+    this.geometry = expansions.offset({ delta: actualDelta }, this.geometry) as Geom3Like;
     return this;
   }
 
