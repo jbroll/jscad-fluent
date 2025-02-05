@@ -1,6 +1,6 @@
-import { measurements, geometries } from '@jscad/modeling';
+import { expansions, measurements, geometries, hulls, booleans } from '@jscad/modeling';
 import GeometryWrapper from './GeometryWrapper';
-import type { Geom3Like, Vec3 } from './types';
+import type { Corners, Geom3Like, Vec3 } from './types';
 
 const { geom3 } = geometries;
 
@@ -12,6 +12,47 @@ export default class Geom3Wrapper extends GeometryWrapper<Geom3Like> {
   measureVolume(): number {
     return measurements.measureVolume(this.geometry);
   }
+
+  union(...others: Geom3Wrapper[]): this {
+    const geometries = [this.geometry, ...others.map(o => o.geometry)];
+    this.geometry = booleans.union(geometries as Geom3Like[]) as Geom3Like;
+    return this;
+  }
+
+  subtract(...others: Geom3Wrapper[]): this {
+    const geometries = [this.geometry, ...others.map(o => o.geometry)];
+    this.geometry = booleans.subtract(geometries as Geom3Like[]) as Geom3Like;
+    return this;
+  }
+
+  intersect(...others: Geom3Wrapper[]): this {
+    const geometries = [this.geometry, ...others.map(o => o.geometry)];
+    this.geometry = booleans.intersect(geometries as Geom3Like[]) as Geom3Like;
+    return this;
+  }
+
+  expand(delta: number, corners?: Corners): this {
+    this.geometry = expansions.expand({ delta, corners }, this.geometry) as Geom3Like;
+    return this;
+  }
+
+  offset(delta: number): this {
+    this.geometry = expansions.offset({ delta }, this.geometry) as Geom3Like;
+    return this;
+  }
+
+  hull(...others: GeometryWrapper<Geom3Like>[]): this {
+    const geometries = [this.geometry, ...others.map(o => o.geometry)];
+    this.geometry = hulls.hull(geometries) as Geom3Like;
+    return this;
+  }
+
+  hullChain(...others: GeometryWrapper<Geom3Like>[]): this {
+    const geometries = [this.geometry, ...others.map(o => o.geometry)];
+    this.geometry = hulls.hullChain(geometries) as Geom3Like;
+    return this;
+  }
+
 
   toPolygons(): Array<{ vertices: Vec3[] }> {
     return geom3.toPolygons(this.geometry);

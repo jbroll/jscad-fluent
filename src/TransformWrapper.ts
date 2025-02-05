@@ -1,8 +1,8 @@
 import { transforms } from '@jscad/modeling';
-import type { Point3 } from './types';
+import type { Vec, Mat4, Point3, GeometryLike } from './types';
 
-export default abstract class TransformWrapper<T> {
-  protected geometry: T;
+export default abstract class TransformWrapper<T extends GeometryLike> {
+  geometry: T;
 
   constructor(geometry: T) {
     this.geometry = geometry;
@@ -28,8 +28,8 @@ export default abstract class TransformWrapper<T> {
     return this;
   }
 
-  rotate(angle: number, axis?: Point3): this {
-    this.geometry = transforms.rotate(angle, axis || [0, 0, 1], this.geometry) as T;
+  rotate(angle: Vec): this {
+    this.geometry = transforms.rotate(angle, this.geometry) as T;
     return this;
   }
 
@@ -48,7 +48,7 @@ export default abstract class TransformWrapper<T> {
     return this;
   }
 
-  scale(vec: Point3 | number): this {
+  scale(vec: Vec): this {
     this.geometry = transforms.scale(vec, this.geometry) as T;
     return this;
   }
@@ -68,7 +68,7 @@ export default abstract class TransformWrapper<T> {
     return this;
   }
 
-  mirror(vec: Point3): this {
+  mirror(vec: Vec): this {
     this.geometry = transforms.mirror(vec, this.geometry) as T;
     return this;
   }
@@ -88,7 +88,7 @@ export default abstract class TransformWrapper<T> {
     return this;
   }
 
-  transform(matrix: number[]): this {
+  transform(matrix: Mat4): this {
     this.geometry = transforms.transform(matrix, this.geometry) as T;
     return this;
   }

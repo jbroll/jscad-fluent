@@ -11,6 +11,7 @@ export type Geom3Like = JSCADGeom3 | RecursiveArray<JSCADGeom3>;
 export type GeometryLike = Geometry | RecursiveArray<Geometry>;
 
 // Re-export vector and matrix types from JSCAD
+export type Vec = maths.vec2.Vec;
 export type Vec2 = maths.vec2.Vec2;
 export type Vec3 = maths.vec3.Vec3;
 export type Mat4 = maths.mat4.Mat4;
@@ -29,6 +30,7 @@ export type Point3 = [number, number, number];
 export type RGB = [number, number, number];
 export type RGBA = [number, number, number, number];
 export type AlignOptions = ['min' | 'center' | 'max', 'min' | 'center' | 'max', 'min' | 'center' | 'max'];
+export type Corners = 'edge' | 'chamfer' | 'round'
 
 // Re-export JSCAD's option types
 export type { 
