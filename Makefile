@@ -2,7 +2,7 @@
 .PHONY: dev build test deploy clean
 
 dev:
-	npm run dev
+	npm run start
 
 size: build
 	
