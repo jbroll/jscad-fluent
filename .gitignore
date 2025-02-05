@@ -1,0 +1,13 @@
+
+.claudesync/
+.claudeignore
+
+.*.swp
+error.log
+
+*.log
+.DS_Store
+node_modules
+dist
+
+
