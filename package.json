@@ -1,4 +1,6 @@
 {
+  "name": "@jbroll/jscad-fluent",
+  "author": "John Roll",
   "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -30,8 +32,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "jscad-fluent",
-  "author": "John Roll",
   "module": "dist/jscad-fluent.esm.js",
   "size-limit": [
     {
