@@ -1,0 +1,35 @@
+{
+  "transformMethods": [
+    {
+      "name": "translate",
+      "params": [{ "name": "offset", "type": "Vec3", "last": true }],
+      "returnType": "this"
+    },
+    {
+      "name": "rotate",
+      "params": [{ "name": "angle", "type": "Vec3", "last": true }],
+      "returnType": "this"
+    }
+  ],
+  "measurementMethods": [
+    {
+      "name": "measureBoundingBox",
+      "params": [],
+      "returnType": "BoundingBox"
+    }
+  ],
+  "booleanMethods": [
+    {
+      "name": "union",
+      "params": [{ "name": "others", "type": "this[]", "last": true }],
+      "returnType": "this"
+    }
+  ],
+  "extrudeMethods": [
+    {
+      "name": "extrudeLinear",
+      "params": [{ "name": "options", "type": "ExtrudeLinearOptions", "last": true }],
+      "returnType": "FluentGeom3"
+    }
+  ]
+}

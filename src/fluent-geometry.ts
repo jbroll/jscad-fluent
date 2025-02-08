@@ -17,7 +17,6 @@ import { MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 export abstract class FluentGeometry<T extends Geometry> {
 
   constructor(geometry: T) {
-    super(geometry);
     Object.assign(this, geometry);
   }
 
