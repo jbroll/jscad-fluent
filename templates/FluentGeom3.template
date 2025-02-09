@@ -1,17 +1,15 @@
 import { geometries, measurements, transforms, booleans } from '@jscad/modeling';
-import type { Geom3, Vec3, BoundingBox } from './types';
+import type { Geom3, Vec3, Mat4, BoundingBox, CenterOptions, MirrorOptions } from '../fluent-types';
 
 const { geom3 } = geometries;
 
 export class FluentGeom3 implements Geom3 {
   readonly type: 'geom3' = 'geom3';
-  polygons: Array<any>;
-  transforms: Mat4;
+  polygons!: Array<any>;
+  transforms!: Mat4;
 
   constructor(geometry: Geom3) {
-    Object.assign(this, geometry);
-    this.polygons = geometry.polygons;
-    this.transforms = mat4.create();
+    Object.assign(this, geometry ?? geom3.create());
   }
 
   {{#transformMethods}}

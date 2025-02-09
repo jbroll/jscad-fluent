@@ -5,6 +5,7 @@ import type { ExtrudeLinearOptions, ExtrudeRotateOptions } from '@jscad/modeling
 import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
 
 import mat4 from '@jscad/modeling/src/maths/mat4';
+import { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 export { mat4 };
 
 // Re-export JSCAD types that we need
@@ -16,6 +17,8 @@ export type {
   ExtrudeLinearOptions, 
   ExtrudeRotateOptions,
   BoundingBox,
+  MirrorOptions,
+  CenterOptions
 };
 
 // Re-export vector and matrix types from JSCAD
