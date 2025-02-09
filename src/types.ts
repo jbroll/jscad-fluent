@@ -16,6 +16,7 @@ import type {
   SquareOptions 
 } from '@jscad/modeling/src/primitives';
 import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
+import { ExpandOptions, OffsetOptions } from '@jscad/modeling/src/operations/expansions';
 
 import mat4 from '@jscad/modeling/src/maths/mat4';
 export { mat4 };
@@ -26,22 +27,23 @@ export type {
   Geom2,
   Geom3,
   Path2,
-  ExtrudeLinearOptions, 
-  ExtrudeRotateOptions,
   BoundingBox,
-  MirrorOptions,
+
   CenterOptions,
-  // 2D primitive options
-  StarOptions,
-  RectangleOptions,
   CircleOptions,
-  EllipseOptions,
-  SquareOptions,
-  // 3D primitive options
   CubeOptions,
-  SphereOptions,
   CylinderOptions,
   CylinderEllipticOptions,
+  EllipseOptions,
+  ExpandOptions,
+  ExtrudeLinearOptions, 
+  ExtrudeRotateOptions,
+  MirrorOptions,
+  OffsetOptions,
+  RectangleOptions,
+  SphereOptions,
+  SquareOptions,
+  StarOptions,
   TorusOptions
 };
 

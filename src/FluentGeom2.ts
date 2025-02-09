@@ -1,4 +1,4 @@
-import { geometries, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
 import type { 
   Centroid, 
   Geom2, 
@@ -9,9 +9,11 @@ import type {
   RGBA, 
   BoundingBox, 
   CenterOptions, 
+  ExpandOptions,
   ExtrudeLinearOptions, 
   ExtrudeRotateOptions, 
-  MirrorOptions 
+  MirrorOptions,
+  OffsetOptions
 } from './types';
 
 const { geom2 } = geometries;
@@ -80,15 +82,15 @@ export class FluentGeom2 implements Geom2 {
     return this;
   }
   mirrorX(): this {
-    Object.assign(this, transforms.mirrorX( this));
+    Object.assign(this, transforms.mirrorX(this));
     return this;
   }
   mirrorY(): this {
-    Object.assign(this, transforms.mirrorY( this));
+    Object.assign(this, transforms.mirrorY(this));
     return this;
   }
   mirrorZ(): this {
-    Object.assign(this, transforms.mirrorZ( this));
+    Object.assign(this, transforms.mirrorZ(this));
     return this;
   }
   center(axes: CenterOptions): this {
@@ -96,15 +98,15 @@ export class FluentGeom2 implements Geom2 {
     return this;
   }
   centerX(): this {
-    Object.assign(this, transforms.centerX( this));
+    Object.assign(this, transforms.centerX(this));
     return this;
   }
   centerY(): this {
-    Object.assign(this, transforms.centerY( this));
+    Object.assign(this, transforms.centerY(this));
     return this;
   }
   centerZ(): this {
-    Object.assign(this, transforms.centerZ( this));
+    Object.assign(this, transforms.centerZ(this));
     return this;
   }
   transform(matrix: Mat4): this {
@@ -113,6 +115,16 @@ export class FluentGeom2 implements Geom2 {
   }
   colorize(color: RGB | RGBA): this {
     Object.assign(this, colors.colorize(color, this));
+    return this;
+  }
+  
+  expand(options: ExpandOptions): this {
+    Object.assign(this, expansions.expand(options, this));
+    return this;
+  }
+
+  offset(options: OffsetOptions): this {
+    Object.assign(this, expansions.offset(options, this));
     return this;
   }
 
@@ -129,6 +141,15 @@ export class FluentGeom2 implements Geom2 {
     return this;
   }
   
+  hull(): this {
+    Object.assign(this, hulls.hull(this));
+    return this;
+  }
+  hullChain(): this {
+    Object.assign(this, hulls.hullChain(this));
+    return this;
+  }
+
   extrudeLinear(options: ExtrudeLinearOptions): FluentGeom3 {
     const extruded = extrusions.extrudeLinear(options, this);
     return new FluentGeom3(extruded);

@@ -40,16 +40,17 @@
     { "name": "intersect", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
   ],
   "hullMethods": [
-    { "ns": "hulls", "name": "hull", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
-    { "ns": "hulls", "name": "hullChain", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
+    { "ns": "hulls", "name": "hull", "params": [], "returnType": "this" },
+    { "ns": "hulls", "name": "hullChain", "params": [], "returnType": "this" }
   ],
   "expansionMethods": [
-    { "name": "expand", "params": [ 
-          { "name": "delta", "type": "number" }, 
-          { "name": "corners", "type": "Corners", "default": "'round'", "last": true } 
-      ], "returnType": "this" },
-    { "name": "offset", "params": [ 
-          { "name": "delta", "type": "number", "last": true } 
+    { "ns": "expansions", "name": "expand", "params": [ 
+          { "name": "options", "type": "ExpandOptions", "last": true } 
+      ], "returnType": "this" }
+  ],
+  "offsetMethods": [
+    { "ns": "expansions", "name": "offset", "params": [ 
+          { "name": "options", "type": "OffsetOptions", "last": true } 
       ], "returnType": "this" }
   ],
   "extrudeMethods": [

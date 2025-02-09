@@ -1,5 +1,16 @@
-import { geometries, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from './types';
+import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
+import type { 
+  Centroid, 
+  ExpandOptions,
+  Geom3, 
+  Vec3, 
+  Mat4, 
+  RGB, 
+  RGBA, 
+  BoundingBox, 
+  CenterOptions, 
+  MirrorOptions,
+} from './types';
 
 const { geom3 } = geometries;
 
@@ -65,15 +76,15 @@ export class FluentGeom3 implements Geom3 {
     return this;
   }
   mirrorX(): this {
-    Object.assign(this, transforms.mirrorX( this));
+    Object.assign(this, transforms.mirrorX(this));
     return this;
   }
   mirrorY(): this {
-    Object.assign(this, transforms.mirrorY( this));
+    Object.assign(this, transforms.mirrorY(this));
     return this;
   }
   mirrorZ(): this {
-    Object.assign(this, transforms.mirrorZ( this));
+    Object.assign(this, transforms.mirrorZ(this));
     return this;
   }
   center(axes: CenterOptions): this {
@@ -81,15 +92,15 @@ export class FluentGeom3 implements Geom3 {
     return this;
   }
   centerX(): this {
-    Object.assign(this, transforms.centerX( this));
+    Object.assign(this, transforms.centerX(this));
     return this;
   }
   centerY(): this {
-    Object.assign(this, transforms.centerY( this));
+    Object.assign(this, transforms.centerY(this));
     return this;
   }
   centerZ(): this {
-    Object.assign(this, transforms.centerZ( this));
+    Object.assign(this, transforms.centerZ(this));
     return this;
   }
   transform(matrix: Mat4): this {
@@ -98,6 +109,20 @@ export class FluentGeom3 implements Geom3 {
   }
   colorize(color: RGB | RGBA): this {
     Object.assign(this, colors.colorize(color, this));
+    return this;
+  }
+  
+  hull(): this {
+    Object.assign(this, hulls.hull(this));
+    return this;
+  }
+  hullChain(): this {
+    Object.assign(this, hulls.hullChain(this));
+    return this;
+  }
+
+  expand(options: ExpandOptions): this {
+    Object.assign(this, expansions.expand(options, this));
     return this;
   }
 

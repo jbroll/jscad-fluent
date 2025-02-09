@@ -23,12 +23,12 @@ export class FluentGeom2Array extends FluentGeometryArray<Geom2> {
   }
 
   
-  hull(others: this[]): ThisScalar {
-    return new ThisScalar(hulls.hull(others, this));
+  hull(): ThisScalar {
+    return new ThisScalar(hulls.hull(this));
   }
 
-  hullChain(others: this[]): ThisScalar {
-    return new ThisScalar(hulls.hullChain(others, this));
+  hullChain(): ThisScalar {
+    return new ThisScalar(hulls.hullChain(this));
   }
 
 

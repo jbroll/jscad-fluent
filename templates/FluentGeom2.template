@@ -1,4 +1,4 @@
-import { geometries, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
 import type { 
   Centroid, 
   Geom2, 
@@ -9,9 +9,11 @@ import type {
   RGBA, 
   BoundingBox, 
   CenterOptions, 
+  ExpandOptions,
   ExtrudeLinearOptions, 
   ExtrudeRotateOptions, 
-  MirrorOptions 
+  MirrorOptions,
+  OffsetOptions
 } from './types';
 
 const { geom2 } = geometries;
@@ -30,11 +32,23 @@ export class FluentGeom2 implements Geom2 {
   {{#transformMethods}}
   {{> methodObject}}
   {{/transformMethods}}
+  
+  {{#expansionMethods}}
+  {{> methodObject}}
+  {{/expansionMethods}}
+
+  {{#offsetMethods}}
+  {{> methodObject}}
+  {{/offsetMethods}}
 
   {{#booleanMethods}}
   {{> methodBoolean}}
   {{/booleanMethods}}
   
+  {{#hullMethods}}
+  {{> methodObject}}
+  {{/hullMethods}}
+
   {{#extrudeMethods}}
   {{> methodExtrude}}
   {{/extrudeMethods}}

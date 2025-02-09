@@ -1,10 +1,13 @@
 import { jscadFluent } from '../src/index';
-import type { Point2, Vec3 } from '../src/types';
+import type { Point2 } from '../src/types';
+import { FluentGeom2 } from '../src/FluentGeom2';
 
 describe('2D Primitives', () => {
   describe('rectangle', () => {
     test('creates basic rectangle with correct dimensions', () => {
       const rect = jscadFluent.rectangle({ size: [10, 20] });
+      expect(rect).toBeInstanceOf(FluentGeom2);
+      
       const dimensions = rect.measureDimensions();
       if (typeof dimensions === 'number') return;
       expect(dimensions[0]).toBeCloseTo(10);
@@ -77,8 +80,10 @@ describe('2D Primitives', () => {
         outerRadius: 10,
         innerRadius: 5
       });
-
-      const dimensions = star.measureDimensions() as Vec3;
+      expect(star).toBeInstanceOf(FluentGeom2);
+      
+      const dimensions = star.measureDimensions();
+      if (typeof dimensions === 'number') return;
       expect(dimensions[0]).toBeCloseTo(18.09, 1);
       expect(dimensions[1]).toBeCloseTo(19.02, 1);
     });

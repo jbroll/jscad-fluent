@@ -1,6 +1,5 @@
 import { transforms, colors } from '@jscad/modeling';
 import type { Geometry, Vec3, Mat4, RGB, RGBA, CenterOptions, MirrorOptions } from './types';
-import { FluentGeometry } from '../fluent-geometry';
 
 export class FluentGeometryArray<T extends Geometry> extends Array<T> {
   constructor(...items: T[]) {
@@ -142,12 +141,6 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
   }
 
 
-
-  clone(): this {
-    return new FluentGeometryArray(...this.map(item => 
-      (item instanceof FluentGeometry) ? item.clone() : item
-    )) as this;
-  }
 
   toString(): string {
     return `FluentGeometryArray(${this.length})[${
