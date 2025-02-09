@@ -1,9 +1,6 @@
 
 .PHONY: dev build test deploy clean gen
 
-GEN=FluentGeom2.ts \
-	FluentGeom3.ts
-
 dev: gen
 	npm run start
 
@@ -26,7 +23,7 @@ force:
 
 	
 TMPL = templates
-GEN = src/gen
+GEN = src
 
 TEMPLATES = $(wildcard $(TMPL)/*.template)
 PARTIALS = $(wildcard $(TMPL)/*.mustache)

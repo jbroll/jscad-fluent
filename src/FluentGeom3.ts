@@ -1,5 +1,5 @@
 import { geometries, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from '../fluent-types';
+import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from '../types';
 
 const { geom3 } = geometries;
 
@@ -115,36 +115,36 @@ export class FluentGeom3 implements Geom3 {
   }
   
   measureBoundingBox(): BoundingBox {
-    return measurements.measureBoundingBox( this);
+    return measurements.measureBoundingBox(this);
   }
 
   measureBoundingSphere(): [Centroid, number] {
-    return measurements.measureBoundingSphere( this);
+    return measurements.measureBoundingSphere(this);
   }
 
   measureCenter(): Vec3 {
-    return measurements.measureCenter( this);
+    return measurements.measureCenter(this);
   }
 
   measureDimensions(): Vec3 {
-    return measurements.measureDimensions( this);
+    return measurements.measureDimensions(this);
   }
 
 
   measureVolume(): number {
-    return measurements.measureVolume( this);
+    return measurements.measureVolume(this);
   }
 
   toPolygons(): Array<{vertices: Vec3[]}> {
-    return geom3.toPolygons( this);
+    return geom3.toPolygons(this);
   }
 
   validate(): void {
-    return geom3.validate( this);
+    return geom3.validate(this);
   }
 
   toString(): string {
-    return geom3.toString( this);
+    return geom3.toString(this);
   }
 
 

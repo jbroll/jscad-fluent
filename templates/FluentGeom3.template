@@ -1,5 +1,5 @@
 import { geometries, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from '../fluent-types';
+import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from '../types';
 
 const { geom3 } = geometries;
 
@@ -21,11 +21,11 @@ export class FluentGeom3 implements Geom3 {
   {{/booleanMethods}}
   
   {{#measurementMethods}}
-  {{> methodEasy}}
+  {{> methodValue}}
   {{/measurementMethods}}
 
   {{#geom3Methods}}
-  {{> methodEasy}}
+  {{> methodValue}}
   {{/geom3Methods}}
 
   clone(): FluentGeom3 {

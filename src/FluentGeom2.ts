@@ -1,5 +1,18 @@
 import { geometries, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
-import type { Centroid, Geom2, Vec2, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, ExtrudeLinearOptions, ExtrudeRotateOptions, MirrorOptions } from '../fluent-types';
+import type { 
+  Centroid, 
+  Geom2, 
+  Vec2, 
+  Vec3, 
+  Mat4, 
+  RGB, 
+  RGBA, 
+  BoundingBox, 
+  CenterOptions, 
+  ExtrudeLinearOptions, 
+  ExtrudeRotateOptions, 
+  MirrorOptions 
+} from '../types';
 
 const { geom2 } = geometries;
 
@@ -120,46 +133,48 @@ export class FluentGeom2 implements Geom2 {
     const extruded = extrusions.extrudeLinear(options, this);
     return new FluentGeom3(extruded);
   }
+
   extrudeRotate(options: ExtrudeRotateOptions): FluentGeom3 {
     const extruded = extrusions.extrudeRotate(options, this);
     return new FluentGeom3(extruded);
   }
+
   
   measureBoundingBox(): BoundingBox {
-    return measurements.measureBoundingBox( this);
+    return measurements.measureBoundingBox(this);
   }
 
   measureBoundingSphere(): [Centroid, number] {
-    return measurements.measureBoundingSphere( this);
+    return measurements.measureBoundingSphere(this);
   }
 
   measureCenter(): Vec3 {
-    return measurements.measureCenter( this);
+    return measurements.measureCenter(this);
   }
 
   measureDimensions(): Vec3 {
-    return measurements.measureDimensions( this);
+    return measurements.measureDimensions(this);
   }
 
 
   measureArea(): number {
-    return measurements.measureArea( this);
+    return measurements.measureArea(this);
   }
 
   toPoints(): Vec2[] {
-    return geom2.toPoints( this);
+    return geom2.toPoints(this);
   }
 
   toOutlines(): Vec2[][] {
-    return geom2.toOutlines( this);
+    return geom2.toOutlines(this);
   }
 
   validate(): void {
-    return geom2.validate( this);
+    return geom2.validate(this);
   }
 
   toString(): string {
-    return geom2.toString( this);
+    return geom2.toString(this);
   }
 
 
