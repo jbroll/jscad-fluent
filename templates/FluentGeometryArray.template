@@ -1,5 +1,5 @@
 import { transforms, colors } from '@jscad/modeling';
-import type { Geometry, Vec3, Mat4, RGB, RGBA, CenterOptions, MirrorOptions } from '../types';
+import type { Geometry, Vec3, Mat4, RGB, RGBA, CenterOptions, MirrorOptions } from './types';
 import { FluentGeometry } from '../fluent-geometry';
 
 export class FluentGeometryArray<T extends Geometry> extends Array<T> {

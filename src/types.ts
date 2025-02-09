@@ -3,9 +3,21 @@ import type { Geometry } from '@jscad/modeling/src/geometries/types';
 import type { Geom2, Geom3, Path2 } from '@jscad/modeling/src/geometries/types';
 import type { ExtrudeLinearOptions, ExtrudeRotateOptions } from '@jscad/modeling/src/operations/extrusions';
 import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
+import type { 
+  StarOptions, 
+  RectangleOptions, 
+  CircleOptions, 
+  EllipseOptions, 
+  CubeOptions, 
+  SphereOptions, 
+  CylinderOptions, 
+  CylinderEllipticOptions, 
+  TorusOptions,
+  SquareOptions 
+} from '@jscad/modeling/src/primitives';
+import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 
 import mat4 from '@jscad/modeling/src/maths/mat4';
-import { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 export { mat4 };
 
 // Re-export JSCAD types that we need
@@ -18,7 +30,19 @@ export type {
   ExtrudeRotateOptions,
   BoundingBox,
   MirrorOptions,
-  CenterOptions
+  CenterOptions,
+  // 2D primitive options
+  StarOptions,
+  RectangleOptions,
+  CircleOptions,
+  EllipseOptions,
+  SquareOptions,
+  // 3D primitive options
+  CubeOptions,
+  SphereOptions,
+  CylinderOptions,
+  CylinderEllipticOptions,
+  TorusOptions
 };
 
 // Re-export vector and matrix types from JSCAD
@@ -33,7 +57,6 @@ export type RGB = [number, number, number];
 export type RGBA = [number, number, number, number];
 export type Centroid = Point3;
 export type Corners = 'edge' | 'chamfer' | 'round';
-
 
 // Array type for collections
 export type GeometryArray<T extends Geometry> = T[];

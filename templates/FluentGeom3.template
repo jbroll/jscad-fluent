@@ -1,5 +1,5 @@
 import { geometries, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from '../types';
+import type { Centroid, Geom3, Vec3, Mat4, RGB, RGBA, BoundingBox, CenterOptions, MirrorOptions } from './types';
 
 const { geom3 } = geometries;
 

@@ -12,7 +12,7 @@ import type {
   ExtrudeLinearOptions, 
   ExtrudeRotateOptions, 
   MirrorOptions 
-} from '../types';
+} from './types';
 
 const { geom2 } = geometries;
 
