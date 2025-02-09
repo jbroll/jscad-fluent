@@ -1,0 +1,25 @@
+import { extrusions, hulls } from '@jscad/modeling';
+import type { Geom2, ExtrudeLinearOptions, ExtrudeRotateOptions } from '../fluent-types';
+import { FluentGeom3Array } from './FluentGeom3Array';
+import { FluentGeometryArray } from './FluentGeometryArray';
+import { FluentGeom2 as ThisScalar } from './FluentGeom2';
+
+export class FluentGeom2Array extends FluentGeometryArray<Geom2> {
+  constructor(...geometries: Geom2[]) {
+    super(...geometries);
+    Object.setPrototypeOf(this, FluentGeom2Array.prototype);
+  }
+
+  static create(...items: Geom2[]): FluentGeom2Array {
+    return new FluentGeom2Array(...items);
+  }
+
+  {{#extrudeMethods}}
+  {{> methodArrayExtrude}}
+  {{/extrudeMethods}}
+  
+  {{#hullMethods}}
+  {{> methodArrayReduce}}
+  {{/hullMethods}}
+
+}

@@ -38,5 +38,5 @@ $(GEN):
 	mkdir -p $(GEN)
 
 $(GEN)/%.ts: $(TMPL)/%.template $(TMPL)/methods.json $(PARTIALS) | $(GEN)
-	npx mustache $(TMPL)/methods.json $< > $@ -P templates
+	npx mustache $(TMPL)/methods.json $< $@ -P templates --no-escapes
 

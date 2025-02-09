@@ -1,0 +1,4 @@
+{{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): {{returnType}}[] {
+  return {{ns}}.{{name}}({{#params}}{{name}}{{^last}}, {{/last}},{{/params}} this);
+}
+

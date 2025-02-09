@@ -1,37 +1,38 @@
 {
   "transformMethods": [
-    { "name": "translate", "params": [ { "name": "offset", "type": "Vec3", "last": true } ], "returnType": "this" },
-    { "name": "translateX", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "translateY", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "translateZ", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "translate", "params": [ { "name": "offset", "type": "Vec3", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "translateX", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "translateY", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "translateZ", "params": [ { "name": "offset", "type": "number", "last": true } ], "returnType": "this" },
 
-    { "name": "rotate", "params": [ { "name": "angle", "type": "Vec3", "last": true } ], "returnType": "this" },
-    { "name": "rotateX", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "rotateY", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "rotateZ", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "rotate", "params": [ { "name": "angle", "type": "Vec3", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "rotateX", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "rotateY", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "rotateZ", "params": [ { "name": "angle", "type": "number", "last": true } ], "returnType": "this" },
 
-    { "name": "scale", "params": [ { "name": "factor", "type": "Vec3", "last": true } ], "returnType": "this" },
-    { "name": "scaleX", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "scaleY", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
-    { "name": "scaleZ", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "scale", "params": [ { "name": "factor", "type": "Vec3", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "scaleX", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "scaleY", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "scaleZ", "params": [ { "name": "factor", "type": "number", "last": true } ], "returnType": "this" },
 
-    { "name": "mirror", "params": [ { "name": "options", "type": "MirrorOptions", "last": true } ], "returnType": "this" },
-    { "name": "mirrorX", "params": null, "returnType": "this" }, 
-    { "name": "mirrorY", "params": null, "returnType": "this" },
-    { "name": "mirrorZ", "params": null, "returnType": "this" },
+    { "ns": "transforms", "name": "mirror", "params": [ { "name": "options", "type": "MirrorOptions", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "mirrorX", "params": null, "returnType": "this" }, 
+    { "ns": "transforms", "name": "mirrorY", "params": null, "returnType": "this" },
+    { "ns": "transforms", "name": "mirrorZ", "params": null, "returnType": "this" },
 
-    { "name": "center", "params": [ { "name": "axes", "type": "CenterOptions", "last": true } ], "returnType": "this" },
-    { "name": "centerX", "params": null, "returnType": "this" },
-    { "name": "centerY", "params": null, "returnType": "this" },
-    { "name": "centerZ", "params": null, "returnType": "this" },
+    { "ns": "transforms", "name": "center", "params": [ { "name": "axes", "type": "CenterOptions", "last": true } ], "returnType": "this" },
+    { "ns": "transforms", "name": "centerX", "params": null, "returnType": "this" },
+    { "ns": "transforms", "name": "centerY", "params": null, "returnType": "this" },
+    { "ns": "transforms", "name": "centerZ", "params": null, "returnType": "this" },
 
-    { "name": "transform", "params": [ { "name": "matrix", "type": "Mat4", "last": true } ], "returnType": "this" }
+    { "ns": "transforms", "name": "transform", "params": [ { "name": "matrix", "type": "Mat4", "last": true } ], "returnType": "this" },
+    { "ns": "colors", "name": "colorize", "params": [ { "name": "color", "type": "RGB | RGBA", "last": true } ], "returnType": "this" }
   ],
   "measurementMethods": [
-    { "name": "measureBoundingBox", "params": [], "returnType": "BoundingBox" },
-    { "name": "measureBoundingSphere", "params": [], "returnType": "[Centroid, number]" },
-    { "name": "measureCenter", "params": [], "returnType": "Vec3" },
-    { "name": "measureDimensions", "params": [], "returnType": "Vec3" }
+    { "ns": "measurements", "name": "measureBoundingBox", "params": [], "returnType": "BoundingBox" },
+    { "ns": "measurements", "name": "measureBoundingSphere", "params": [], "returnType": "[Centroid, number]" },
+    { "ns": "measurements", "name": "measureCenter", "params": [], "returnType": "Vec3" },
+    { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3" }
   ],
   "booleanMethods": [
     { "name": "union", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
@@ -39,8 +40,8 @@
     { "name": "intersect", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
   ],
   "hullMethods": [
-    { "name": "hull", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
-    { "name": "hullChain", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
+    { "ns": "hulls", "name": "hull", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
+    { "ns": "hulls", "name": "hullChain", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
   ],
   "expansionMethods": [
     { "name": "expand", "params": [ 
@@ -56,15 +57,16 @@
     { "name": "extrudeRotate", "params": [ { "name": "options", "type": "ExtrudeRotateOptions", "last": true } ], "returnType": "FluentGeom3" }
   ],
   "geom2Methods": [
-    { "name": "measureArea", "params": [], "returnType": "number" },
-    { "name": "toPoints", "params": [], "returnType": "Vec2[]" },
-    { "name": "toOutlines", "params": [], "returnType": "Vec2[][]" }
+    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number" },
+    { "ns": "geom2", "name": "toPoints", "params": [], "returnType": "Vec2[]" },
+    { "ns": "geom2", "name": "toOutlines", "params": [], "returnType": "Vec2[][]" },
+    { "ns": "geom2", "name": "validate", "params": [], "returnType": "void" },
+    { "ns": "geom2", "name": "toString", "params": [], "returnType": "string" }
   ],
   "geom3Methods": [
-    { "name": "measureVolume", "params": [], "returnType": "number" },
-    { "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" }
-  ],
-  "colorMethods": [
-    { "name": "setColor", "params": [ { "name": "color", "type": "RGB | RGBA", "last": true } ], "returnType": "this" }
+    { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number" },
+    { "ns": "geom3", "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" },
+    { "ns": "geom3", "name": "validate", "params": [], "returnType": "void" },
+    { "ns": "geom3", "name": "toString", "params": [], "returnType": "string" }
   ]
 }

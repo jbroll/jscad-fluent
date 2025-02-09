@@ -1,0 +1,7 @@
+{{name}}{{#params}}<{{#generics}}{{.}}{{^last}}, {{/last}}{{/generics}}>{{/params}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): {{returnType}} {
+  const result = super.{{name}}({{#params}}{{name}}{{^last}}, {{/last}}{{/params}});
+  return (result[0] instanceof FluentGeometry)
+    ? FluentGeometryArray.create(...result)
+    : result as any;
+}
+

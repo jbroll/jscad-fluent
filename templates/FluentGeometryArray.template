@@ -1,0 +1,34 @@
+import { transforms, colors } from '@jscad/modeling';
+import type { Geometry, Vec3, Mat4, RGB, RGBA, CenterOptions, MirrorOptions } from '../fluent-types';
+import { FluentGeometry } from '../fluent-geometry';
+
+export class FluentGeometryArray<T extends Geometry> extends Array<T> {
+  constructor(...items: T[]) {
+    super(...items);
+    Object.setPrototypeOf(this, FluentGeometryArray.prototype);
+  }
+
+  {{#arrayMethods}}
+  {{> methodArrayGeneric}}
+  {{/arrayMethods}}
+
+  {{#transformMethods}}
+  {{> methodArrayObject}}
+  {{/transformMethods}}
+
+  {{#measurementMethods}}
+  {{> methodArrayEasy}}
+  {{/measurementMethods}}
+
+  clone(): this {
+    return new FluentGeometryArray(...this.map(item => 
+      (item instanceof FluentGeometry) ? item.clone() : item
+    )) as this;
+  }
+
+  toString(): string {
+    return `FluentGeometryArray(${this.length})[${
+      this.map(item => item.toString()).join(', ')
+    }]`;
+  }
+}

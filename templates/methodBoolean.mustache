@@ -1,5 +1,4 @@
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): {{returnType}} {
-  Object.assign(this, transforms.{{name}}({{#params}}{{name}}{{^last}}, {{/last}},{{/params}} this));
+  Object.assign(this, booleans.{{name}}([this, others]));
   return this;
 }
-

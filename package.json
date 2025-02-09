@@ -44,7 +44,7 @@
     }
   ],
   "devDependencies": {
-    "@jbroll/mustache": "^4.2.2",
+    "@jbroll/mustache": "^4.3.1",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
