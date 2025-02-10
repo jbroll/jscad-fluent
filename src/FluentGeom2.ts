@@ -18,6 +18,7 @@ import type {
 
 const { geom2 } = geometries;
 
+import { FluentGeom2Array } from './FluentGeom2Array';
 import { FluentGeom3 } from './FluentGeom3';
 
 export class FluentGeom2 implements Geom2 {
@@ -27,6 +28,14 @@ export class FluentGeom2 implements Geom2 {
 
   constructor(geometry: Geom2) {
     Object.assign(this, geometry ?? geom2.create());
+  }
+  
+  clone(): FluentGeom2 {
+    return new FluentGeom2(geom2.clone(this));
+  }
+
+  append(geometry: Geom2): FluentGeom2Array {
+    return FluentGeom2Array.create(this, geometry);
   }
 
   translate(offset: Vec3): this {
@@ -199,7 +208,4 @@ export class FluentGeom2 implements Geom2 {
   }
 
 
-  clone(): FluentGeom2 {
-    return new FluentGeom2(geom2.clone(this));
-  }
 }

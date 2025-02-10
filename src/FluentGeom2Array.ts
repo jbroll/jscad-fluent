@@ -13,6 +13,11 @@ export class FluentGeom2Array extends FluentGeometryArray<Geom2> {
   static create(...items: Geom2[]): FluentGeom2Array {
     return new FluentGeom2Array(...items);
   }
+  
+  append(geometry: Geom2): this {
+    super.push(geometry);
+    return this;
+  }
 
   extrudeLinear(options: ExtrudeLinearOptions): FluentGeom3Array {
     return FluentGeom3Array.create(...this.map(geom => extrusions.extrudeLinear(options, geom)));

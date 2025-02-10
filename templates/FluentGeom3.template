@@ -11,6 +11,7 @@ import type {
   CenterOptions, 
   MirrorOptions,
 } from './types';
+import { FluentGeom3Array } from './FluentGeom3Array';
 
 const { geom3 } = geometries;
 
@@ -21,6 +22,14 @@ export class FluentGeom3 implements Geom3 {
 
   constructor(geometry: Geom3) {
     Object.assign(this, geometry ?? geom3.create());
+  }
+
+  clone(): FluentGeom3 {
+    return new FluentGeom3(geom3.clone(this));
+  }
+
+  append(geometry: Geom3): FluentGeom3Array {
+    return FluentGeom3Array.create(this, geometry);
   }
 
   {{#transformMethods}}
@@ -47,7 +56,4 @@ export class FluentGeom3 implements Geom3 {
   {{> methodValue}}
   {{/geom3Methods}}
 
-  clone(): FluentGeom3 {
-    return new FluentGeom3(geom3.clone(this));
-  }
 }

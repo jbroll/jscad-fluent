@@ -6,7 +6,7 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
     super(...items);
     Object.setPrototypeOf(this, FluentGeometryArray.prototype);
   }
-
+  
 
   translate(offset: Vec3): this {
     return new FluentGeometryArray(
