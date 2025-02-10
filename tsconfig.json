@@ -1,23 +1,21 @@
 {
-  // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
   "include": ["src", "types"],
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "importHelpers": true,
     "declaration": true,
-    "sourceMap": true,
-    "rootDir": "./src",
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "module": "commonjs",
     "moduleResolution": "node",
-    "jsx": "react",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-  }
+    "target": "es2015",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "removeComments": false,
+    "sourceMap": false,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "dist",
+    "examples",
+    "node_modules"
+  ]
 }

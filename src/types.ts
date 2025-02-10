@@ -18,7 +18,7 @@ import type {
 import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 import { ExpandOptions, OffsetOptions } from '@jscad/modeling/src/operations/expansions';
 
-import mat4 from '@jscad/modeling/src/maths/mat4';
+import { mat4 } from '@jscad/modeling/src/maths';
 export { mat4 };
 
 // Re-export JSCAD types that we need
