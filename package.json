@@ -1,50 +1,37 @@
 {
   "name": "@jbroll/jscad-fluent",
   "author": "John Roll",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=10"
+  "main": "./dist/jscad-fluent.umd.cjs",
+  "module": "./dist/jscad-fluent.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/jscad-fluent.js",
+      "require": "./dist/jscad-fluent.umd.cjs"
+    }
   },
   "scripts": {
-    "build": "tsc",
-    "lint": "tslint src/*.ts tests/*.ts",
-    "lint-fix": "npm run lint -- --fix",
-    "prepublish": "npm run test",
-    "test": "npm run build && mocha -R tap dist/tests"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "jest"
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "module": "dist/jscad-fluent.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/jscad-fluent.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/jscad-fluent.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@jbroll/mustache": "^4.3.1",
-    "@types/mocha": "^7.0.2",
-    "mocha": "^7.1.1",
-    "should": "^13.2.3",
-    "tslint": "^6.1.1",
-    "typescript": "^5.7.3"
+    "@types/jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.4",
+    "vite-plugin-dts": "^3.6.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@jscad/modeling": "^2.12.5"
   }
 }
