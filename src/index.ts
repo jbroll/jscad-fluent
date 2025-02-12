@@ -1,4 +1,4 @@
-import { primitives } from '@jscad/modeling';
+import { primitives, curves } from '@jscad/modeling';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentPath2 } from './gen/FluentPath2';
 import { FluentGeom3 } from './gen/FluentGeom3';
@@ -21,9 +21,22 @@ import type {
  * Provides factory functions for creating fluent geometry objects.
  */
 export const jscadFluent = {
+  // Path2 Primitives
+  arc(options: { center: Point2; radius: number; startAngle: number; endAngle: number; }): FluentPath2 {
+    return new FluentPath2(primitives.arc(options));
+  },
+
+  line(points: Point2[]): FluentPath2 {
+    return new FluentPath2(primitives.line(points));
+  },
+
   // 2D Primitives
   rectangle(options: RectangleOptions): FluentGeom2 {
     return new FluentGeom2(primitives.rectangle(options));
+  },
+
+  roundedRectangle(options: { size: Point2; roundRadius: number; }): FluentGeom2 {
+    return new FluentGeom2(primitives.roundedRectangle(options));
   },
 
   circle(options: CircleOptions): FluentGeom2 {

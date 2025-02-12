@@ -21,13 +21,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "types": "tsc --emitDeclarationOnly --outDir dist/types && api-extractor run --local --verbose"
   },
   "devDependencies": {
     "@jbroll/mustache": "^4.3.1",
     "@microsoft/api-extractor": "^7.42.3",
+    "@vitest/coverage-v8": "^1.0.4",
     "typescript": "^5.3.2",
-    "vite": "^5.0.4"
+    "vite": "^5.0.4",
+    "vitest": "^1.0.4"
   },
   "peerDependencies": {
     "@jscad/modeling": "^2.12.5"
