@@ -10,7 +10,7 @@ import type {
   BoundingBox, 
   CenterOptions, 
   MirrorOptions,
-} from './types';
+} from '../types';
 import { FluentGeom3Array } from './FluentGeom3Array';
 
 const { geom3 } = geometries;

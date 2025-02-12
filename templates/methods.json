@@ -64,6 +64,12 @@
     { "ns": "geom2", "name": "validate", "params": [], "returnType": "void" },
     { "ns": "geom2", "name": "toString", "params": [], "returnType": "string" }
   ],
+  "path2Methods": [
+    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number" },
+    { "ns": "path2", "name": "toPoints", "params": [], "returnType": "Vec2[]" },
+    { "ns": "path2", "name": "validate", "params": [], "returnType": "void" },
+    { "ns": "path2", "name": "toString", "params": [], "returnType": "string" }
+  ],
   "geom3Methods": [
     { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number" },
     { "ns": "geom3", "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" },

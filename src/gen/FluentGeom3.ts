@@ -1,41 +1,35 @@
-import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
 import type { 
   Centroid, 
-  Geom2, 
-  Vec2, 
+  ExpandOptions,
+  Geom3, 
   Vec3, 
   Mat4, 
   RGB, 
   RGBA, 
   BoundingBox, 
   CenterOptions, 
-  ExpandOptions,
-  ExtrudeLinearOptions, 
-  ExtrudeRotateOptions, 
   MirrorOptions,
-  OffsetOptions
-} from './types';
+} from '../types';
+import { FluentGeom3Array } from './FluentGeom3Array';
 
-const { geom2 } = geometries;
+const { geom3 } = geometries;
 
-import { FluentGeom2Array } from './FluentGeom2Array';
-import { FluentGeom3 } from './FluentGeom3';
-
-export class FluentGeom2 implements Geom2 {
-  readonly type: 'geom2' = 'geom2';
-  sides!: Array<any>;
+export class FluentGeom3 implements Geom3 {
+  readonly type: 'geom3' = 'geom3';
+  polygons!: Array<any>;
   transforms!: Mat4;
 
-  constructor(geometry: Geom2) {
-    Object.assign(this, geometry ?? geom2.create());
-  }
-  
-  clone(): FluentGeom2 {
-    return new FluentGeom2(geom2.clone(this));
+  constructor(geometry: Geom3) {
+    Object.assign(this, geometry ?? geom3.create());
   }
 
-  append(geometry: Geom2): FluentGeom2Array {
-    return FluentGeom2Array.create(this, geometry);
+  clone(): FluentGeom3 {
+    return new FluentGeom3(geom3.clone(this));
+  }
+
+  append(geometry: Geom3): FluentGeom3Array {
+    return FluentGeom3Array.create(this, geometry);
   }
 
   translate(offset: Vec3): this {
@@ -127,13 +121,17 @@ export class FluentGeom2 implements Geom2 {
     return this;
   }
   
-  expand(options: ExpandOptions): this {
-    Object.assign(this, expansions.expand(options, this));
+  hull(): this {
+    Object.assign(this, hulls.hull(this));
+    return this;
+  }
+  hullChain(): this {
+    Object.assign(this, hulls.hullChain(this));
     return this;
   }
 
-  offset(options: OffsetOptions): this {
-    Object.assign(this, expansions.offset(options, this));
+  expand(options: ExpandOptions): this {
+    Object.assign(this, expansions.expand(options, this));
     return this;
   }
 
@@ -149,26 +147,6 @@ export class FluentGeom2 implements Geom2 {
     Object.assign(this, booleans.intersect([this, others]));
     return this;
   }
-  
-  hull(): this {
-    Object.assign(this, hulls.hull(this));
-    return this;
-  }
-  hullChain(): this {
-    Object.assign(this, hulls.hullChain(this));
-    return this;
-  }
-
-  extrudeLinear(options: ExtrudeLinearOptions): FluentGeom3 {
-    const extruded = extrusions.extrudeLinear(options, this);
-    return new FluentGeom3(extruded);
-  }
-
-  extrudeRotate(options: ExtrudeRotateOptions): FluentGeom3 {
-    const extruded = extrusions.extrudeRotate(options, this);
-    return new FluentGeom3(extruded);
-  }
-
   
   measureBoundingBox(): BoundingBox {
     return measurements.measureBoundingBox(this);
@@ -187,24 +165,20 @@ export class FluentGeom2 implements Geom2 {
   }
 
 
-  measureArea(): number {
-    return measurements.measureArea(this);
+  measureVolume(): number {
+    return measurements.measureVolume(this);
   }
 
-  toPoints(): Vec2[] {
-    return geom2.toPoints(this);
-  }
-
-  toOutlines(): Vec2[][] {
-    return geom2.toOutlines(this);
+  toPolygons(): Array<{vertices: Vec3[]}> {
+    return geom3.toPolygons(this);
   }
 
   validate(): void {
-    return geom2.validate(this);
+    return geom3.validate(this);
   }
 
   toString(): string {
-    return geom2.toString(this);
+    return geom3.toString(this);
   }
 
 

@@ -14,7 +14,7 @@ import type {
   ExtrudeRotateOptions, 
   MirrorOptions,
   OffsetOptions
-} from './types';
+} from '../types';
 
 const { geom2 } = geometries;
 
@@ -61,7 +61,7 @@ export class FluentGeom2 implements Geom2 {
   {{#extrudeMethods}}
   {{> methodExtrude}}
   {{/extrudeMethods}}
-  
+
   {{#measurementMethods}}
   {{> methodValue}}
   {{/measurementMethods}}

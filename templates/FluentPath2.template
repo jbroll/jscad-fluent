@@ -1,0 +1,63 @@
+import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
+import type { 
+  Centroid, 
+  Path2, 
+  Vec2, 
+  Vec3, 
+  Mat4, 
+  RGB, 
+  RGBA, 
+  BoundingBox, 
+  CenterOptions, 
+  ExpandOptions,
+  MirrorOptions,
+  OffsetOptions
+} from '../types';
+
+const { path2 } = geometries;
+
+import { FluentPath2Array } from './FluentPath2Array';
+
+export class FluentPath2 implements Path2 {
+  readonly type: 'path2' = 'path2';
+  points!: Array<any>;
+  transforms!: Mat4;
+  isClosed!: boolean;
+
+  constructor(geometry: Path2) {
+    Object.assign(this, geometry ?? path2.create());
+  }
+  
+  clone(): FluentPath2 {
+    return new FluentPath2(path2.clone(this));
+  }
+
+  append(geometry: Path2): FluentPath2Array {
+    return FluentPath2Array.create(this, geometry);
+  }
+
+  {{#transformMethods}}
+  {{> methodObject}}
+  {{/transformMethods}}
+  
+  {{#expansionMethods}}
+  {{> methodObject}}
+  {{/expansionMethods}}
+
+  {{#offsetMethods}}
+  {{> methodObject}}
+  {{/offsetMethods}}
+
+  {{#hullMethods}}
+  {{> methodObject}}
+  {{/hullMethods}}
+  
+  {{#measurementMethods}}
+  {{> methodValue}}
+  {{/measurementMethods}}
+
+  {{#path2Methods}}
+  {{> methodValue}}
+  {{/path2Methods}}
+
+}

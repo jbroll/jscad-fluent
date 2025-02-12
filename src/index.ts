@@ -1,6 +1,7 @@
 import { primitives } from '@jscad/modeling';
-import { FluentGeom2 } from './FluentGeom2';
-import { FluentGeom3 } from './FluentGeom3';
+import { FluentGeom2 } from './gen/FluentGeom2';
+import { FluentPath2 } from './gen/FluentPath2';
+import { FluentGeom3 } from './gen/FluentGeom3';
 import type { 
   Point2,
   StarOptions, 
@@ -72,7 +73,9 @@ export const jscadFluent = {
 };
 
 // Export classes for advanced usage
-export { FluentGeom2 } from './FluentGeom2';
-export { FluentGeom3 } from './FluentGeom3';
-export { FluentGeom2Array } from './FluentGeom2Array';
-export { FluentGeom3Array } from './FluentGeom3Array';
+export { FluentGeom2 } from './gen/FluentGeom2';
+export { FluentPath2 } from './gen/FluentPath2';
+export { FluentGeom3 } from './gen/FluentGeom3';
+export { FluentGeom2Array } from './gen/FluentGeom2Array';
+export { FluentPath2Array } from './gen/FluentPath2Array';
+export { FluentGeom3Array } from './gen/FluentGeom3Array';

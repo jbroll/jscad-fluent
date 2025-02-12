@@ -1,6 +1,14 @@
 
 .PHONY: dev build test deploy clean gen
 
+TMPL = templates
+GEN = src/gen
+
+TEMPLATES = $(wildcard $(TMPL)/*.template)
+PARTIALS = $(wildcard $(TMPL)/*.mustache)
+TS_FILES = $(patsubst $(TMPL)/%.template,$(GEN)/%.ts,$(TEMPLATES))
+
+
 dev: gen
 	npm run build
 
@@ -17,18 +25,11 @@ deploy: force
 
 clean:
 	rm -rf dist
-	rm -rf src/gen
+	rm -rf $(GEN)
 
 force:
 
 	
-TMPL = templates
-GEN = src
-
-TEMPLATES = $(wildcard $(TMPL)/*.template)
-PARTIALS = $(wildcard $(TMPL)/*.mustache)
-TS_FILES = $(patsubst $(TMPL)/%.template,$(GEN)/%.ts,$(TEMPLATES))
-
 gen: $(GEN) $(TS_FILES)
 
 $(GEN):

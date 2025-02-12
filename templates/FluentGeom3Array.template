@@ -1,5 +1,5 @@
 import { hulls } from '@jscad/modeling';
-import type { Geom3 } from './types';
+import type { Geom3 } from '../types';
 import { FluentGeometryArray } from './FluentGeometryArray';
 import { FluentGeom3 as ThisScalar } from './FluentGeom3';
 

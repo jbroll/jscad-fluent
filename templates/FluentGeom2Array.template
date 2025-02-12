@@ -1,5 +1,5 @@
 import { extrusions, hulls } from '@jscad/modeling';
-import type { Geom2, ExtrudeLinearOptions, ExtrudeRotateOptions } from './types';
+import type { Geom2, ExtrudeLinearOptions, ExtrudeRotateOptions } from '../types';
 import { FluentGeom3Array } from './FluentGeom3Array';
 import { FluentGeometryArray } from './FluentGeometryArray';
 import { FluentGeom2 as ThisScalar } from './FluentGeom2';
