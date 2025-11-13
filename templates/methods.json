@@ -29,10 +29,10 @@
     { "ns": "colors", "name": "colorize", "params": [ { "name": "color", "type": "RGB | RGBA", "last": true } ], "returnType": "this" }
   ],
   "measurementMethods": [
-    { "ns": "measurements", "name": "measureBoundingBox", "params": [], "returnType": "BoundingBox" },
-    { "ns": "measurements", "name": "measureBoundingSphere", "params": [], "returnType": "[Centroid, number]" },
-    { "ns": "measurements", "name": "measureCenter", "params": [], "returnType": "Vec3" },
-    { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3" }
+    { "ns": "measurements", "name": "measureBoundingBox", "params": [], "returnType": "BoundingBox", "isVoid": false },
+    { "ns": "measurements", "name": "measureBoundingSphere", "params": [], "returnType": "[Centroid, number]", "isVoid": false },
+    { "ns": "measurements", "name": "measureCenter", "params": [], "returnType": "Vec3", "isVoid": false },
+    { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3", "isVoid": false }
   ],
   "booleanMethods": [
     { "name": "union", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
@@ -58,22 +58,22 @@
     { "name": "extrudeRotate", "params": [ { "name": "options", "type": "ExtrudeRotateOptions", "last": true } ], "returnType": "FluentGeom3" }
   ],
   "geom2Methods": [
-    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number" },
-    { "ns": "geom2", "name": "toPoints", "params": [], "returnType": "Vec2[]" },
-    { "ns": "geom2", "name": "toOutlines", "params": [], "returnType": "Vec2[][]" },
-    { "ns": "geom2", "name": "validate", "params": [], "returnType": "void" },
-    { "ns": "geom2", "name": "toString", "params": [], "returnType": "string" }
+    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number", "isVoid": false },
+    { "ns": "geom2", "name": "toPoints", "params": [], "returnType": "Vec2[]", "isVoid": false },
+    { "ns": "geom2", "name": "toOutlines", "params": [], "returnType": "Vec2[][]", "isVoid": false },
+    { "ns": "geom2", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
+    { "ns": "geom2", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
   ],
   "path2Methods": [
-    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number" },
-    { "ns": "path2", "name": "toPoints", "params": [], "returnType": "Vec2[]" },
-    { "ns": "path2", "name": "validate", "params": [], "returnType": "void" },
-    { "ns": "path2", "name": "toString", "params": [], "returnType": "string" }
+    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number", "isVoid": false },
+    { "ns": "path2", "name": "toPoints", "params": [], "returnType": "Vec2[]", "isVoid": false },
+    { "ns": "path2", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
+    { "ns": "path2", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
   ],
   "geom3Methods": [
-    { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number" },
-    { "ns": "geom3", "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" },
-    { "ns": "geom3", "name": "validate", "params": [], "returnType": "void" },
-    { "ns": "geom3", "name": "toString", "params": [], "returnType": "string" }
+    { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number", "isVoid": false },
+    { "ns": "geom3", "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" , "isVoid": false },
+    { "ns": "geom3", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
+    { "ns": "geom3", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
   ]
 }

@@ -1,4 +1,4 @@
-import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, transforms, colors } from '@jscad/modeling';
 import type { 
   Centroid, 
   Path2, 
@@ -20,6 +20,7 @@ import { FluentPath2Array } from './FluentPath2Array';
 
 export class FluentPath2 implements Path2 {
   readonly type: 'path2' = 'path2';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   points!: Array<any>;
   transforms!: Mat4;
   isClosed!: boolean;

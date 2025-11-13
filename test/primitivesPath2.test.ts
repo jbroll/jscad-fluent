@@ -1,6 +1,6 @@
+import { FluentPath2 } from '../src/gen/FluentPath2';
 import { jscadFluent } from '../src/index';
 import type { Point2 } from '../src/types';
-import { FluentPath2 } from '../src/gen/FluentPath2';
 
 describe('Path2 Primitives', () => {
   describe('arc', () => {
@@ -9,10 +9,10 @@ describe('Path2 Primitives', () => {
         center: [0, 0],
         radius: 10,
         startAngle: 0,
-        endAngle: Math.PI
+        endAngle: Math.PI,
       });
       expect(arc).toBeInstanceOf(FluentPath2);
-      
+
       const dimensions = arc.measureDimensions();
       if (typeof dimensions === 'number') return;
       expect(dimensions[0]).toBeCloseTo(20, 1); // diameter
@@ -20,13 +20,15 @@ describe('Path2 Primitives', () => {
     });
 
     test('arc with transforms', () => {
-      const arc = jscadFluent.arc({
-        center: [0, 0],
-        radius: 10,
-        startAngle: 0,
-        endAngle: Math.PI * 2
-      }).translate([5, 5, 0]);
-      
+      const arc = jscadFluent
+        .arc({
+          center: [0, 0],
+          radius: 10,
+          startAngle: 0,
+          endAngle: Math.PI * 2,
+        })
+        .translate([5, 5, 0]);
+
       const center = arc.measureCenter();
       if (typeof center === 'number') return;
       expect(center[0]).toBeCloseTo(5, 1);
@@ -38,11 +40,11 @@ describe('Path2 Primitives', () => {
     test('creates line with correct length', () => {
       const points: Point2[] = [
         [0, 0],
-        [10, 0]
+        [10, 0],
       ];
       const line = jscadFluent.line(points);
       expect(line).toBeInstanceOf(FluentPath2);
-      
+
       const dimensions = line.measureDimensions();
       if (typeof dimensions === 'number') return;
       expect(dimensions[0]).toBeCloseTo(10, 1);
@@ -53,14 +55,13 @@ describe('Path2 Primitives', () => {
       const points: Point2[] = [
         [0, 0],
         [10, 0],
-        [10, 10]
+        [10, 10],
       ];
       const line = jscadFluent.line(points);
-      
+
       const bbox = line.measureBoundingBox();
       expect(bbox[1][0] - bbox[0][0]).toBeCloseTo(10, 1); // X span
       expect(bbox[1][1] - bbox[0][1]).toBeCloseTo(10, 1); // Y span
     });
   });
-
 });

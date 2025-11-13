@@ -1,19 +1,19 @@
-import { primitives, curves } from '@jscad/modeling';
+import { primitives } from '@jscad/modeling';
 import { FluentGeom2 } from './gen/FluentGeom2';
-import { FluentPath2 } from './gen/FluentPath2';
 import { FluentGeom3 } from './gen/FluentGeom3';
-import type { 
-  Point2,
-  StarOptions, 
-  RectangleOptions, 
+import { FluentPath2 } from './gen/FluentPath2';
+import type {
   CircleOptions,
-  EllipseOptions,
   CubeOptions,
-  SphereOptions,
-  CylinderOptions,
   CylinderEllipticOptions,
+  CylinderOptions,
+  EllipseOptions,
+  Point2,
+  RectangleOptions,
+  SphereOptions,
+  SquareOptions,
+  StarOptions,
   TorusOptions,
-  SquareOptions
 } from './types';
 
 /**
@@ -22,7 +22,12 @@ import type {
  */
 export const jscadFluent = {
   // Path2 Primitives
-  arc(options: { center: Point2; radius: number; startAngle: number; endAngle: number; }): FluentPath2 {
+  arc(options: {
+    center: Point2;
+    radius: number;
+    startAngle: number;
+    endAngle: number;
+  }): FluentPath2 {
     return new FluentPath2(primitives.arc(options));
   },
 
@@ -35,7 +40,7 @@ export const jscadFluent = {
     return new FluentGeom2(primitives.rectangle(options));
   },
 
-  roundedRectangle(options: { size: Point2; roundRadius: number; }): FluentGeom2 {
+  roundedRectangle(options: { size: Point2; roundRadius: number }): FluentGeom2 {
     return new FluentGeom2(primitives.roundedRectangle(options));
   },
 
@@ -80,15 +85,21 @@ export const jscadFluent = {
     return new FluentGeom3(primitives.torus(options));
   },
 
-  polyhedron({ points, faces }: { points: [number, number, number][], faces: number[][] }): FluentGeom3 {
+  polyhedron({
+    points,
+    faces,
+  }: {
+    points: [number, number, number][];
+    faces: number[][];
+  }): FluentGeom3 {
     return new FluentGeom3(primitives.polyhedron({ points, faces }));
-  }
+  },
 };
 
 // Export classes for advanced usage
 export { FluentGeom2 } from './gen/FluentGeom2';
-export { FluentPath2 } from './gen/FluentPath2';
-export { FluentGeom3 } from './gen/FluentGeom3';
 export { FluentGeom2Array } from './gen/FluentGeom2Array';
-export { FluentPath2Array } from './gen/FluentPath2Array';
+export { FluentGeom3 } from './gen/FluentGeom3';
 export { FluentGeom3Array } from './gen/FluentGeom3Array';
+export { FluentPath2 } from './gen/FluentPath2';
+export { FluentPath2Array } from './gen/FluentPath2Array';

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import { resolve } from 'path'
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
@@ -7,10 +7,10 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'jscadFluent',
       fileName: 'jscad-fluent',
-      formats: ['es']
+      formats: ['es'],
     },
     rollupOptions: {
-      external: ['@jscad/modeling']
-    }
-  }
-})
+      external: ['@jscad/modeling'],
+    },
+  },
+});

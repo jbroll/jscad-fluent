@@ -1,15 +1,23 @@
-import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
+import {
+  booleans,
+  colors,
+  expansions,
+  geometries,
+  hulls,
+  measurements,
+  transforms,
+} from '@jscad/modeling';
+import type {
+  BoundingBox,
+  CenterOptions,
+  Centroid,
   ExpandOptions,
-  Geom3, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+  Geom3,
+  Mat4,
   MirrorOptions,
+  RGB,
+  RGBA,
+  Vec3,
 } from '../types';
 import { FluentGeom3Array } from './FluentGeom3Array';
 
@@ -17,6 +25,7 @@ const { geom3 } = geometries;
 
 export class FluentGeom3 implements Geom3 {
   readonly type: 'geom3' = 'geom3';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   polygons!: Array<any>;
   transforms!: Mat4;
 
@@ -120,7 +129,7 @@ export class FluentGeom3 implements Geom3 {
     Object.assign(this, colors.colorize(color, this));
     return this;
   }
-  
+
   hull(): this {
     Object.assign(this, hulls.hull(this));
     return this;
@@ -147,7 +156,7 @@ export class FluentGeom3 implements Geom3 {
     Object.assign(this, booleans.intersect([this, others]));
     return this;
   }
-  
+
   measureBoundingBox(): BoundingBox {
     return measurements.measureBoundingBox(this);
   }
@@ -164,22 +173,19 @@ export class FluentGeom3 implements Geom3 {
     return measurements.measureDimensions(this);
   }
 
-
   measureVolume(): number {
     return measurements.measureVolume(this);
   }
 
-  toPolygons(): Array<{vertices: Vec3[]}> {
+  toPolygons(): Array<{ vertices: Vec3[] }> {
     return geom3.toPolygons(this);
   }
 
   validate(): void {
-    return geom3.validate(this);
+    geom3.validate(this);
   }
 
   toString(): string {
     return geom3.toString(this);
   }
-
-
 }

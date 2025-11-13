@@ -1,34 +1,34 @@
-import { maths } from '@jscad/modeling';
-import type { Geometry } from '@jscad/modeling/src/geometries/types';
-import type { Geom2, Geom3, Path2 } from '@jscad/modeling/src/geometries/types';
-import type { ExtrudeLinearOptions, ExtrudeRotateOptions } from '@jscad/modeling/src/operations/extrusions';
-import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
-import type { 
-  StarOptions, 
-  RectangleOptions, 
-  CircleOptions, 
-  EllipseOptions, 
-  CubeOptions, 
-  SphereOptions, 
-  CylinderOptions, 
-  CylinderEllipticOptions, 
-  TorusOptions,
-  SquareOptions 
-} from '@jscad/modeling/src/primitives';
-import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
-import { ExpandOptions, OffsetOptions } from '@jscad/modeling/src/operations/expansions';
-
+import type { maths } from '@jscad/modeling';
+import type { Geom2, Geom3, Geometry, Path2 } from '@jscad/modeling/src/geometries/types';
 import { mat4 } from '@jscad/modeling/src/maths';
+import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
+import type { ExpandOptions, OffsetOptions } from '@jscad/modeling/src/operations/expansions';
+import type {
+  ExtrudeLinearOptions,
+  ExtrudeRotateOptions,
+} from '@jscad/modeling/src/operations/extrusions';
+import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
+import type {
+  CircleOptions,
+  CubeOptions,
+  CylinderEllipticOptions,
+  CylinderOptions,
+  EllipseOptions,
+  RectangleOptions,
+  SphereOptions,
+  SquareOptions,
+  StarOptions,
+  TorusOptions,
+} from '@jscad/modeling/src/primitives';
 export { mat4 };
 
 // Re-export JSCAD types that we need
-export type { 
+export type {
   Geometry,
   Geom2,
   Geom3,
   Path2,
   BoundingBox,
-
   CenterOptions,
   CircleOptions,
   CubeOptions,
@@ -36,7 +36,7 @@ export type {
   CylinderEllipticOptions,
   EllipseOptions,
   ExpandOptions,
-  ExtrudeLinearOptions, 
+  ExtrudeLinearOptions,
   ExtrudeRotateOptions,
   MirrorOptions,
   OffsetOptions,
@@ -44,7 +44,7 @@ export type {
   SphereOptions,
   SquareOptions,
   StarOptions,
-  TorusOptions
+  TorusOptions,
 };
 
 // Re-export vector and matrix types from JSCAD

@@ -1,19 +1,28 @@
-import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
-  Geom2, 
-  Vec2, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+import {
+  booleans,
+  colors,
+  expansions,
+  extrusions,
+  geometries,
+  hulls,
+  measurements,
+  transforms,
+} from '@jscad/modeling';
+import type {
+  BoundingBox,
+  CenterOptions,
+  Centroid,
   ExpandOptions,
-  ExtrudeLinearOptions, 
-  ExtrudeRotateOptions, 
+  ExtrudeLinearOptions,
+  ExtrudeRotateOptions,
+  Geom2,
+  Mat4,
   MirrorOptions,
-  OffsetOptions
+  OffsetOptions,
+  RGB,
+  RGBA,
+  Vec2,
+  Vec3,
 } from '../types';
 
 const { geom2 } = geometries;
@@ -23,13 +32,14 @@ import { FluentGeom3 } from './FluentGeom3';
 
 export class FluentGeom2 implements Geom2 {
   readonly type: 'geom2' = 'geom2';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   sides!: Array<any>;
   transforms!: Mat4;
 
   constructor(geometry: Geom2) {
     Object.assign(this, geometry ?? geom2.create());
   }
-  
+
   clone(): FluentGeom2 {
     return new FluentGeom2(geom2.clone(this));
   }
@@ -126,7 +136,7 @@ export class FluentGeom2 implements Geom2 {
     Object.assign(this, colors.colorize(color, this));
     return this;
   }
-  
+
   expand(options: ExpandOptions): this {
     Object.assign(this, expansions.expand(options, this));
     return this;
@@ -149,7 +159,7 @@ export class FluentGeom2 implements Geom2 {
     Object.assign(this, booleans.intersect([this, others]));
     return this;
   }
-  
+
   hull(): this {
     Object.assign(this, hulls.hull(this));
     return this;
@@ -169,7 +179,6 @@ export class FluentGeom2 implements Geom2 {
     return new FluentGeom3(extruded);
   }
 
-
   measureBoundingBox(): BoundingBox {
     return measurements.measureBoundingBox(this);
   }
@@ -186,7 +195,6 @@ export class FluentGeom2 implements Geom2 {
     return measurements.measureDimensions(this);
   }
 
-
   measureArea(): number {
     return measurements.measureArea(this);
   }
@@ -200,12 +208,10 @@ export class FluentGeom2 implements Geom2 {
   }
 
   validate(): void {
-    return geom2.validate(this);
+    geom2.validate(this);
   }
 
   toString(): string {
     return geom2.toString(this);
   }
-
-
 }

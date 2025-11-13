@@ -23,6 +23,7 @@ import { FluentGeom3 } from './FluentGeom3';
 
 export class FluentGeom2 implements Geom2 {
   readonly type: 'geom2' = 'geom2';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   sides!: Array<any>;
   transforms!: Mat4;
 

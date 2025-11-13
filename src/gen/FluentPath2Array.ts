@@ -12,7 +12,7 @@ export class FluentPath2Array extends FluentGeometryArray<Path2> {
   static create(...items: Path2[]): FluentPath2Array {
     return new FluentPath2Array(...items);
   }
-  
+
   append(geometry: Path2): this {
     super.push(geometry);
     return this;
@@ -25,6 +25,4 @@ export class FluentPath2Array extends FluentGeometryArray<Path2> {
   hullChain(): ThisScalar {
     return new ThisScalar(hulls.hullChain(this));
   }
-
-
 }

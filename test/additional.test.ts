@@ -23,25 +23,26 @@ describe('Extended Coverage Tests', () => {
 
   describe('3D Operations', () => {
     test('complex transforms', () => {
-      const cube = jscadFluent.cube({ size: 10 })
+      const cube = jscadFluent
+        .cube({ size: 10 })
         .rotateX(Math.PI / 4)
         .rotateY(Math.PI / 4)
         .scale([2, 1, 1])
         .translate([5, 5, 5]);
-      
+
       const volume = cube.measureVolume();
       expect(volume).toBeCloseTo(2000);
     });
 
     test('expansion with different corner types', () => {
       const square = jscadFluent.square({ size: 100 });
-      
+
       const roundExpansion = square.expand({ delta: 5, corners: 'round' });
       const roundArea = roundExpansion.measureArea();
-      
+
       const chamferExpansion = square.expand({ delta: 5, corners: 'chamfer' });
       const chamferArea = chamferExpansion.measureArea();
-      
+
       // expect(roundArea).not.toEqual(chamferArea);
       expect(roundArea).toBeGreaterThan(10000);
       expect(chamferArea).toBeGreaterThan(10000);
@@ -53,23 +54,22 @@ describe('Extended Coverage Tests', () => {
       const rect1 = jscadFluent.rectangle({ size: [10, 10] });
       const rect2 = jscadFluent.rectangle({ size: [20, 20] });
       const array = [rect1, rect2];
-      
-      const transformed = array.map(geom => 
-        geom.translate([10, 0, 0])
-           .scale([2, 2, 1])
-      );
-      
-      expect(transformed[0].measureArea()).toBeCloseTo(400);
-      expect(transformed[1].measureArea()).toBeCloseTo(1600);
+
+      const transformed = array.map((geom) => geom.translate([10, 0, 0]).scale([2, 2, 1]));
+
+      expect(transformed[0]?.measureArea()).toBeCloseTo(400);
+      expect(transformed[1]?.measureArea()).toBeCloseTo(1600);
     });
 
     test('3D array boolean operations', () => {
       const sphere1 = jscadFluent.sphere({ radius: 5 });
       const sphere2 = jscadFluent.sphere({ radius: 10 });
       const array = [sphere1, sphere2];
-      
-      const volumes = array.map(item => item.measureVolume());
-      expect(volumes[0]).toBeLessThan(volumes[1]);
+
+      const volumes = array.map((item) => item.measureVolume());
+      if (volumes[0] !== undefined && volumes[1] !== undefined) {
+        expect(volumes[0]).toBeLessThan(volumes[1]);
+      }
     });
   });
 
@@ -77,19 +77,17 @@ describe('Extended Coverage Tests', () => {
     test('toString implementations', () => {
       const rect = jscadFluent.rectangle({ size: [10, 20] });
       expect(rect.toString()).toContain('geom2');
-      
+
       const cube = jscadFluent.cube({ size: 10 });
       expect(cube.toString()).toContain('geom3');
     });
 
     test('clone operations', () => {
-      const original = jscadFluent.cube({ size: 10 })
-        .translate([5, 5, 5])
-        .colorize([1, 0, 0]);
-      
+      const original = jscadFluent.cube({ size: 10 }).translate([5, 5, 5]).colorize([1, 0, 0]);
+
       const clone = original.clone();
       expect(clone.measureVolume()).toEqual(original.measureVolume());
-      
+
       const center = clone.measureCenter();
       const originalCenter = original.measureCenter();
       if (typeof center === 'number' || typeof originalCenter === 'number') return;
@@ -99,7 +97,7 @@ describe('Extended Coverage Tests', () => {
     test('validation operations', () => {
       const rect = jscadFluent.rectangle({ size: [10, 20] });
       expect(() => rect.validate()).not.toThrow();
-      
+
       const cube = jscadFluent.cube({ size: 10 });
       expect(() => cube.validate()).not.toThrow();
     });
@@ -107,14 +105,12 @@ describe('Extended Coverage Tests', () => {
 
   describe('Color Operations', () => {
     test('RGB color assignment', () => {
-      const rect = jscadFluent.rectangle({ size: [10, 20] })
-        .colorize([1, 0, 0]);
+      const rect = jscadFluent.rectangle({ size: [10, 20] }).colorize([1, 0, 0]);
       expect(rect).toBeDefined();
     });
 
     test('RGBA color assignment', () => {
-      const cube = jscadFluent.cube({ size: 10 })
-        .colorize([1, 0, 0, 0.5]);
+      const cube = jscadFluent.cube({ size: 10 }).colorize([1, 0, 0, 0.5]);
       expect(cube).toBeDefined();
     });
   });
@@ -132,7 +128,7 @@ describe('Extended Coverage Tests', () => {
       const rect = jscadFluent.rectangle({ size: [10, 20] });
       const points = rect.toPoints();
       expect(points.length).toBeGreaterThan(0);
-      
+
       const outlines = rect.toOutlines();
       expect(outlines.length).toBeGreaterThan(0);
     });

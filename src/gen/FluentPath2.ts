@@ -1,17 +1,17 @@
-import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
-  Path2, 
-  Vec2, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+import { colors, expansions, geometries, hulls, measurements, transforms } from '@jscad/modeling';
+import type {
+  BoundingBox,
+  CenterOptions,
+  Centroid,
   ExpandOptions,
+  Mat4,
   MirrorOptions,
-  OffsetOptions
+  OffsetOptions,
+  Path2,
+  RGB,
+  RGBA,
+  Vec2,
+  Vec3,
 } from '../types';
 
 const { path2 } = geometries;
@@ -20,6 +20,7 @@ import { FluentPath2Array } from './FluentPath2Array';
 
 export class FluentPath2 implements Path2 {
   readonly type: 'path2' = 'path2';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   points!: Array<any>;
   transforms!: Mat4;
   isClosed!: boolean;
@@ -27,7 +28,7 @@ export class FluentPath2 implements Path2 {
   constructor(geometry: Path2) {
     Object.assign(this, geometry ?? path2.create());
   }
-  
+
   clone(): FluentPath2 {
     return new FluentPath2(path2.clone(this));
   }
@@ -124,7 +125,7 @@ export class FluentPath2 implements Path2 {
     Object.assign(this, colors.colorize(color, this));
     return this;
   }
-  
+
   expand(options: ExpandOptions): this {
     Object.assign(this, expansions.expand(options, this));
     return this;
@@ -143,7 +144,7 @@ export class FluentPath2 implements Path2 {
     Object.assign(this, hulls.hullChain(this));
     return this;
   }
-  
+
   measureBoundingBox(): BoundingBox {
     return measurements.measureBoundingBox(this);
   }
@@ -160,7 +161,6 @@ export class FluentPath2 implements Path2 {
     return measurements.measureDimensions(this);
   }
 
-
   measureArea(): number {
     return measurements.measureArea(this);
   }
@@ -170,12 +170,10 @@ export class FluentPath2 implements Path2 {
   }
 
   validate(): void {
-    return path2.validate(this);
+    path2.validate(this);
   }
 
   toString(): string {
     return path2.toString(this);
   }
-
-
 }

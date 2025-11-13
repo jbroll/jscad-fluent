@@ -17,6 +17,7 @@ const { geom3 } = geometries;
 
 export class FluentGeom3 implements Geom3 {
   readonly type: 'geom3' = 'geom3';
+  // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   polygons!: Array<any>;
   transforms!: Mat4;
 

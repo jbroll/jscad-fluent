@@ -5,17 +5,27 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es2015",
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
+    "skipLibCheck": true,
+
+    // Strict type checking
     "strict": true,
-    "skipLibCheck": true
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
   },
   "exclude": [
     "dist",
     "examples",
-    "node_modules"
+    "node_modules",
+    "test",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
