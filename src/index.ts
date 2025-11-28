@@ -20,7 +20,7 @@ import type {
  * Main entry point for the JSCAD Fluent API.
  * Provides factory functions for creating fluent geometry objects.
  */
-export const jscadFluent = {
+const jscadFluent = {
   // Path2 Primitives
   arc(options: {
     center: Point2;
@@ -96,10 +96,5 @@ export const jscadFluent = {
   },
 };
 
-// Export classes for advanced usage
-export { FluentGeom2 } from './gen/FluentGeom2';
-export { FluentGeom2Array } from './gen/FluentGeom2Array';
-export { FluentGeom3 } from './gen/FluentGeom3';
-export { FluentGeom3Array } from './gen/FluentGeom3Array';
-export { FluentPath2 } from './gen/FluentPath2';
-export { FluentPath2Array } from './gen/FluentPath2Array';
+// Default export for simple usage: const jf = require('@jbroll/jscad-fluent')
+export default jscadFluent;

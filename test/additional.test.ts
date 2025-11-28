@@ -1,4 +1,4 @@
-import { jscadFluent } from '../src/index';
+import jscadFluent from '../src/index';
 
 describe('Extended Coverage Tests', () => {
   describe('2D Operations', () => {

@@ -1,5 +1,5 @@
 import { FluentGeom2 } from '../src/gen/FluentGeom2';
-import { jscadFluent } from '../src/index';
+import jscadFluent from '../src/index';
 import type { Point2 } from '../src/types';
 
 describe('2D Primitives', () => {

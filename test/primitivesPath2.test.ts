@@ -1,5 +1,5 @@
 import { FluentPath2 } from '../src/gen/FluentPath2';
-import { jscadFluent } from '../src/index';
+import jscadFluent from '../src/index';
 import type { Point2 } from '../src/types';
 
 describe('Path2 Primitives', () => {

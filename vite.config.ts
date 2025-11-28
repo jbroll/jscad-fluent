@@ -7,10 +7,16 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'jscadFluent',
       fileName: 'jscad-fluent',
-      formats: ['es'],
+      formats: ['es', 'umd'],
     },
     rollupOptions: {
       external: ['@jscad/modeling'],
+      output: {
+        globals: {
+          '@jscad/modeling': 'jscadModeling',
+        },
+        exports: 'default',
+      },
     },
   },
 });

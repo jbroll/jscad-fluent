@@ -1,4 +1,4 @@
-import { jscadFluent } from '../src/index';
+import jscadFluent from '../src/index';
 
 describe('3D Primitives', () => {
   describe('cube', () => {
