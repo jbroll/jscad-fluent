@@ -66,6 +66,7 @@ jf.star({ vertices: number, outerRadius: number, innerRadius: number })
 ```typescript
 // All primitives return a Geom3Wrapper instance
 jf.cube({ size: number })
+jf.cuboid({ size: [width, depth, height] })
 jf.sphere({ radius: number })
 jf.cylinder({ radius: number, height: number })
 jf.cylinderElliptic({ 

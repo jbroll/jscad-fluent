@@ -37,6 +37,7 @@ jf.line(points: Vec2[])
 ## 3D PRIMITIVES -> FluentGeom3
 
 jf.cube({ size?: number=2, center?: Vec3=[0,0,0] })
+jf.cuboid({ size?: Vec3=[2,2,2], center?: Vec3=[0,0,0] })
 jf.sphere({ radius?: number=1, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.cylinder({ radius?: number=1, height?: number=2, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.cylinderElliptic({ height?: number=2, startRadius?: Vec2=[1,1], endRadius?: Vec2=[1,1], startAngle?: number=0, endAngle?: number=2*PI, center?: Vec3=[0,0,0], segments?: number=32 })

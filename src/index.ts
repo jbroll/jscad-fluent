@@ -5,6 +5,7 @@ import { FluentPath2 } from './gen/FluentPath2';
 import type {
   CircleOptions,
   CubeOptions,
+  CuboidOptions,
   CylinderEllipticOptions,
   CylinderOptions,
   EllipseOptions,
@@ -67,6 +68,10 @@ const jscadFluent = {
   // 3D Primitives
   cube(options: CubeOptions): FluentGeom3 {
     return new FluentGeom3(primitives.cube(options));
+  },
+
+  cuboid(options: CuboidOptions): FluentGeom3 {
+    return new FluentGeom3(primitives.cuboid(options));
   },
 
   sphere(options: SphereOptions): FluentGeom3 {

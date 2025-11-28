@@ -11,6 +11,7 @@ import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operation
 import type {
   CircleOptions,
   CubeOptions,
+  CuboidOptions,
   CylinderEllipticOptions,
   CylinderOptions,
   EllipseOptions,
@@ -32,6 +33,7 @@ export type {
   CenterOptions,
   CircleOptions,
   CubeOptions,
+  CuboidOptions,
   CylinderOptions,
   CylinderEllipticOptions,
   EllipseOptions,
