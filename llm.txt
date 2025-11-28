@@ -1,14 +1,14 @@
 # jscad-fluent API
 
-Fluent wrapper for JSCAD. All methods chainable. Import: ` import { jscadFluent as jf } from '@jbroll/jscad-fluent'`
+Fluent wrapper for JSCAD. All methods chainable. REQUIRE NOT IMPORT: `const jf = require('@jbroll/jscad-fluent')
+`
 
 ## CRITICAL CONSTRAINTS
 - Angles: RADIANS (not degrees). Use Math.PI
 - Colors: 0-1 range (not 0-255)
 - Booleans: all inputs must be same type (all 2D or all 3D)
-- Transforms mutate and return `this`
+- All operations return NEW objects (immutable, like standard JSCAD)
 - Measurements return values (not chainable)
-- Use clone() to preserve original
 
 ## TYPES
 ```
@@ -44,7 +44,7 @@ jf.cylinderElliptic({ height?: number=2, startRadius?: Vec2=[1,1], endRadius?: V
 jf.torus({ innerRadius?: number=1, outerRadius?: number=4, innerSegments?: number=32, outerSegments?: number=32, innerRotation?: number=0, outerRotation?: number=2*PI, startAngle?: number=0 })
 jf.polyhedron({ points: Vec3[], faces: number[][], colors?: RGBA[], orientation?: 'outward'|'inward'='outward' })
 
-## TRANSFORMS -> this (chainable, all geometry types)
+## TRANSFORMS -> new instance (chainable, all geometry types)
 
 .translate(offset: Vec3)
 .translateX(offset: number)
@@ -68,7 +68,7 @@ jf.polyhedron({ points: Vec3[], faces: number[][], colors?: RGBA[], orientation?
 .centerZ()
 .transform(matrix: Mat4)
 
-## COLOR -> this
+## COLOR -> new instance
 
 .colorize(color: RGB | RGBA)    // values 0-1
 
@@ -83,18 +83,18 @@ jf.colors.rgbToHsl(rgb: RGB) -> [h,s,l]
 jf.colors.rgbToHsv(rgb: RGB) -> [h,s,v]
 jf.colors.css.<name>                                // 150+ CSS colors: .red, .lightblue, etc.
 
-## BOOLEANS -> this (inputs must match geometry type)
+## BOOLEANS -> new instance (inputs must match geometry type)
 
 .union(others: FluentGeom2[] | FluentGeom3[])
 .subtract(others: FluentGeom2[] | FluentGeom3[])
 .intersect(others: FluentGeom2[] | FluentGeom3[])
 
-## HULL -> this
+## HULL -> new instance
 
 .hull()
 .hullChain()
 
-## EXPANSION -> this
+## EXPANSION -> new instance
 
 .expand({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })
 .offset({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })  // 2D only
@@ -115,7 +115,6 @@ jf.colors.css.<name>                                // 150+ CSS colors: .red, .l
 
 ## UTILITY
 
-.clone() -> FluentGeom2 | FluentGeom3
 .validate() -> void             // throws if invalid
 .toString() -> string
 .toPoints() -> Vec2[]           // 2D only
