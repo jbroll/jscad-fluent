@@ -1,14 +1,14 @@
 import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
+import type {
+  Centroid,
   ExpandOptions,
-  Geom3, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+  Geom3,
+  Vec3,
+  Mat4,
+  RGB,
+  RGBA,
+  BoundingBox,
+  CenterOptions,
   MirrorOptions,
 } from '../types';
 import { FluentGeom3Array } from './FluentGeom3Array';
@@ -25,8 +25,9 @@ export class FluentGeom3 implements Geom3 {
     Object.assign(this, geometry ?? geom3.create());
   }
 
-  clone(): FluentGeom3 {
-    return new FluentGeom3(geom3.clone(this));
+  // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
+  private _wrap(geometry: any): this {
+    return new (this.constructor as new (g: Geom3) => this)(geometry);
   }
 
   append(geometry: Geom3): FluentGeom3Array {

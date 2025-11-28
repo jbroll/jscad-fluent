@@ -82,16 +82,26 @@ describe('Extended Coverage Tests', () => {
       expect(cube.toString()).toContain('geom3');
     });
 
-    test('clone operations', () => {
-      const original = jscadFluent.cube({ size: 10 }).translate([5, 5, 5]).colorize([1, 0, 0]);
+    test('immutable operations return new objects', () => {
+      const original = jscadFluent.cube({ size: 10 });
+      const translated = original.translate([5, 5, 5]);
 
-      const clone = original.clone();
-      expect(clone.measureVolume()).toEqual(original.measureVolume());
+      // Verify these are different objects
+      expect(translated).not.toBe(original);
 
-      const center = clone.measureCenter();
+      // Verify original is unchanged (centered at origin)
       const originalCenter = original.measureCenter();
-      if (typeof center === 'number' || typeof originalCenter === 'number') return;
-      expect(center).toEqual(originalCenter);
+      if (typeof originalCenter === 'number') return;
+      expect(originalCenter[0]).toBeCloseTo(0);
+      expect(originalCenter[1]).toBeCloseTo(0);
+      expect(originalCenter[2]).toBeCloseTo(0);
+
+      // Verify translated has new position
+      const translatedCenter = translated.measureCenter();
+      if (typeof translatedCenter === 'number') return;
+      expect(translatedCenter[0]).toBeCloseTo(5);
+      expect(translatedCenter[1]).toBeCloseTo(5);
+      expect(translatedCenter[2]).toBeCloseTo(5);
     });
 
     test('validation operations', () => {

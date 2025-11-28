@@ -1,17 +1,17 @@
 import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
-  Geom2, 
-  Vec2, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+import type {
+  Centroid,
+  Geom2,
+  Vec2,
+  Vec3,
+  Mat4,
+  RGB,
+  RGBA,
+  BoundingBox,
+  CenterOptions,
   ExpandOptions,
-  ExtrudeLinearOptions, 
-  ExtrudeRotateOptions, 
+  ExtrudeLinearOptions,
+  ExtrudeRotateOptions,
   MirrorOptions,
   OffsetOptions
 } from '../types';
@@ -30,9 +30,10 @@ export class FluentGeom2 implements Geom2 {
   constructor(geometry: Geom2) {
     Object.assign(this, geometry ?? geom2.create());
   }
-  
-  clone(): FluentGeom2 {
-    return new FluentGeom2(geom2.clone(this));
+
+  // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
+  private _wrap(geometry: any): this {
+    return new (this.constructor as new (g: Geom2) => this)(geometry);
   }
 
   append(geometry: Geom2): FluentGeom2Array {

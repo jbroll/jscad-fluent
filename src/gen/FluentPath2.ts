@@ -29,8 +29,9 @@ export class FluentPath2 implements Path2 {
     Object.assign(this, geometry ?? path2.create());
   }
 
-  clone(): FluentPath2 {
-    return new FluentPath2(path2.clone(this));
+  // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
+  private _wrap(geometry: any): this {
+    return new (this.constructor as new (g: Path2) => this)(geometry);
   }
 
   append(geometry: Path2): FluentPath2Array {
@@ -38,111 +39,85 @@ export class FluentPath2 implements Path2 {
   }
 
   translate(offset: Vec3): this {
-    Object.assign(this, transforms.translate(offset, this));
-    return this;
+    return this._wrap(transforms.translate(offset, this));
   }
   translateX(offset: number): this {
-    Object.assign(this, transforms.translateX(offset, this));
-    return this;
+    return this._wrap(transforms.translateX(offset, this));
   }
   translateY(offset: number): this {
-    Object.assign(this, transforms.translateY(offset, this));
-    return this;
+    return this._wrap(transforms.translateY(offset, this));
   }
   translateZ(offset: number): this {
-    Object.assign(this, transforms.translateZ(offset, this));
-    return this;
+    return this._wrap(transforms.translateZ(offset, this));
   }
   rotate(angle: Vec3): this {
-    Object.assign(this, transforms.rotate(angle, this));
-    return this;
+    return this._wrap(transforms.rotate(angle, this));
   }
   rotateX(angle: number): this {
-    Object.assign(this, transforms.rotateX(angle, this));
-    return this;
+    return this._wrap(transforms.rotateX(angle, this));
   }
   rotateY(angle: number): this {
-    Object.assign(this, transforms.rotateY(angle, this));
-    return this;
+    return this._wrap(transforms.rotateY(angle, this));
   }
   rotateZ(angle: number): this {
-    Object.assign(this, transforms.rotateZ(angle, this));
-    return this;
+    return this._wrap(transforms.rotateZ(angle, this));
   }
   scale(factor: Vec3): this {
-    Object.assign(this, transforms.scale(factor, this));
-    return this;
+    return this._wrap(transforms.scale(factor, this));
   }
   scaleX(factor: number): this {
-    Object.assign(this, transforms.scaleX(factor, this));
-    return this;
+    return this._wrap(transforms.scaleX(factor, this));
   }
   scaleY(factor: number): this {
-    Object.assign(this, transforms.scaleY(factor, this));
-    return this;
+    return this._wrap(transforms.scaleY(factor, this));
   }
   scaleZ(factor: number): this {
-    Object.assign(this, transforms.scaleZ(factor, this));
-    return this;
+    return this._wrap(transforms.scaleZ(factor, this));
   }
   mirror(options: MirrorOptions): this {
-    Object.assign(this, transforms.mirror(options, this));
-    return this;
+    return this._wrap(transforms.mirror(options, this));
   }
   mirrorX(): this {
-    Object.assign(this, transforms.mirrorX(this));
-    return this;
+    return this._wrap(transforms.mirrorX(this));
   }
   mirrorY(): this {
-    Object.assign(this, transforms.mirrorY(this));
-    return this;
+    return this._wrap(transforms.mirrorY(this));
   }
   mirrorZ(): this {
-    Object.assign(this, transforms.mirrorZ(this));
-    return this;
+    return this._wrap(transforms.mirrorZ(this));
   }
   center(axes: CenterOptions): this {
-    Object.assign(this, transforms.center(axes, this));
-    return this;
+    return this._wrap(transforms.center(axes, this));
   }
   centerX(): this {
-    Object.assign(this, transforms.centerX(this));
-    return this;
+    return this._wrap(transforms.centerX(this));
   }
   centerY(): this {
-    Object.assign(this, transforms.centerY(this));
-    return this;
+    return this._wrap(transforms.centerY(this));
   }
   centerZ(): this {
-    Object.assign(this, transforms.centerZ(this));
-    return this;
+    return this._wrap(transforms.centerZ(this));
   }
   transform(matrix: Mat4): this {
-    Object.assign(this, transforms.transform(matrix, this));
-    return this;
+    return this._wrap(transforms.transform(matrix, this));
   }
   colorize(color: RGB | RGBA): this {
-    Object.assign(this, colors.colorize(color, this));
-    return this;
+    return this._wrap(colors.colorize(color, this));
   }
 
   expand(options: ExpandOptions): this {
-    Object.assign(this, expansions.expand(options, this));
-    return this;
+    return this._wrap(expansions.expand(options, this));
   }
 
   offset(options: OffsetOptions): this {
-    Object.assign(this, expansions.offset(options, this));
-    return this;
+    return this._wrap(expansions.offset(options, this));
   }
 
   hull(): this {
-    Object.assign(this, hulls.hull(this));
-    return this;
+    return this._wrap(hulls.hull(this));
   }
   hullChain(): this {
-    Object.assign(this, hulls.hullChain(this));
-    return this;
+    return this._wrap(hulls.hullChain(this));
   }
 
   measureBoundingBox(): BoundingBox {

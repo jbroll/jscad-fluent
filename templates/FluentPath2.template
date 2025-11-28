@@ -1,14 +1,14 @@
 import { expansions, geometries, hulls, measurements, transforms, colors } from '@jscad/modeling';
-import type { 
-  Centroid, 
-  Path2, 
-  Vec2, 
-  Vec3, 
-  Mat4, 
-  RGB, 
-  RGBA, 
-  BoundingBox, 
-  CenterOptions, 
+import type {
+  Centroid,
+  Path2,
+  Vec2,
+  Vec3,
+  Mat4,
+  RGB,
+  RGBA,
+  BoundingBox,
+  CenterOptions,
   ExpandOptions,
   MirrorOptions,
   OffsetOptions
@@ -28,9 +28,10 @@ export class FluentPath2 implements Path2 {
   constructor(geometry: Path2) {
     Object.assign(this, geometry ?? path2.create());
   }
-  
-  clone(): FluentPath2 {
-    return new FluentPath2(path2.clone(this));
+
+  // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
+  private _wrap(geometry: any): this {
+    return new (this.constructor as new (g: Path2) => this)(geometry);
   }
 
   append(geometry: Path2): FluentPath2Array {
