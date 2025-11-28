@@ -11,18 +11,18 @@ npm install jscad-fluent
 ## Quick Start
 
 ```typescript
-import { jscadFluent } from 'jscad-fluent';
+import { jf } from 'jscad-fluent';
 
 // Create a simple 3D model
-const model = jscadFluent.cube({ size: 10 })
+const model = jf.cube({ size: 10 })
   .translate([5, 0, 0])
   .rotate([0, Math.PI/4, 0])
   .setColor([1, 0, 0]);
 
 // Create a complex 2D shape
-const logo = jscadFluent.circle({ radius: 10 })
+const logo = jf.circle({ radius: 10 })
   .subtract(
-    jscadFluent.star({
+    jf.star({
       vertices: 5,
       outerRadius: 8,
       innerRadius: 4
@@ -53,28 +53,28 @@ const extruded = logo.extrudeLinear({ height: 10 });
 
 ```typescript
 // All primitives return a Geom2Wrapper instance
-jscadFluent.rectangle({ size: [width, height] })
-jscadFluent.circle({ radius: number })
-jscadFluent.ellipse({ radius: [rx, ry] })
-jscadFluent.polygon(points: [number, number][])
-jscadFluent.square({ size: number })
-jscadFluent.star({ vertices: number, outerRadius: number, innerRadius: number })
+jf.rectangle({ size: [width, height] })
+jf.circle({ radius: number })
+jf.ellipse({ radius: [rx, ry] })
+jf.polygon(points: [number, number][])
+jf.square({ size: number })
+jf.star({ vertices: number, outerRadius: number, innerRadius: number })
 ```
 
 ### 3D Primitives
 
 ```typescript
 // All primitives return a Geom3Wrapper instance
-jscadFluent.cube({ size: number })
-jscadFluent.sphere({ radius: number })
-jscadFluent.cylinder({ radius: number, height: number })
-jscadFluent.cylinderElliptic({ 
+jf.cube({ size: number })
+jf.sphere({ radius: number })
+jf.cylinder({ radius: number, height: number })
+jf.cylinderElliptic({ 
   height: number, 
   startRadius: [rx, ry],
   endRadius?: [rx, ry] 
 })
-jscadFluent.torus({ innerRadius: number, outerRadius: number })
-jscadFluent.polyhedron({ 
+jf.torus({ innerRadius: number, outerRadius: number })
+jf.polyhedron({ 
   points: [number, number, number][], 
   faces: number[][]
 })
@@ -164,27 +164,27 @@ geometry.toPolygons()    // Returns array of polygons with vertices
 
 ```typescript
 // Vector creation
-jscadFluent.vec2.create()
-jscadFluent.vec3.create()
+jf.vec2.create()
+jf.vec3.create()
 
 // Matrix operations
-jscadFluent.mat4.create()
+jf.mat4.create()
 
 // Angle conversion
-jscadFluent.degToRad(degrees)
-jscadFluent.radToDeg(radians)
+jf.degToRad(degrees)
+jf.radToDeg(radians)
 ```
 
 ## Example: Creating Complex Geometry
 
 ```typescript
-const complexShape = jscadFluent.cube({ size: 10 })
+const complexShape = jf.cube({ size: 10 })
   .union(
-    jscadFluent.sphere({ radius: 6 })
+    jf.sphere({ radius: 6 })
       .translate([0, 0, 5])
   )
   .subtract(
-    jscadFluent.cylinder({ radius: 2, height: 20 })
+    jf.cylinder({ radius: 2, height: 20 })
       .rotate([Math.PI/2, 0, 0])
   )
   .expand(0.5, 'round')
