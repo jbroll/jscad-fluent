@@ -1,6 +1,6 @@
 # jscad-fluent API
 
-Fluent wrapper for JSCAD. All methods chainable. Import: `import { jf } from 'jscad-fluent'`
+Fluent wrapper for JSCAD. All methods chainable. Import: ` import { jscadFluent as jf } from '@jbroll/jscad-fluent'`
 
 ## CRITICAL CONSTRAINTS
 - Angles: RADIANS (not degrees). Use Math.PI
