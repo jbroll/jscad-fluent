@@ -1,4 +1,4 @@
-import { primitives } from '@jscad/modeling';
+import { colors, primitives } from '@jscad/modeling';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom3 } from './gen/FluentGeom3';
 import { FluentPath2 } from './gen/FluentPath2';
@@ -93,6 +93,84 @@ const jscadFluent = {
     faces: number[][];
   }): FluentGeom3 {
     return new FluentGeom3(primitives.polyhedron({ points, faces }));
+  },
+
+  /**
+   * Color utilities for converting between color formats.
+   * All color values are normalized to 0-1 range for use with colorize().
+   */
+  colors: {
+    /**
+     * Convert hex color notation to RGB or RGBA.
+     * @param hex - Hex color string (e.g., '#FF0000', '#F00', '#FF000080')
+     * @returns RGB or RGBA tuple with values 0-1
+     * @example
+     * jscadFluent.colors.hexToRgb('#FF0000')  // [1, 0, 0]
+     * jscadFluent.colors.hexToRgb('#FF000080')  // [1, 0, 0, 0.5]
+     */
+    hexToRgb: colors.hexToRgb,
+
+    /**
+     * Convert CSS color name to RGB.
+     * @param name - CSS color name (e.g., 'red', 'lightblue', 'cornflowerblue')
+     * @returns RGB tuple with values 0-1
+     * @example
+     * jscadFluent.colors.colorNameToRgb('red')  // [1, 0, 0]
+     * jscadFluent.colors.colorNameToRgb('lightblue')  // [0.68, 0.85, 0.9]
+     */
+    colorNameToRgb: colors.colorNameToRgb,
+
+    /**
+     * Convert HSL to RGB. All values use 0-1 range.
+     * @param hsl - HSL or HSLA tuple (all values 0-1)
+     * @returns RGB or RGBA tuple with values 0-1
+     * @example
+     * jscadFluent.colors.hslToRgb([0, 1, 0.5])  // Red: [1, 0, 0]
+     * jscadFluent.colors.hslToRgb([0.33, 1, 0.5])  // Green
+     */
+    hslToRgb: colors.hslToRgb,
+
+    /**
+     * Convert HSV to RGB. All values use 0-1 range.
+     * @param hsv - HSV or HSVA tuple (all values 0-1)
+     * @returns RGB or RGBA tuple with values 0-1
+     * @example
+     * jscadFluent.colors.hsvToRgb([0, 1, 1])  // Red: [1, 0, 0]
+     * jscadFluent.colors.hsvToRgb([0.33, 1, 1])  // Green
+     */
+    hsvToRgb: colors.hsvToRgb,
+
+    /**
+     * Convert RGB to hex notation.
+     * @param rgb - RGB or RGBA tuple with values 0-1
+     * @returns Hex color string
+     * @example
+     * jscadFluent.colors.rgbToHex([1, 0, 0])  // '#FF0000'
+     */
+    rgbToHex: colors.rgbToHex,
+
+    /**
+     * Convert RGB to HSL.
+     * @param rgb - RGB or RGBA tuple with values 0-1
+     * @returns HSL or HSLA tuple
+     */
+    rgbToHsl: colors.rgbToHsl,
+
+    /**
+     * Convert RGB to HSV.
+     * @param rgb - RGB or RGBA tuple with values 0-1
+     * @returns HSV or HSVA tuple
+     */
+    rgbToHsv: colors.rgbToHsv,
+
+    /**
+     * CSS color constants (150+ named colors).
+     * All values are RGB tuples with values 0-1.
+     * @example
+     * jscadFluent.colors.css.red  // [1, 0, 0]
+     * jscadFluent.colors.css.lightblue  // [0.68, 0.85, 0.9]
+     */
+    css: colors.cssColors,
   },
 };
 

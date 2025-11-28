@@ -113,6 +113,66 @@ describe('Extended Coverage Tests', () => {
       const cube = jscadFluent.cube({ size: 10 }).colorize([1, 0, 0, 0.5]);
       expect(cube).toBeDefined();
     });
+
+    test('hexToRgb conversion', () => {
+      const red = jscadFluent.colors.hexToRgb('#FF0000');
+      expect(red[0]).toBeCloseTo(1);
+      expect(red[1]).toBeCloseTo(0);
+      expect(red[2]).toBeCloseTo(0);
+
+      const blueWithAlpha = jscadFluent.colors.hexToRgb('#0000FF80');
+      expect(blueWithAlpha[0]).toBeCloseTo(0);
+      expect(blueWithAlpha[1]).toBeCloseTo(0);
+      expect(blueWithAlpha[2]).toBeCloseTo(1);
+      expect(blueWithAlpha[3]).toBeCloseTo(0.5, 1);
+    });
+
+    test('colorNameToRgb conversion', () => {
+      const red = jscadFluent.colors.colorNameToRgb('red');
+      expect(red[0]).toBeCloseTo(1);
+      expect(red[1]).toBeCloseTo(0);
+      expect(red[2]).toBeCloseTo(0);
+    });
+
+    test('hslToRgb conversion', () => {
+      // JSCAD HSL uses 0-1 range for all values (H, S, L)
+      const red = jscadFluent.colors.hslToRgb([0, 1, 0.5]);
+      expect(red[0]).toBeCloseTo(1);
+      expect(red[1]).toBeCloseTo(0);
+      expect(red[2]).toBeCloseTo(0);
+    });
+
+    test('hsvToRgb conversion', () => {
+      // JSCAD HSV uses 0-1 range for all values (H, S, V)
+      const red = jscadFluent.colors.hsvToRgb([0, 1, 1]);
+      expect(red[0]).toBeCloseTo(1);
+      expect(red[1]).toBeCloseTo(0);
+      expect(red[2]).toBeCloseTo(0);
+    });
+
+    test('rgbToHex conversion', () => {
+      const hex = jscadFluent.colors.rgbToHex([1, 0, 0]);
+      expect(hex).toBe('#ff0000');
+    });
+
+    test('CSS color constants', () => {
+      const red = jscadFluent.colors.css.red;
+      expect(red[0]).toBeCloseTo(1);
+      expect(red[1]).toBeCloseTo(0);
+      expect(red[2]).toBeCloseTo(0);
+    });
+
+    test('colorize with hex color', () => {
+      const cube = jscadFluent.cube({ size: 10 }).colorize(jscadFluent.colors.hexToRgb('#FF0000'));
+      expect(cube).toBeDefined();
+    });
+
+    test('colorize with CSS color name', () => {
+      const cube = jscadFluent
+        .cube({ size: 10 })
+        .colorize(jscadFluent.colors.colorNameToRgb('lightblue'));
+      expect(cube).toBeDefined();
+    });
   });
 
   describe('Measurement Operations', () => {

@@ -57,6 +57,10 @@ export type Point2 = [number, number];
 export type Point3 = [number, number, number];
 export type RGB = [number, number, number];
 export type RGBA = [number, number, number, number];
+export type HSL = [number, number, number];
+export type HSLA = [number, number, number, number];
+export type HSV = [number, number, number];
+export type HSVA = [number, number, number, number];
 export type Centroid = Point3;
 export type Corners = 'edge' | 'chamfer' | 'round';
 

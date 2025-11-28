@@ -71,6 +71,17 @@ jf.polyhedron({ points: Vec3[], faces: number[][], colors?: RGBA[], orientation?
 
 .colorize(color: RGB | RGBA)    // values 0-1
 
+## COLOR UTILITIES (jf.colors.*)
+
+jf.colors.hexToRgb(hex: string) -> RGB | RGBA       // '#FF0000', '#F00', '#FF000080'
+jf.colors.colorNameToRgb(name: string) -> RGB       // 'red', 'lightblue', 'cornflowerblue'
+jf.colors.hslToRgb(hsl: [h,s,l]) -> RGB             // all values 0-1
+jf.colors.hsvToRgb(hsv: [h,s,v]) -> RGB             // all values 0-1
+jf.colors.rgbToHex(rgb: RGB) -> string              // returns '#ff0000'
+jf.colors.rgbToHsl(rgb: RGB) -> [h,s,l]
+jf.colors.rgbToHsv(rgb: RGB) -> [h,s,v]
+jf.colors.css.<name>                                // 150+ CSS colors: .red, .lightblue, etc.
+
 ## BOOLEANS -> this (inputs must match geometry type)
 
 .union(others: FluentGeom2[] | FluentGeom3[])
@@ -121,5 +132,8 @@ const model = jf.rectangle({ size: [50, 30] })
   .expand({ delta: 2, corners: 'round' })
   .extrudeLinear({ height: 20 })
   .union([jf.cylinder({ radius: 3, height: 25 }).translate([20, 10, 0])])
-  .colorize([0.2, 0.2, 0.8]);
+  .colorize(jf.colors.hexToRgb('#3344CC'));
+
+// Or use CSS color names
+const redSphere = jf.sphere({ radius: 5 }).colorize(jf.colors.css.red);
 ```
