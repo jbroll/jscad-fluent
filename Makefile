@@ -20,12 +20,14 @@ build:
 test:
 	npm test
 
-deploy: force
-	bash -x ./deploy/deploy.sh
-
 clean:
 	rm -rf dist
 	rm -rf $(GEN)
+
+publish: build
+	npm version patch
+	npm publish
+
 
 force:
 
