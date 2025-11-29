@@ -40,7 +40,24 @@ jf.line(points: Vec2[])
 jf.cube({ size?: number=2, center?: Vec3=[0,0,0] })
 jf.cuboid({ size?: Vec3=[2,2,2], center?: Vec3=[0,0,0] })
 jf.sphere({ radius?: number=1, center?: Vec3=[0,0,0], segments?: number=32 })
-jf.cylinder({ radius?: number=1, height?: number=2, center?: Vec3=[0,0,0], segments?: number=32 })
+jf.cylinder({
+  radius?: FlexRadius=1,     // number | [start,end] | [[x1,y1],[x2,y2]] for tapered/elliptical
+  height?: number=2,
+  center?: Vec3=[0,0,0],
+  segments?: number=32,
+  angle?: [number,number],   // [startAngle, endAngle] for partial arcs, default [0, 2*PI]
+  outer?: FlexRadius,        // outer radius for hollow cylinder
+  inner?: FlexRadius,        // inner radius for hollow cylinder
+  wall?: FlexRadius          // wall thickness (calculates inner from outer - wall)
+})
+// FlexRadius = number | [start, end] | [[x1,y1], [x2,y2]]
+// Examples:
+//   jf.cylinder({ radius: 5, height: 10 })                    // solid
+//   jf.cylinder({ radius: [5, 3], height: 10 })               // tapered
+//   jf.cylinder({ radius: [[5,3], [5,3]], height: 10 })       // elliptical
+//   jf.cylinder({ outer: 6, inner: 4, height: 10 })           // hollow
+//   jf.cylinder({ outer: 6, wall: 1, height: 10 })            // pipe with wall thickness
+//   jf.cylinder({ radius: 5, height: 10, angle: [0, PI/2] })  // quarter cylinder
 jf.cylinderElliptic({ height?: number=2, startRadius?: Vec2=[1,1], endRadius?: Vec2=[1,1], startAngle?: number=0, endAngle?: number=2*PI, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.torus({ innerRadius?: number=1, outerRadius?: number=4, innerSegments?: number=32, outerSegments?: number=32, innerRotation?: number=0, outerRotation?: number=2*PI, startAngle?: number=0 })
 jf.ellipsoid({ radius?: Vec3=[1,1,1], center?: Vec3=[0,0,0], segments?: number=32, axes?: [Vec3,Vec3,Vec3] })

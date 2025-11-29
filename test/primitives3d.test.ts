@@ -267,4 +267,108 @@ describe('3D Primitives', () => {
       expect(expanded).toBeGreaterThan(0);
     });
   });
+
+  describe('cylinder (enhanced)', () => {
+    describe('solid cylinders', () => {
+      test('creates solid cylinder with uniform radius', () => {
+        const cyl = jscadFluent.cylinder({ radius: 5, height: 10 });
+
+        const dimensions = cyl.measureDimensions();
+        if (typeof dimensions === 'number') return;
+        expect(dimensions[0]).toBeCloseTo(10); // diameter
+        expect(dimensions[1]).toBeCloseTo(10);
+        expect(dimensions[2]).toBeCloseTo(10); // height
+      });
+
+      test('creates tapered cylinder', () => {
+        const cyl = jscadFluent.cylinder({ radius: [5, 3], height: 10 });
+
+        const volume = cyl.measureVolume();
+        expect(volume).toBeGreaterThan(0);
+        // Tapered cylinder should have less volume than uniform
+        const uniformVolume = Math.PI * 5 * 5 * 10;
+        expect(volume).toBeLessThan(uniformVolume);
+      });
+
+      test('creates elliptical cylinder', () => {
+        const cyl = jscadFluent.cylinder({
+          radius: [
+            [5, 3],
+            [5, 3],
+          ],
+          height: 10,
+        });
+
+        const dimensions = cyl.measureDimensions();
+        if (typeof dimensions === 'number') return;
+        expect(dimensions[0]).toBeCloseTo(10); // 2 * 5
+        expect(dimensions[1]).toBeCloseTo(6); // 2 * 3
+      });
+
+      test('creates partial arc cylinder', () => {
+        const fullCyl = jscadFluent.cylinder({ radius: 5, height: 10 });
+        const halfCyl = jscadFluent.cylinder({
+          radius: 5,
+          height: 10,
+          angle: [0, Math.PI],
+        });
+
+        const fullVolume = fullCyl.measureVolume();
+        const halfVolume = halfCyl.measureVolume();
+        expect(halfVolume).toBeCloseTo(fullVolume / 2, 0);
+      });
+    });
+
+    describe('hollow cylinders', () => {
+      test('creates hollow cylinder with inner/outer radii', () => {
+        const cyl = jscadFluent.cylinder({ outer: 6, inner: 4, height: 10 });
+
+        const volume = cyl.measureVolume();
+        const expectedVolume = Math.PI * (36 - 16) * 10; // pi * (R^2 - r^2) * h
+        expect(Math.abs(volume - expectedVolume)).toBeLessThan(20);
+      });
+
+      test('creates tapered hollow cylinder', () => {
+        const cyl = jscadFluent.cylinder({
+          outer: [6, 4],
+          inner: [4, 2.5],
+          height: 10,
+        });
+
+        expect(cyl.measureVolume()).toBeGreaterThan(0);
+      });
+    });
+
+    describe('cylinder with wall thickness', () => {
+      test('creates cylinder with uniform wall', () => {
+        const cyl = jscadFluent.cylinder({ outer: 6, wall: 1, height: 10 });
+
+        // Wall of 1 means inner radius is 5
+        const volume = cyl.measureVolume();
+        const expectedVolume = Math.PI * (36 - 25) * 10;
+        expect(Math.abs(volume - expectedVolume)).toBeLessThan(20);
+      });
+
+      test('creates cylinder with tapered wall', () => {
+        const cyl = jscadFluent.cylinder({
+          outer: [6, 4],
+          wall: [1, 0.8],
+          height: 10,
+        });
+
+        expect(cyl.measureVolume()).toBeGreaterThan(0);
+      });
+    });
+
+    test('cylinder supports fluent transforms', () => {
+      const cyl = jscadFluent
+        .cylinder({ outer: 5, inner: 3, height: 10 })
+        .translate([10, 0, 0])
+        .rotate([Math.PI / 2, 0, 0]);
+
+      const center = cyl.measureCenter();
+      if (typeof center === 'number') return;
+      expect(center[0]).toBeCloseTo(10);
+    });
+  });
 });

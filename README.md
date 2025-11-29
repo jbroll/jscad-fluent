@@ -70,7 +70,14 @@ jf.triangle({ type: 'SSS' | 'AAS' | 'ASA' | 'SAS' | 'SSA', values: [a, b, c] })
 jf.cube({ size: number })
 jf.cuboid({ size: [width, depth, height] })
 jf.sphere({ radius: number })
-jf.cylinder({ radius: number, height: number })
+jf.cylinder({
+  radius: number | [start, end] | [[x1, y1], [x2, y2]],  // flexible radius
+  height: number,
+  outer?: number,   // for hollow cylinders
+  inner?: number,   // for hollow cylinders
+  wall?: number,    // wall thickness (alternative to inner)
+  angle?: [start, end]  // partial arc in radians
+})
 jf.cylinderElliptic({
   height: number,
   startRadius: [rx, ry],

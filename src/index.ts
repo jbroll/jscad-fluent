@@ -7,9 +7,10 @@ import type {
   CubeOptions,
   CuboidOptions,
   CylinderEllipticOptions,
-  CylinderOptions,
   EllipseOptions,
   EllipsoidOptions,
+  FlexCylinderOptions,
+  FlexRadius,
   GeodesicSphereOptions,
   Point2,
   RectangleOptions,
@@ -66,6 +67,100 @@ function intersect(
     return new FluentGeom2(booleans.intersect(geometries as FluentGeom2[]));
   }
   return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));
+}
+
+const TAU = Math.PI * 2;
+
+/**
+ * Normalizes radius input into [startRadius, endRadius] format for cylinderElliptic
+ * @param radius - Single value, [start, end], or [[x1,y1], [x2,y2]]
+ * @param defaultValue - Fallback value if radius is undefined
+ * @returns Normalized start and end radii as [Point2, Point2]
+ */
+function normalizeRadius(radius: FlexRadius | undefined, defaultValue = 1): [Point2, Point2] {
+  if (radius === undefined) {
+    return [
+      [defaultValue, defaultValue],
+      [defaultValue, defaultValue],
+    ];
+  }
+  if (typeof radius === 'number') {
+    return [
+      [radius, radius],
+      [radius, radius],
+    ];
+  }
+  const [start, end] = radius;
+  return [Array.isArray(start) ? start : [start, start], Array.isArray(end) ? end : [end, end]];
+}
+
+/**
+ * Creates a solid or hollow cylinder with optional elliptical cross-sections.
+ * Enhanced version of the basic cylinder primitive.
+ */
+function createCylinder(options: FlexCylinderOptions): FluentGeom3 {
+  const config = {
+    height: 1,
+    segments: 32,
+    center: [0, 0, 0] as [number, number, number],
+    ...options,
+  };
+
+  const [startAngle, endAngle] = config.angle ?? [0, TAU];
+
+  // Handle wall thickness - calculate inner from outer - wall
+  let innerRadius = options.inner;
+  if (options.wall !== undefined) {
+    const [outerStart, outerEnd] = normalizeRadius(options.outer ?? options.radius);
+    const [wallStart, wallEnd] = normalizeRadius(options.wall);
+
+    innerRadius = [
+      [outerStart[0] - wallStart[0], outerStart[1] - wallStart[1]] as Point2,
+      [outerEnd[0] - wallEnd[0], outerEnd[1] - wallEnd[1]] as Point2,
+    ];
+  }
+
+  // Hollow cylinder (with inner radius)
+  if (innerRadius !== undefined) {
+    const [outerStartRadius, outerEndRadius] = normalizeRadius(options.outer ?? options.radius);
+    const [innerStartRadius, innerEndRadius] = normalizeRadius(innerRadius);
+
+    const outer = primitives.cylinderElliptic({
+      height: config.height,
+      segments: config.segments,
+      center: config.center,
+      startRadius: outerStartRadius,
+      endRadius: outerEndRadius,
+      startAngle,
+      endAngle,
+    });
+
+    const inner = primitives.cylinderElliptic({
+      height: config.height,
+      segments: config.segments,
+      center: config.center,
+      startRadius: innerStartRadius,
+      endRadius: innerEndRadius,
+      startAngle,
+      endAngle,
+    });
+
+    return new FluentGeom3(booleans.subtract(outer, inner));
+  }
+
+  // Solid cylinder
+  const [startRadius, endRadius] = normalizeRadius(options.radius);
+  return new FluentGeom3(
+    primitives.cylinderElliptic({
+      height: config.height,
+      segments: config.segments,
+      center: config.center,
+      startRadius,
+      endRadius,
+      startAngle,
+      endAngle,
+    }),
+  );
 }
 
 /**
@@ -133,8 +228,31 @@ const jscadFluent = {
     return new FluentGeom3(primitives.sphere(options));
   },
 
-  cylinder(options: CylinderOptions): FluentGeom3 {
-    return new FluentGeom3(primitives.cylinder(options));
+  /**
+   * Creates a flexible cylinder - solid, hollow, or with wall thickness.
+   * Supports uniform, tapered, elliptical cross-sections and partial arcs.
+   *
+   * @example
+   * // Simple solid cylinder (backwards compatible)
+   * jf.cylinder({ radius: 5, height: 10 })
+   *
+   * // Tapered cylinder
+   * jf.cylinder({ radius: [5, 3], height: 10 })
+   *
+   * // Elliptical cylinder
+   * jf.cylinder({ radius: [[5, 3], [5, 3]], height: 10 })
+   *
+   * // Hollow cylinder
+   * jf.cylinder({ outer: 6, inner: 4, height: 10 })
+   *
+   * // Pipe with wall thickness
+   * jf.cylinder({ outer: 6, wall: 1, height: 10 })
+   *
+   * // Partial arc (quarter cylinder)
+   * jf.cylinder({ radius: 5, height: 10, angle: [0, Math.PI / 2] })
+   */
+  cylinder(options: FlexCylinderOptions): FluentGeom3 {
+    return createCylinder(options);
   },
 
   cylinderElliptic(options: CylinderEllipticOptions): FluentGeom3 {
