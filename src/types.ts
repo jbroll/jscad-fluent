@@ -15,11 +15,16 @@ import type {
   CylinderEllipticOptions,
   CylinderOptions,
   EllipseOptions,
+  EllipsoidOptions,
+  GeodesicSphereOptions,
   RectangleOptions,
+  RoundedCuboidOptions,
+  RoundedCylinderOptions,
   SphereOptions,
   SquareOptions,
   StarOptions,
   TorusOptions,
+  TriangleOptions,
 } from '@jscad/modeling/src/primitives';
 export { mat4 };
 
@@ -37,16 +42,21 @@ export type {
   CylinderOptions,
   CylinderEllipticOptions,
   EllipseOptions,
+  EllipsoidOptions,
   ExpandOptions,
   ExtrudeLinearOptions,
   ExtrudeRotateOptions,
+  GeodesicSphereOptions,
   MirrorOptions,
   OffsetOptions,
   RectangleOptions,
+  RoundedCuboidOptions,
+  RoundedCylinderOptions,
   SphereOptions,
   SquareOptions,
   StarOptions,
   TorusOptions,
+  TriangleOptions,
 };
 
 // Re-export vector and matrix types from JSCAD

@@ -54,11 +54,13 @@ const extruded = logo.extrudeLinear({ height: 10 });
 ```typescript
 // All primitives return a Geom2Wrapper instance
 jf.rectangle({ size: [width, height] })
+jf.roundedRectangle({ size: [width, height], roundRadius: number })
 jf.circle({ radius: number })
 jf.ellipse({ radius: [rx, ry] })
 jf.polygon(points: [number, number][])
 jf.square({ size: number })
 jf.star({ vertices: number, outerRadius: number, innerRadius: number })
+jf.triangle({ type: 'SSS' | 'AAS' | 'ASA' | 'SAS' | 'SSA', values: [a, b, c] })
 ```
 
 ### 3D Primitives
@@ -69,14 +71,18 @@ jf.cube({ size: number })
 jf.cuboid({ size: [width, depth, height] })
 jf.sphere({ radius: number })
 jf.cylinder({ radius: number, height: number })
-jf.cylinderElliptic({ 
-  height: number, 
+jf.cylinderElliptic({
+  height: number,
   startRadius: [rx, ry],
-  endRadius?: [rx, ry] 
+  endRadius?: [rx, ry]
 })
 jf.torus({ innerRadius: number, outerRadius: number })
-jf.polyhedron({ 
-  points: [number, number, number][], 
+jf.ellipsoid({ radius: [rx, ry, rz] })
+jf.geodesicSphere({ radius: number, frequency?: number })
+jf.roundedCuboid({ size: [width, depth, height], roundRadius: number })
+jf.roundedCylinder({ radius: number, height: number, roundRadius: number })
+jf.polyhedron({
+  points: [number, number, number][],
   faces: number[][]
 })
 ```

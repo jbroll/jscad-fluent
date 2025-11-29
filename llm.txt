@@ -28,6 +28,7 @@ jf.circle({ radius?: number=1, center?: Vec2=[0,0], startAngle?: number=0, endAn
 jf.ellipse({ radius?: Vec2=[1,1], center?: Vec2=[0,0], startAngle?: number=0, endAngle?: number=2*PI, segments?: number=32 })
 jf.polygon(points: Vec2[])  // counter-clockwise for extrusion
 jf.star({ vertices?: number=5, outerRadius?: number=1, innerRadius?: number=0, density?: number=2, startAngle?: number=0, center?: Vec2=[0,0] })
+jf.triangle({ type?: 'SSS'|'AAS'|'ASA'|'SAS'|'SSA'='SSS', values?: [number,number,number]=[1,1,1] })  // A=angle (radians), S=side length
 
 ## PATH PRIMITIVES -> FluentPath2
 
@@ -42,6 +43,10 @@ jf.sphere({ radius?: number=1, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.cylinder({ radius?: number=1, height?: number=2, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.cylinderElliptic({ height?: number=2, startRadius?: Vec2=[1,1], endRadius?: Vec2=[1,1], startAngle?: number=0, endAngle?: number=2*PI, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.torus({ innerRadius?: number=1, outerRadius?: number=4, innerSegments?: number=32, outerSegments?: number=32, innerRotation?: number=0, outerRotation?: number=2*PI, startAngle?: number=0 })
+jf.ellipsoid({ radius?: Vec3=[1,1,1], center?: Vec3=[0,0,0], segments?: number=32, axes?: [Vec3,Vec3,Vec3] })
+jf.geodesicSphere({ radius?: number=1, frequency?: number=6 })  // frequency: multiples of 6
+jf.roundedCuboid({ size?: Vec3=[2,2,2], center?: Vec3=[0,0,0], roundRadius?: number=0.2, segments?: number=32 })
+jf.roundedCylinder({ radius?: number=1, height?: number=2, center?: Vec3=[0,0,0], roundRadius?: number=0.2, segments?: number=32 })
 jf.polyhedron({ points: Vec3[], faces: number[][], colors?: RGBA[], orientation?: 'outward'|'inward'='outward' })
 
 ## TRANSFORMS -> new instance (chainable, all geometry types)

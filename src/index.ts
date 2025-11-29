@@ -9,13 +9,64 @@ import type {
   CylinderEllipticOptions,
   CylinderOptions,
   EllipseOptions,
+  EllipsoidOptions,
+  GeodesicSphereOptions,
   Point2,
   RectangleOptions,
+  RoundedCuboidOptions,
+  RoundedCylinderOptions,
   SphereOptions,
   SquareOptions,
   StarOptions,
   TorusOptions,
+  TriangleOptions,
 } from './types';
+
+// Overloaded boolean functions for type-safe returns
+function union(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
+function union(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function union(
+  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+): FluentGeom2 | FluentGeom3 {
+  if (geometries.length === 0) {
+    throw new Error('union requires at least one geometry');
+  }
+  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
+  if (first instanceof FluentGeom2) {
+    return new FluentGeom2(booleans.union(geometries as FluentGeom2[]));
+  }
+  return new FluentGeom3(booleans.union(geometries as FluentGeom3[]));
+}
+
+function subtract(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
+function subtract(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function subtract(
+  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+): FluentGeom2 | FluentGeom3 {
+  if (geometries.length === 0) {
+    throw new Error('subtract requires at least one geometry');
+  }
+  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
+  if (first instanceof FluentGeom2) {
+    return new FluentGeom2(booleans.subtract(geometries as FluentGeom2[]));
+  }
+  return new FluentGeom3(booleans.subtract(geometries as FluentGeom3[]));
+}
+
+function intersect(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
+function intersect(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function intersect(
+  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+): FluentGeom2 | FluentGeom3 {
+  if (geometries.length === 0) {
+    throw new Error('intersect requires at least one geometry');
+  }
+  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
+  if (first instanceof FluentGeom2) {
+    return new FluentGeom2(booleans.intersect(geometries as FluentGeom2[]));
+  }
+  return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));
+}
 
 /**
  * Main entry point for the JSCAD Fluent API.
@@ -65,6 +116,10 @@ const jscadFluent = {
     return new FluentGeom2(primitives.star(options));
   },
 
+  triangle(options: TriangleOptions): FluentGeom2 {
+    return new FluentGeom2(primitives.triangle(options));
+  },
+
   // 3D Primitives
   cube(options: CubeOptions): FluentGeom3 {
     return new FluentGeom3(primitives.cube(options));
@@ -90,6 +145,22 @@ const jscadFluent = {
     return new FluentGeom3(primitives.torus(options));
   },
 
+  ellipsoid(options: EllipsoidOptions): FluentGeom3 {
+    return new FluentGeom3(primitives.ellipsoid(options));
+  },
+
+  geodesicSphere(options: GeodesicSphereOptions): FluentGeom3 {
+    return new FluentGeom3(primitives.geodesicSphere(options));
+  },
+
+  roundedCuboid(options: RoundedCuboidOptions): FluentGeom3 {
+    return new FluentGeom3(primitives.roundedCuboid(options));
+  },
+
+  roundedCylinder(options: RoundedCylinderOptions): FluentGeom3 {
+    return new FluentGeom3(primitives.roundedCylinder(options));
+  },
+
   polyhedron({
     points,
     faces,
@@ -100,73 +171,10 @@ const jscadFluent = {
     return new FluentGeom3(primitives.polyhedron({ points, faces }));
   },
 
-  // Boolean operations (top-level)
-  /**
-   * Union multiple 2D or 3D geometries together.
-   * @param geometries - Geometries to union (must all be same type). Accepts individual args, arrays, or mixed.
-   * @returns A new fluent geometry containing the union
-   * @example
-   * jf.union(cube1, cube2, cube3)
-   * jf.union([cube1, cube2, cube3])
-   * jf.union(circle1, circle2)
-   */
-  union(
-    ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
-  ): FluentGeom2 | FluentGeom3 {
-    if (geometries.length === 0) {
-      throw new Error('union requires at least one geometry');
-    }
-    // JSCAD's booleans.union has built-in flatten
-    const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
-    if (first instanceof FluentGeom2) {
-      return new FluentGeom2(booleans.union(geometries as FluentGeom2[]));
-    }
-    return new FluentGeom3(booleans.union(geometries as FluentGeom3[]));
-  },
-
-  /**
-   * Subtract geometries from the first geometry.
-   * @param geometries - First geometry is the base, rest are subtracted from it. Accepts individual args, arrays, or mixed.
-   * @returns A new fluent geometry with the subtractions applied
-   * @example
-   * jf.subtract(block, hole1, hole2)
-   * jf.subtract(block, [hole1, hole2])
-   */
-  subtract(
-    ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
-  ): FluentGeom2 | FluentGeom3 {
-    if (geometries.length === 0) {
-      throw new Error('subtract requires at least one geometry');
-    }
-    // JSCAD's booleans.subtract has built-in flatten
-    const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
-    if (first instanceof FluentGeom2) {
-      return new FluentGeom2(booleans.subtract(geometries as FluentGeom2[]));
-    }
-    return new FluentGeom3(booleans.subtract(geometries as FluentGeom3[]));
-  },
-
-  /**
-   * Intersect multiple geometries, keeping only overlapping regions.
-   * @param geometries - Geometries to intersect (must all be same type). Accepts individual args, arrays, or mixed.
-   * @returns A new fluent geometry containing only the intersection
-   * @example
-   * jf.intersect(cube1, cube2)
-   * jf.intersect([cube1, cube2, cube3])
-   */
-  intersect(
-    ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
-  ): FluentGeom2 | FluentGeom3 {
-    if (geometries.length === 0) {
-      throw new Error('intersect requires at least one geometry');
-    }
-    // JSCAD's booleans.intersect has built-in flatten
-    const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
-    if (first instanceof FluentGeom2) {
-      return new FluentGeom2(booleans.intersect(geometries as FluentGeom2[]));
-    }
-    return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));
-  },
+  // Boolean operations (top-level) - reference overloaded functions
+  union,
+  subtract,
+  intersect,
 
   /**
    * Color utilities for converting between color formats.

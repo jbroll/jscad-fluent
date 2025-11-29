@@ -126,6 +126,105 @@ describe('3D Primitives', () => {
     });
   });
 
+  describe('ellipsoid', () => {
+    test('creates ellipsoid with correct dimensions', () => {
+      const ellipsoid = jscadFluent.ellipsoid({ radius: [10, 5, 3] });
+
+      const dimensions = ellipsoid.measureDimensions();
+      if (typeof dimensions === 'number') return;
+      expect(dimensions[0]).toBeCloseTo(20);
+      expect(dimensions[1]).toBeCloseTo(10);
+      expect(dimensions[2]).toBeCloseTo(6);
+    });
+
+    test('ellipsoid with transforms', () => {
+      const ellipsoid = jscadFluent.ellipsoid({ radius: [5, 5, 5] }).scale([2, 1, 1]);
+
+      const dimensions = ellipsoid.measureDimensions();
+      if (typeof dimensions === 'number') return;
+      expect(dimensions[0]).toBeCloseTo(20);
+      expect(dimensions[1]).toBeCloseTo(10);
+      expect(dimensions[2]).toBeCloseTo(10);
+    });
+  });
+
+  describe('geodesicSphere', () => {
+    test('creates geodesic sphere with positive volume', () => {
+      const sphere = jscadFluent.geodesicSphere({ radius: 10 });
+      expect(sphere.measureVolume()).toBeGreaterThan(0);
+    });
+
+    test('geodesic sphere volume increases with radius', () => {
+      const small = jscadFluent.geodesicSphere({ radius: 5 });
+      const large = jscadFluent.geodesicSphere({ radius: 10 });
+
+      expect(large.measureVolume()).toBeGreaterThan(small.measureVolume());
+    });
+
+    test('geodesic sphere with transforms', () => {
+      const sphere = jscadFluent.geodesicSphere({ radius: 5 }).translate([10, 0, 0]);
+
+      const center = sphere.measureCenter();
+      if (typeof center === 'number') return;
+      expect(center[0]).toBeCloseTo(10, 0);
+    });
+  });
+
+  describe('roundedCuboid', () => {
+    test('creates rounded cuboid with correct dimensions', () => {
+      const cuboid = jscadFluent.roundedCuboid({
+        size: [10, 20, 30],
+        roundRadius: 1,
+      });
+
+      const dimensions = cuboid.measureDimensions();
+      if (typeof dimensions === 'number') return;
+      expect(dimensions[0]).toBeCloseTo(10);
+      expect(dimensions[1]).toBeCloseTo(20);
+      expect(dimensions[2]).toBeCloseTo(30);
+    });
+
+    test('rounded cuboid with transforms', () => {
+      const cuboid = jscadFluent
+        .roundedCuboid({ size: [10, 10, 10], roundRadius: 1 })
+        .translate([5, 5, 5]);
+
+      const center = cuboid.measureCenter();
+      if (typeof center === 'number') return;
+      expect(center[0]).toBeCloseTo(5);
+      expect(center[1]).toBeCloseTo(5);
+      expect(center[2]).toBeCloseTo(5);
+    });
+  });
+
+  describe('roundedCylinder', () => {
+    test('creates rounded cylinder with correct dimensions', () => {
+      const cylinder = jscadFluent.roundedCylinder({
+        radius: 5,
+        height: 10,
+        roundRadius: 1,
+      });
+
+      const dimensions = cylinder.measureDimensions();
+      if (typeof dimensions === 'number') return;
+      expect(dimensions[0]).toBeCloseTo(10);
+      expect(dimensions[1]).toBeCloseTo(10);
+      expect(dimensions[2]).toBeCloseTo(10);
+    });
+
+    test('rounded cylinder with boolean operations', () => {
+      const outer = jscadFluent.roundedCylinder({
+        radius: 10,
+        height: 20,
+        roundRadius: 2,
+      });
+      const inner = jscadFluent.cylinder({ radius: 5, height: 25 });
+
+      const result = outer.subtract(inner);
+      expect(result.measureVolume()).toBeGreaterThan(0);
+    });
+  });
+
   describe('polyhedron', () => {
     test('creates tetrahedron', () => {
       const points: [number, number, number][] = [

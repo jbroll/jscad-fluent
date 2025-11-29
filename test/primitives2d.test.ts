@@ -87,6 +87,38 @@ describe('2D Primitives', () => {
     });
   });
 
+  describe('triangle', () => {
+    test('creates triangle with SSS (three sides)', () => {
+      // Equilateral triangle with sides of 10
+      const tri = jscadFluent.triangle({ type: 'SSS', values: [10, 10, 10] });
+      expect(tri).toBeInstanceOf(FluentGeom2);
+
+      // Area of equilateral triangle = (sqrt(3)/4) * side^2
+      const expectedArea = (Math.sqrt(3) / 4) * 100;
+      expect(tri.measureArea()).toBeCloseTo(expectedArea, 1);
+    });
+
+    test('creates triangle with AAS (angle-angle-side)', () => {
+      // 45-45-90 triangle
+      const tri = jscadFluent.triangle({
+        type: 'AAS',
+        values: [Math.PI / 4, Math.PI / 4, 10],
+      });
+      expect(tri).toBeInstanceOf(FluentGeom2);
+      expect(tri.measureArea()).toBeGreaterThan(0);
+    });
+
+    test('triangle supports fluent transforms', () => {
+      const tri = jscadFluent
+        .triangle({ type: 'SSS', values: [10, 10, 10] })
+        .translate([5, 5, 0])
+        .rotate([0, 0, Math.PI / 4]);
+
+      // Should still be a valid geometry with positive area
+      expect(tri.measureArea()).toBeGreaterThan(0);
+    });
+  });
+
   describe('2D to 3D operations', () => {
     test('linear extrusion of rectangle', () => {
       const rect = jscadFluent.rectangle({ size: [10, 20] });
