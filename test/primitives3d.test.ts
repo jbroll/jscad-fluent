@@ -59,7 +59,7 @@ describe('3D Primitives', () => {
       const cylinder1 = jscadFluent.cylinder({ radius: 5, height: 10 });
       const cylinder2 = jscadFluent.cylinder({ radius: 3, height: 12 });
 
-      const result = cylinder1.subtract([cylinder2]);
+      const result = cylinder1.subtract(cylinder2);
       const volume = result.measureVolume();
       const expectedVolume = Math.PI * (25 - 9) * 10;
       expect(Math.abs(volume - expectedVolume)).toBeLessThan(10);

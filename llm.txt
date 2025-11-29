@@ -85,9 +85,15 @@ jf.colors.css.<name>                                // 150+ CSS colors: .red, .l
 
 ## BOOLEANS -> new instance (inputs must match geometry type)
 
-.union(others: FluentGeom2[] | FluentGeom3[])
-.subtract(others: FluentGeom2[] | FluentGeom3[])
-.intersect(others: FluentGeom2[] | FluentGeom3[])
+// Method chaining - accepts spread args, arrays, or mixed
+.union(...others)           // a.union(b), a.union(b, c), a.union([b, c])
+.subtract(...others)        // a.subtract(b), a.subtract(b, c), a.subtract([b, c])
+.intersect(...others)       // a.intersect(b), a.intersect(b, c), a.intersect([b, c])
+
+// Top-level functions - for combining multiple geometries
+jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c])
+jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
+jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 
 ## HULL -> new instance
 
@@ -124,15 +130,27 @@ jf.colors.css.<name>                                // 150+ CSS colors: .red, .l
 
 ## EXAMPLE
 
-```typescript
-import { jf } from 'jscad-fluent';
+```javascript
+const jf = require('@jbroll/jscad-fluent');
 
 const model = jf.rectangle({ size: [50, 30] })
-  .subtract([jf.circle({ radius: 8 }).translate([15, 0, 0])])
+  .subtract(jf.circle({ radius: 8 }).translate([15, 0, 0]))
   .expand({ delta: 2, corners: 'round' })
   .extrudeLinear({ height: 20 })
-  .union([jf.cylinder({ radius: 3, height: 25 }).translate([20, 10, 0])])
+  .union(jf.cylinder({ radius: 3, height: 25 }).translate([20, 10, 0]))
   .colorize(jf.colors.hexToRgb('#3344CC'));
+
+// Multiple objects at once
+const holes = [
+  jf.cylinder({ radius: 2, height: 10 }).translate([5, 5, 0]),
+  jf.cylinder({ radius: 2, height: 10 }).translate([-5, -5, 0])
+];
+const withHoles = block.subtract(holes);  // array form
+const withHoles2 = block.subtract(hole1, hole2);  // spread form
+
+// Top-level union for combining many objects
+const allParts = jf.union(part1, part2, part3);
+const allParts2 = jf.union([part1, part2, part3]);  // array form
 
 // Or use CSS color names
 const redSphere = jf.sphere({ radius: 5 }).colorize(jf.colors.css.red);

@@ -112,10 +112,24 @@ geometry.centerZ()
 geometry.setColor([r, g, b])       // RGB values 0-1
 geometry.setColor([r, g, b, a])    // RGBA values 0-1
 
-// Boolean operations
-geometry.union(...others)
-geometry.subtract(...others)
-geometry.intersect(...others)
+// Boolean operations (accepts spread args, arrays, or mixed)
+geometry.union(other)
+geometry.union(a, b, c)
+geometry.union([a, b, c])
+geometry.subtract(other)
+geometry.subtract(a, b, c)
+geometry.subtract([a, b, c])
+geometry.intersect(other)
+geometry.intersect(a, b, c)
+geometry.intersect([a, b, c])
+
+// Top-level boolean operations (for combining multiple geometries)
+jf.union(a, b, c)
+jf.union([a, b, c])
+jf.subtract(base, hole1, hole2)
+jf.subtract(base, [hole1, hole2])
+jf.intersect(a, b, c)
+jf.intersect([a, b, c])
 
 // Hull operations
 geometry.hull(...others)
@@ -132,7 +146,6 @@ geometry.measureCenter()
 geometry.measureDimensions()
 
 // Utility
-geometry.clone()
 geometry.validate()
 ```
 

@@ -120,13 +120,13 @@ export class FluentGeom3 implements Geom3 {
     return this._wrap(expansions.expand(options, this));
   }
 
-  union(others: this[]): this {
+  union(...others: (this | this[])[]): this {
     return this._wrap(booleans.union([this, ...others]));
   }
-  subtract(others: this[]): this {
+  subtract(...others: (this | this[])[]): this {
     return this._wrap(booleans.subtract([this, ...others]));
   }
-  intersect(others: this[]): this {
+  intersect(...others: (this | this[])[]): this {
     return this._wrap(booleans.intersect([this, ...others]));
   }
 

@@ -15,7 +15,7 @@ describe('Extended Coverage Tests', () => {
       const base = jscadFluent.rectangle({ size: [20, 20] });
       const hole1 = jscadFluent.circle({ radius: 4 }).translate([5, 5, 0]);
       const hole2 = jscadFluent.circle({ radius: 4 }).translate([15, 15, 0]);
-      const result = base.subtract([hole1, hole2]);
+      const result = base.subtract(hole1, hole2);
       const area = result.measureArea();
       expect(area).toBeCloseTo(350, 0);
     });
