@@ -26,7 +26,7 @@ clean:
 
 publish: build
 	npm version patch
-	npm publish </dev/tty
+	script -q -c "npm publish" /dev/null
 	curl -s https://purge.jsdelivr.net/npm/@jbroll/jscad-fluent
 
 
