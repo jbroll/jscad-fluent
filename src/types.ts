@@ -78,27 +78,3 @@ export type Corners = 'edge' | 'chamfer' | 'round';
 
 // Array type for collections
 export type GeometryArray<T extends Geometry> = T[];
-
-// Flexible radius type for pipe primitive
-// Can be: number | [start, end] | [[x1,y1], [x2,y2]]
-export type FlexRadius = number | [number, number] | [Point2, Point2];
-
-// Enhanced cylinder options - flexible cylinder with solid, hollow, or wall-based variants
-export interface FlexCylinderOptions {
-  /** Height of the cylinder */
-  height?: number;
-  /** Number of segments for circular approximation */
-  segments?: number;
-  /** Center position [x, y, z] */
-  center?: Point3;
-  /** Start and end angles in radians [start, end], default [0, 2*PI] */
-  angle?: [number, number];
-  /** Outer radius - for solid cylinder or as outer radius for hollow */
-  radius?: FlexRadius;
-  /** Outer radius - alias for hollow cylinders */
-  outer?: FlexRadius;
-  /** Inner radius - creates hollow cylinder */
-  inner?: FlexRadius;
-  /** Wall thickness - alternative to inner, calculates inner from outer - wall */
-  wall?: FlexRadius;
-}
