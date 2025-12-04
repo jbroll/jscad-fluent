@@ -1,7 +1,7 @@
 {
   "name": "@jbroll/jscad-fluent",
   "author": "John Roll",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "license": "MIT",
   "type": "module",
   "files": [

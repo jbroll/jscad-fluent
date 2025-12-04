@@ -42,7 +42,7 @@ jf.cuboid({ size?: Vec3=[2,2,2], center?: Vec3=[0,0,0] })
 jf.sphere({ radius?: number=1, center?: Vec3=[0,0,0], segments?: number=32 })
 jf.cylinder({
   radius?: FlexRadius=1,     // number | [start,end] | [[x1,y1],[x2,y2]] for tapered/elliptical
-  height?: number=2,
+  height?: number=1,
   center?: Vec3=[0,0,0],
   segments?: number=32,
   angle?: [number,number],   // [startAngle, endAngle] for partial arcs, default [0, 2*PI]
