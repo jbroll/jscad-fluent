@@ -117,10 +117,34 @@ jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c])
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 
-## HULL -> new instance
+## GEOMETRY ARRAYS (for hull, hullChain, batch extrusion)
 
-.hull()
-.hullChain()
+// Create array with .append(), then call array operations
+geom1.append(geom2) -> FluentGeom*Array     // creates array from two geometries
+array.append(geom3) -> FluentGeom*Array     // adds to array (chainable)
+
+// Array operations - combine into single geometry
+.hull() -> FluentGeom*                      // convex hull of all geometries
+.hullChain() -> FluentGeom*                 // sequential hull pairs
+
+// 2D arrays only - batch extrusion (extrudes each element)
+.extrudeLinear(options) -> FluentGeom3Array
+.extrudeRotate(options) -> FluentGeom3Array
+
+// Transforms on arrays apply to all elements
+array.translate([x,y,z]) -> FluentGeom*Array
+array.rotate([rx,ry,rz]) -> FluentGeom*Array
+// ... all transform methods work on arrays
+
+// Examples:
+const hull2d = jf.circle({ radius: 5 })
+  .append(jf.circle({ radius: 5 }).translate([20, 0, 0]))
+  .hull();  // -> FluentGeom2
+
+const hull3d = jf.sphere({ radius: 5 })
+  .append(jf.sphere({ radius: 5 }).translate([15, 0, 0]))
+  .append(jf.sphere({ radius: 5 }).translate([15, 15, 0]))
+  .hullChain();  // -> FluentGeom3
 
 ## EXPANSION -> new instance
 
@@ -148,7 +172,6 @@ jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 .toPoints() -> Vec2[]           // 2D only
 .toOutlines() -> Vec2[][]       // 2D only
 .toPolygons() -> {vertices: Vec3[]}[]  // 3D only
-.append(geometry) -> FluentGeom2Array | FluentGeom3Array
 
 ## EXAMPLE
 
