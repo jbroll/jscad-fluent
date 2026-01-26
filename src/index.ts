@@ -1,8 +1,11 @@
 import { booleans, colors, primitives } from '@jscad/modeling';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
+import { FluentGeom2Array } from './gen/FluentGeom2Array';
 import { FluentGeom3 } from './gen/FluentGeom3';
+import { FluentGeom3Array } from './gen/FluentGeom3Array';
 import { FluentPath2 } from './gen/FluentPath2';
+import { FluentPath2Array } from './gen/FluentPath2Array';
 import type {
   CircleOptions,
   CubeOptions,
@@ -66,6 +69,41 @@ function intersect(
     return new FluentGeom2(booleans.intersect(geometries as FluentGeom2[]));
   }
   return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));
+}
+
+// Array constructors - infers type from first argument
+function array(...items: FluentGeom2[]): FluentGeom2Array;
+function array(...items: FluentGeom3[]): FluentGeom3Array;
+function array(...items: FluentPath2[]): FluentPath2Array;
+function array(
+  ...items: (FluentGeom2 | FluentGeom3 | FluentPath2)[]
+): FluentGeom2Array | FluentGeom3Array | FluentPath2Array {
+  if (items.length === 0) {
+    throw new Error(
+      'array() requires at least one item. Use geom2Array(), geom3Array(), or path2Array() for empty arrays.',
+    );
+  }
+  const first = items[0];
+  if (first instanceof FluentGeom2) {
+    return new FluentGeom2Array(...(items as FluentGeom2[]));
+  }
+  if (first instanceof FluentGeom3) {
+    return new FluentGeom3Array(...(items as FluentGeom3[]));
+  }
+  return new FluentPath2Array(...(items as FluentPath2[]));
+}
+
+// Typed array constructors for empty arrays (use in loops)
+function geom2Array(...items: FluentGeom2[]): FluentGeom2Array {
+  return new FluentGeom2Array(...items);
+}
+
+function geom3Array(...items: FluentGeom3[]): FluentGeom3Array {
+  return new FluentGeom3Array(...items);
+}
+
+function path2Array(...items: FluentPath2[]): FluentPath2Array {
+  return new FluentPath2Array(...items);
 }
 
 /**
@@ -173,6 +211,12 @@ const jscadFluent = {
   union,
   subtract,
   intersect,
+
+  // Array constructors
+  array,
+  geom2Array,
+  geom3Array,
+  path2Array,
 
   /**
    * Color utilities for converting between color formats.

@@ -119,7 +119,13 @@ jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 
 ## GEOMETRY ARRAYS (for hull, hullChain, batch extrusion)
 
-// Create array with .append(), then call array operations
+// Array constructors
+jf.array(geom1, geom2, ...)      // infers type from first item (requires at least one)
+jf.geom2Array(...items)          // typed 2D array (can be empty, use for loops)
+jf.geom3Array(...items)          // typed 3D array (can be empty, use for loops)
+jf.path2Array(...items)          // typed path array (can be empty, use for loops)
+
+// Create array with .append()
 geom1.append(geom2) -> FluentGeom*Array     // creates array from two geometries
 array.append(geom3) -> FluentGeom*Array     // adds to array (chainable)
 
@@ -137,14 +143,24 @@ array.rotate([rx,ry,rz]) -> FluentGeom*Array
 // ... all transform methods work on arrays
 
 // Examples:
-const hull2d = jf.circle({ radius: 5 })
-  .append(jf.circle({ radius: 5 }).translate([20, 0, 0]))
-  .hull();  // -> FluentGeom2
+// Inline array creation (type inferred from items)
+const hull2d = jf.array(
+  jf.circle({ radius: 5 }),
+  jf.circle({ radius: 5 }).translate([20, 0, 0])
+).hull();  // -> FluentGeom2
 
+// Using append chain
 const hull3d = jf.sphere({ radius: 5 })
   .append(jf.sphere({ radius: 5 }).translate([15, 0, 0]))
   .append(jf.sphere({ radius: 5 }).translate([15, 15, 0]))
   .hullChain();  // -> FluentGeom3
+
+// Loop pattern (use typed constructor for empty start)
+let arr = jf.geom2Array();
+for (let i = 0; i < 5; i++) {
+  arr = arr.append(jf.circle({ radius: i + 1 }).translate([i * 10, 0, 0]));
+}
+const result = arr.hull();
 
 ## EXPANSION -> new instance
 

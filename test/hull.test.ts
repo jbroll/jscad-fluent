@@ -1,5 +1,61 @@
 import jscadFluent from '../src/index';
 
+describe('Array Constructor', () => {
+  describe('jf.array() with items', () => {
+    test('array with 2D items', () => {
+      const arr = jscadFluent.array(
+        jscadFluent.circle({ radius: 5 }),
+        jscadFluent.circle({ radius: 3 }).translate([10, 0, 0]),
+      );
+      const result = arr.hull();
+      const area = result.measureArea();
+      expect(area).toBeGreaterThan(Math.PI * 25);
+    });
+
+    test('array with 3D items', () => {
+      const arr = jscadFluent.array(
+        jscadFluent.sphere({ radius: 5 }),
+        jscadFluent.sphere({ radius: 3 }).translate([10, 0, 0]),
+      );
+      const result = arr.hull();
+      const volume = result.measureVolume();
+      expect(volume).toBeGreaterThan((4 / 3) * Math.PI * 125);
+    });
+  });
+
+  describe('typed array constructors for loops', () => {
+    test('geom2Array with loop append', () => {
+      let arr = jscadFluent.geom2Array();
+      for (let i = 0; i < 3; i++) {
+        arr = arr.append(jscadFluent.circle({ radius: i + 1 }));
+      }
+      const result = arr.hull();
+      const area = result.measureArea();
+      expect(area).toBeGreaterThan(0);
+    });
+
+    test('geom3Array with loop append', () => {
+      let arr = jscadFluent.geom3Array();
+      for (let i = 0; i < 3; i++) {
+        arr = arr.append(jscadFluent.sphere({ radius: i + 1 }));
+      }
+      const result = arr.hull();
+      const volume = result.measureVolume();
+      expect(volume).toBeGreaterThan(0);
+    });
+
+    test('geom2Array with initial items', () => {
+      const arr = jscadFluent.geom2Array(
+        jscadFluent.circle({ radius: 5 }),
+        jscadFluent.circle({ radius: 3 }).translate([10, 0, 0]),
+      );
+      const result = arr.hull();
+      const area = result.measureArea();
+      expect(area).toBeGreaterThan(Math.PI * 25);
+    });
+  });
+});
+
 describe('Hull Operations', () => {
   describe('2D Hull Operations', () => {
     test('hull of two rectangles using append', () => {
