@@ -105,17 +105,22 @@ jf.colors.rgbToHsl(rgb: RGB) -> [h,s,l]
 jf.colors.rgbToHsv(rgb: RGB) -> [h,s,v]
 jf.colors.css.<name>                                // 150+ CSS colors: .red, .lightblue, etc.
 
-## BOOLEANS -> new instance (inputs must match geometry type)
+## BOOLEANS & COMBINING -> new instance (inputs must match geometry type)
 
 // Method chaining - accepts spread args, arrays, or mixed
 .union(...others)           // a.union(b), a.union(b, c), a.union([b, c])
 .subtract(...others)        // a.subtract(b), a.subtract(b, c), a.subtract([b, c])
 .intersect(...others)       // a.intersect(b), a.intersect(b, c), a.intersect([b, c])
+.minkowski(...others)       // a.minkowski(b), a.minkowski(b, c) - 3D only
 
 // Top-level functions - for combining multiple geometries
 jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c])
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
+
+// Minkowski sum - useful for rounding edges, collision volumes, swept shapes
+// Example: rounded cube
+jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))
 
 ## GEOMETRY ARRAYS (for hull, hullChain, batch extrusion)
 

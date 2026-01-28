@@ -4,11 +4,16 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2015",
+    "target": "es2019",
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": false,
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@jscad/modeling": ["node_modules/@jbroll/jscad-modeling/src"],
+      "@jscad/modeling/*": ["node_modules/@jbroll/jscad-modeling/src/*"]
+    },
 
     // Strict type checking
     "strict": true,

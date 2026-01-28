@@ -1,4 +1,4 @@
-import { expansions, geometries, hulls, measurements, transforms, booleans, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, minkowski, transforms, booleans, colors } from '@jscad/modeling';
 import type {
   Centroid,
   ExpandOptions,
@@ -49,6 +49,10 @@ export class FluentGeom3 implements Geom3 {
   {{#booleanMethods}}
   {{> methodBoolean}}
   {{/booleanMethods}}
+
+  {{#minkowskiMethods}}
+  {{> methodMinkowski}}
+  {{/minkowskiMethods}}
   
   {{#measurementMethods}}
   {{> methodValue}}

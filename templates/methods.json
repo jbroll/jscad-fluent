@@ -35,9 +35,9 @@
     { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3", "isVoid": false }
   ],
   "booleanMethods": [
-    { "name": "union", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
-    { "name": "subtract", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" },
-    { "name": "intersect", "params": [ { "name": "others", "type": "this[]", "last": true } ], "returnType": "this" }
+    { "name": "union", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
+    { "name": "subtract", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
+    { "name": "intersect", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" }
   ],
   "hullMethods": [
     { "ns": "hulls", "name": "hull", "params": [], "returnType": "this" },
@@ -69,6 +69,9 @@
     { "ns": "path2", "name": "toPoints", "params": [], "returnType": "Vec2[]", "isVoid": false },
     { "ns": "path2", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
     { "ns": "path2", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
+  ],
+  "minkowskiMethods": [
+    { "name": "minkowski", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" }
   ],
   "geom3Methods": [
     { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number", "isVoid": false },

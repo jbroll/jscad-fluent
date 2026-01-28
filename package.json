@@ -44,6 +44,6 @@
     "vitest": "^1.0.4"
   },
   "peerDependencies": {
-    "@jscad/modeling": "^2.12.5"
+    "@jbroll/jscad-modeling": "^2.13.0"
   }
 }

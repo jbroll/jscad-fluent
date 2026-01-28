@@ -5,6 +5,7 @@ import {
   geometries,
   hulls,
   measurements,
+  minkowski,
   transforms,
 } from '@jscad/modeling';
 import type {
@@ -128,6 +129,10 @@ export class FluentGeom3 implements Geom3 {
   }
   intersect(...others: (this | this[])[]): this {
     return this._wrap(booleans.intersect([this, ...others]));
+  }
+
+  minkowski(...others: (this | this[])[]): this {
+    return this._wrap(minkowski.minkowskiSum(this, ...others.flat()));
   }
 
   measureBoundingBox(): BoundingBox {
