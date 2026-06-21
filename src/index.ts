@@ -218,6 +218,10 @@ const jscadFluent = {
   geom3Array,
   path2Array,
 
+  // Wrapper classes - attached to default object for CJS/UMD consumers
+  FluentGeom2,
+  FluentGeom3,
+
   /**
    * Color utilities for converting between color formats.
    * All color values are normalized to 0-1 range for use with colorize().
@@ -299,6 +303,3 @@ const jscadFluent = {
 
 // Default export for simple usage: const jf = require('@jbroll/jscad-fluent')
 export default jscadFluent;
-
-export { FluentGeom2 } from './gen/FluentGeom2';
-export { FluentGeom3 } from './gen/FluentGeom3';
