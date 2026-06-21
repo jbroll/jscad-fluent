@@ -20,7 +20,7 @@ export default defineConfig({
         globals: {
           '@jscad/modeling': 'jscadModeling',
         },
-        exports: 'default',
+        exports: 'named',
       },
     },
   },

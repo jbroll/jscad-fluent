@@ -299,3 +299,6 @@ const jscadFluent = {
 
 // Default export for simple usage: const jf = require('@jbroll/jscad-fluent')
 export default jscadFluent;
+
+export { FluentGeom2 } from './gen/FluentGeom2';
+export { FluentGeom3 } from './gen/FluentGeom3';
