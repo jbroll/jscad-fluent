@@ -28,6 +28,19 @@ import type {
 } from '@jscad/modeling/src/primitives';
 export { mat4 };
 
+export type {
+  AlignOptions,
+  Anchorable,
+  AnchorRef,
+  AttachOptions,
+  Frame,
+  Frames,
+  SubtractOptions,
+} from '@jbroll/jscad-anchors';
+
+// withAnchors normalizes its input, so x may be omitted.
+export type FrameInput = { origin: Vec3; z: Vec3; x?: Vec3 };
+
 // Re-export JSCAD types that we need
 export type {
   Geometry,

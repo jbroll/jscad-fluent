@@ -187,6 +187,38 @@ geometry.measureVolume()
 geometry.toPolygons()    // Returns array of polygons with vertices
 ```
 
+### Anchors (2D and 3D)
+
+Anchors are named frames (`{ origin, z, x }`) stored on a part, from
+[`@jbroll/jscad-anchors`](https://github.com/jbroll/jscad-anchors). Every
+fluent method goes through that package, so frames follow transforms and
+booleans. Path2 has no anchors.
+
+```typescript
+// Store frames in the part's local space; x may be omitted
+part.withAnchors({ axis: { origin: [0, 0, 0], z: [0, 0, 1] } })
+
+// World-space frame by name, or one of the 27 bounding-box defaults
+part.anchor('axis')
+part.anchor('top+right')
+
+// Stored local frames, or undefined; use anchor(name) for world space
+part.anchors?.frames
+
+// Move this part so its childAnchor sits on parent's parentAnchor
+post.attachTo(base, 'top', 'bottom', { overlap: 0, flip: true, spin: 0 })
+
+// Translate against parent's bounding box
+block.alignTo(base, 'right', { inset: 0, inside: false })
+
+// Booleans keep the first operand's frames; union adds new names from the rest.
+// carry copies a tool's frames under a prefix, here 'bolt1.axis'.
+plate.subtract(hole, { carry: { bolt1: hole } })
+jf.subtract(plate, hole, { carry: { bolt1: hole } })
+```
+
+Hull, expand, offset, extrusion, and minkowski results carry no frames.
+
 ### Utility Functions
 
 ```typescript
@@ -220,10 +252,11 @@ const complexShape = jf.cube({ size: 10 })
 
 ## Development
 
-The published package lists `@jbroll/jscad-modeling` as a peer dependency. In this repo, `devDependencies` link both `@jbroll/jscad-modeling` and `@jscad/modeling` to `../OpenJSCAD.org/packages/modeling`, so `npm install` needs that checkout beside this repo:
+The published package lists `@jbroll/jscad-modeling` and `@jbroll/jscad-anchors` as peer dependencies. In this repo, `devDependencies` link both `@jbroll/jscad-modeling` and `@jscad/modeling` to `../OpenJSCAD.org/packages/modeling`, and `@jbroll/jscad-anchors` to `../jscad-anchors`, so `npm install` needs both checkouts beside this repo:
 
 ```bash
 git clone -b fork-main https://github.com/jbroll/OpenJSCAD.org ../OpenJSCAD.org
+git clone https://github.com/jbroll/jscad-anchors ../jscad-anchors
 npm install
 npm test
 ```

@@ -1,5 +1,13 @@
-import { expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jscad/modeling';
+import { anchors, expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jbroll/jscad-anchors';
 import type {
+  AlignOptions,
+  Anchorable,
+  AnchorRef,
+  AttachOptions,
+  Frame,
+  FrameInput,
+  Frames,
+  SubtractOptions,
   Centroid,
   Geom2,
   Vec2,
@@ -26,6 +34,7 @@ export class FluentGeom2 implements Geom2 {
   // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   sides!: Array<any>;
   transforms!: Mat4;
+  anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom2) {
     Object.assign(this, geometry ?? geom2.create());
@@ -55,7 +64,9 @@ export class FluentGeom2 implements Geom2 {
   {{#booleanMethods}}
   {{> methodBoolean}}
   {{/booleanMethods}}
-  
+
+  {{> methodAnchors}}
+
   {{#hullMethods}}
   {{> methodObject}}
   {{/hullMethods}}

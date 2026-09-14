@@ -15,10 +15,11 @@ export default defineConfig({
       formats: ['es', 'umd'],
     },
     rollupOptions: {
-      external: ['@jscad/modeling'],
+      external: ['@jscad/modeling', '@jbroll/jscad-anchors'],
       output: {
         globals: {
           '@jscad/modeling': 'jscadModeling',
+          '@jbroll/jscad-anchors': 'jscadAnchors',
         },
         exports: 'default',
       },

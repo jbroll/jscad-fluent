@@ -1,5 +1,13 @@
-import { expansions, geometries, hulls, measurements, minkowski, transforms, booleans, colors } from '@jscad/modeling';
+import { anchors, expansions, geometries, hulls, measurements, minkowski, transforms, booleans, colors } from '@jbroll/jscad-anchors';
 import type {
+  AlignOptions,
+  Anchorable,
+  AnchorRef,
+  AttachOptions,
+  Frame,
+  FrameInput,
+  Frames,
+  SubtractOptions,
   Centroid,
   ExpandOptions,
   Geom3,
@@ -20,6 +28,7 @@ export class FluentGeom3 implements Geom3 {
   // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   polygons!: Array<any>;
   transforms!: Mat4;
+  anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom3) {
     Object.assign(this, geometry ?? geom3.create());
@@ -49,6 +58,8 @@ export class FluentGeom3 implements Geom3 {
   {{#booleanMethods}}
   {{> methodBoolean}}
   {{/booleanMethods}}
+
+  {{> methodAnchors}}
 
   {{#minkowskiMethods}}
   {{> methodMinkowski}}

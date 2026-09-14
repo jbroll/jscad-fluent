@@ -1,4 +1,4 @@
-import { booleans, colors, primitives } from '@jscad/modeling';
+import { booleans, colors, primitives } from '@jbroll/jscad-anchors';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -21,6 +21,7 @@ import type {
   SphereOptions,
   SquareOptions,
   StarOptions,
+  SubtractOptions,
   TorusOptions,
   TriangleOptions,
 } from './types';
@@ -41,19 +42,20 @@ function union(
   return new FluentGeom3(booleans.union(geometries as FluentGeom3[]));
 }
 
-function subtract(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
-function subtract(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function subtract(...geometries: (FluentGeom2 | FluentGeom2[] | SubtractOptions)[]): FluentGeom2;
+function subtract(...geometries: (FluentGeom3 | FluentGeom3[] | SubtractOptions)[]): FluentGeom3;
 function subtract(
-  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[] | SubtractOptions)[]
 ): FluentGeom2 | FluentGeom3 {
   if (geometries.length === 0) {
     throw new Error('subtract requires at least one geometry');
   }
   const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
+  // Spread, not one array: subtractAnchored only reads { carry } from its last argument.
   if (first instanceof FluentGeom2) {
-    return new FluentGeom2(booleans.subtract(geometries as FluentGeom2[]));
+    return new FluentGeom2(booleans.subtract(...(geometries as FluentGeom2[])));
   }
-  return new FluentGeom3(booleans.subtract(geometries as FluentGeom3[]));
+  return new FluentGeom3(booleans.subtract(...(geometries as FluentGeom3[])));
 }
 
 function intersect(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;

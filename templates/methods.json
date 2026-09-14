@@ -36,7 +36,7 @@
   ],
   "booleanMethods": [
     { "name": "union", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
-    { "name": "subtract", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
+    { "name": "subtract", "params": [ { "name": "...others", "type": "(this | this[] | SubtractOptions)[]", "last": true } ], "returnType": "this" },
     { "name": "intersect", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" }
   ],
   "hullMethods": [

@@ -1,4 +1,4 @@
-import { hulls } from '@jscad/modeling';
+import { hulls } from '@jbroll/jscad-anchors';
 import type { Path2 } from '../types';
 import { FluentGeometryArray } from './FluentGeometryArray';
 import { FluentPath2 as ThisScalar } from './FluentPath2';

@@ -1,4 +1,4 @@
-import { booleans, primitives } from '@jscad/modeling';
+import { booleans, primitives } from '@jbroll/jscad-anchors';
 import { FluentGeom3 } from './gen/FluentGeom3';
 import type { Point2, Point3 } from './types';
 

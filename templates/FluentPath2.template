@@ -1,4 +1,4 @@
-import { expansions, geometries, hulls, measurements, transforms, colors } from '@jscad/modeling';
+import { expansions, geometries, hulls, measurements, transforms, colors } from '@jbroll/jscad-anchors';
 import type {
   Centroid,
   Path2,

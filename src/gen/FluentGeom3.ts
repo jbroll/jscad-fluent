@@ -1,4 +1,5 @@
 import {
+  anchors,
   booleans,
   colors,
   expansions,
@@ -7,17 +8,25 @@ import {
   measurements,
   minkowski,
   transforms,
-} from '@jscad/modeling';
+} from '@jbroll/jscad-anchors';
 import type {
+  AlignOptions,
+  Anchorable,
+  AnchorRef,
+  AttachOptions,
   BoundingBox,
   CenterOptions,
   Centroid,
   ExpandOptions,
+  Frame,
+  FrameInput,
+  Frames,
   Geom3,
   Mat4,
   MirrorOptions,
   RGB,
   RGBA,
+  SubtractOptions,
   Vec3,
 } from '../types';
 import { FluentGeom3Array } from './FluentGeom3Array';
@@ -29,6 +38,7 @@ export class FluentGeom3 implements Geom3 {
   // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   polygons!: Array<any>;
   transforms!: Mat4;
+  anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom3) {
     Object.assign(this, geometry ?? geom3.create());
@@ -122,13 +132,34 @@ export class FluentGeom3 implements Geom3 {
   }
 
   union(...others: (this | this[])[]): this {
-    return this._wrap(booleans.union([this, ...others]));
+    return this._wrap(booleans.union(this, ...others));
   }
-  subtract(...others: (this | this[])[]): this {
-    return this._wrap(booleans.subtract([this, ...others]));
+  subtract(...others: (this | this[] | SubtractOptions)[]): this {
+    return this._wrap(booleans.subtract(this, ...others));
   }
   intersect(...others: (this | this[])[]): this {
-    return this._wrap(booleans.intersect([this, ...others]));
+    return this._wrap(booleans.intersect(this, ...others));
+  }
+
+  withAnchors(frames: { [name: string]: FrameInput }): this {
+    return this._wrap(anchors.withAnchors(this, frames as Frames));
+  }
+
+  anchor(ref: AnchorRef): Frame {
+    return anchors.anchor(this, ref);
+  }
+
+  attachTo(
+    parent: Anchorable,
+    parentAnchor: AnchorRef,
+    childAnchor: AnchorRef,
+    options?: AttachOptions,
+  ): this {
+    return this._wrap(anchors.attach(this, childAnchor, parent, parentAnchor, options));
+  }
+
+  alignTo(parent: Anchorable, direction: AnchorRef, options?: AlignOptions): this {
+    return this._wrap(anchors.alignTo(this, parent, direction, options));
   }
 
   minkowski(...others: (this | this[])[]): this {

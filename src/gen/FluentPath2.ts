@@ -1,4 +1,11 @@
-import { colors, expansions, geometries, hulls, measurements, transforms } from '@jscad/modeling';
+import {
+  colors,
+  expansions,
+  geometries,
+  hulls,
+  measurements,
+  transforms,
+} from '@jbroll/jscad-anchors';
 import type {
   BoundingBox,
   CenterOptions,

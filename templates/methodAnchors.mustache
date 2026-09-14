@@ -1,0 +1,15 @@
+withAnchors(frames: { [name: string]: FrameInput }): this {
+  return this._wrap(anchors.withAnchors(this, frames as Frames));
+}
+
+anchor(ref: AnchorRef): Frame {
+  return anchors.anchor(this, ref);
+}
+
+attachTo(parent: Anchorable, parentAnchor: AnchorRef, childAnchor: AnchorRef, options?: AttachOptions): this {
+  return this._wrap(anchors.attach(this, childAnchor, parent, parentAnchor, options));
+}
+
+alignTo(parent: Anchorable, direction: AnchorRef, options?: AlignOptions): this {
+  return this._wrap(anchors.alignTo(this, parent, direction, options));
+}

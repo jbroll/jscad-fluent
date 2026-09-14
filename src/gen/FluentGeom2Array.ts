@@ -1,4 +1,4 @@
-import { extrusions, hulls } from '@jscad/modeling';
+import { extrusions, hulls } from '@jbroll/jscad-anchors';
 import type { ExtrudeLinearOptions, ExtrudeRotateOptions, Geom2 } from '../types';
 import { FluentGeom2 as ThisScalar } from './FluentGeom2';
 import { FluentGeom3Array } from './FluentGeom3Array';
