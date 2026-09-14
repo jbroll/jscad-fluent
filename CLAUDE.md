@@ -72,6 +72,7 @@ npm run check:all         # Run type-check, lint, and tests
    - `methodBoolean.mustache` - boolean operations (union, subtract, intersect)
    - `methodExtrude.mustache` - 2D to 3D extrusion operations
    - `methodValue.mustache` - methods that return computed values
+   - `methodAnchors.mustache` - `withAnchors`, `anchor`, `attachTo`, `alignTo` on geom2 and geom3
    - `methodArray*.mustache` - array operation variants
 
 4. **Generation Process**: `make gen` uses `@jbroll/mustache` CLI to render templates with the method definitions, outputting TypeScript files to `src/gen/`
@@ -97,8 +98,8 @@ npm run check:all         # Run type-check, lint, and tests
 Each wrapper class:
 - Implements the underlying JSCAD geometry interface
 - Provides fluent chainable methods by returning `this` for transformations
-- Uses `Object.assign()` to mutate the current instance with results from JSCAD functions
-- Wraps JSCAD namespace functions (`transforms.*`, `booleans.*`, `measurements.*`, etc.)
+- Copies the geometry's fields onto a new instance with `Object.assign()` in its constructor, including the `anchors` field
+- Wraps JSCAD namespace functions (`transforms.*`, `booleans.*`, `measurements.*`, etc.), imported from `@jbroll/jscad-anchors` rather than `@jscad/modeling` so frames survive every call. Never import runtime modeling functions from `@jscad/modeling` directly; types are fine.
 
 ### Factory Functions
 
@@ -109,19 +110,17 @@ The main entry point `jscadFluent` (in `src/index.ts`) provides factory function
 
 ### Method Pattern
 
-All transformation methods follow this pattern:
+All transformation methods return a new instance:
 ```typescript
 methodName(params): this {
-  Object.assign(this, jscadNamespace.methodName(params, this));
-  return this;
+  return this._wrap(jscadNamespace.methodName(params, this));
 }
 ```
 
-Boolean operations accept variadic arguments:
+Boolean operations spread their operands. `subtract` reads `{ carry }` only from its last argument, so never pass operands as one array:
 ```typescript
-union(...others: FluentGeom2[]): this {
-  Object.assign(this, booleans.union(this, ...others));
-  return this;
+subtract(...others: (this | this[] | SubtractOptions)[]): this {
+  return this._wrap(booleans.subtract(this, ...others));
 }
 ```
 
@@ -169,7 +168,8 @@ The project uses **Biome** (not ESLint) for linting and formatting:
 
 ## Dependencies
 
-- **@jscad/modeling**: Peer dependency - the underlying JSCAD library that this wraps
+- **@jbroll/jscad-modeling**: Peer dependency - the underlying JSCAD library that this wraps
+- **@jbroll/jscad-anchors**: Peer dependency - wraps modeling so named frames follow geometry; linked from `../jscad-anchors` for development
 - **@jbroll/mustache**: Template engine for code generation (dev dependency)
 - **vite**: Build tool for bundling
 - **vitest**: Test runner
