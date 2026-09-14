@@ -218,6 +218,16 @@ const complexShape = jf.cube({ size: 10 })
   .setColor([0.7, 0.7, 1]);
 ```
 
+## Development
+
+The published package lists `@jbroll/jscad-modeling` as a peer dependency. In this repo, `devDependencies` link both `@jbroll/jscad-modeling` and `@jscad/modeling` to `../OpenJSCAD.org/packages/modeling`, so `npm install` needs that checkout beside this repo:
+
+```bash
+git clone -b fork-main https://github.com/jbroll/OpenJSCAD.org ../OpenJSCAD.org
+npm install
+npm test
+```
+
 ## License
 
 MIT License - see LICENSE file for details
