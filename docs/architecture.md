@@ -41,10 +41,21 @@ committed so the package builds without the generator.
 ## Wrapper classes
 
 Each class implements the JSCAD geometry interface it wraps, so a fluent
-object can be passed straight to any modeling function. The constructor copies
-every field of the raw geometry onto the instance with `Object.assign`, which
-carries `color` and `anchors` along with `polygons`, `sides`, or `points` and
-`transforms`.
+object can be passed straight to any modeling function. The constructor calls
+`copyGeometry` (`src/copyGeometry.ts`), which copies every own field of the raw
+geometry onto the instance, carrying `color` and `anchors` along with
+`polygons`, `sides`, or `points` and `transforms`.
+
+Geometry from the jscadui viewer's manifold engine (`ManifoldGeom3`,
+`ManifoldGeom2`) keeps `polygons`, `sides`, `type`, and its `isManifoldGeom3`
+and `manifold` markers as getters on its class, which `Object.assign` skips.
+`copyGeometry` defines a forwarding getter on the instance for each one, and a
+forwarding method for each class method the wrapper lacks (`boundingBox`,
+`volume`, `clone`). Reading `polygons` still converts the mesh, but only when
+something reads it, and manifold operations given the wrapper find the
+`manifold` object without a conversion. The forwarders are non-enumerable, as
+they are on the source class, so a spread, `Object.assign`, or the viewer
+worker's `postMessage` sees the same fields it would see on the raw geometry.
 
 Methods don't mutate. Each returns `this._wrap(result)`, which constructs a new
 instance through `this.constructor`, so the return type stays `this`.

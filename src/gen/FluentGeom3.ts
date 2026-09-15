@@ -9,6 +9,7 @@ import {
   minkowski,
   transforms,
 } from '@jbroll/jscad-anchors';
+import { copyGeometry } from '../copyGeometry';
 import type {
   AlignOptions,
   Anchorable,
@@ -41,7 +42,7 @@ export class FluentGeom3 implements Geom3 {
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom3) {
-    Object.assign(this, geometry ?? geom3.create());
+    copyGeometry(this, geometry ?? geom3.create());
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper

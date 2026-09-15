@@ -23,6 +23,7 @@ import type {
 
 const { path2 } = geometries;
 
+import { copyGeometry } from '../copyGeometry';
 import { FluentPath2Array } from './FluentPath2Array';
 
 export class FluentPath2 implements Path2 {
@@ -33,7 +34,7 @@ export class FluentPath2 implements Path2 {
   isClosed!: boolean;
 
   constructor(geometry: Path2) {
-    Object.assign(this, geometry ?? path2.create());
+    copyGeometry(this, geometry ?? path2.create());
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper

@@ -36,6 +36,7 @@ import type {
 
 const { geom2 } = geometries;
 
+import { copyGeometry } from '../copyGeometry';
 import { FluentGeom2Array } from './FluentGeom2Array';
 import { FluentGeom3 } from './FluentGeom3';
 
@@ -47,7 +48,7 @@ export class FluentGeom2 implements Geom2 {
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom2) {
-    Object.assign(this, geometry ?? geom2.create());
+    copyGeometry(this, geometry ?? geom2.create());
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
