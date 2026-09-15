@@ -1,5 +1,22 @@
 # Backlog
 
+## 0.7.0 release plan
+
+The plan is to publish 0.7.0 from `local-packages` (anchor methods plus the
+manifold wrapper fix in `src/copyGeometry.ts`). `make publish`
+(`Makefile`'s `publish` target) bumps the patch version, so 0.7.0 needs a
+manual `npm version 0.7.0` first, then `npm run build`, `npm publish`, and a
+jsdelivr purge. Publish only after the jscadui viewer deploy: the currently
+deployed viewer has no `@jscad/modeling-for-anchors` alias and would fail
+loading 0.7.0.
+
+## `copyGeometry` method check matches inherited names
+
+`src/copyGeometry.ts`'s method-forwarding branch checks `!(key in target)`,
+which is also true for names inherited from `Object.prototype` (`toString`,
+`valueOf`, `hasOwnProperty`, ...) since `in` walks the whole prototype
+chain. A source method named like one of those would not be forwarded.
+
 ## Publish dependencies before the next release
 
 npm has no `@jbroll/jscad-anchors`, and its latest `@jbroll/jscad-modeling`
