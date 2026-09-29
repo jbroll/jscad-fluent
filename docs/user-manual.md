@@ -537,19 +537,32 @@ jf.utils.radToDeg(radians)        -> degrees
 jf.utils.radiusToSegments(radius, minimumLength, minimumAngle) -> number   // at least 4; 0 ignores a limit
 jf.utils.flatten(nestedArrays)    -> flat array
 
-jf.maths.constants                // { TAU, EPS, NEPS, spatialResolution }
-jf.maths.vec2.*                   // @jscad/modeling vec2 functions
-jf.maths.vec3.*                   // @jscad/modeling vec3 functions
-jf.maths.mat4.*                   // @jscad/modeling mat4 functions, for .transform(matrix)
+jf.maths.constants.TAU            // 2 * PI
+jf.maths.constants.EPS            // 1e-5, tolerance for comparing points and planes
+jf.maths.constants.NEPS           // 1e-13, tolerance for near-zero distances
+jf.maths.constants.spatialResolution   // 1e5, 1 / EPS
+jf.maths.vec2.*  jf.maths.vec3.*  jf.maths.vec4.*   // @jscad/modeling vector functions
+jf.maths.mat4.*                   // matrices, for .transform(matrix)
+jf.maths.line2.*                  // 2D lines as [nx, ny, distance]
+jf.maths.line3.*                  // 3D lines as [origin, direction]
+jf.maths.plane.*                  // planes as [nx, ny, nz, distance]
+jf.maths.utils.area(points)       // signed area of a 2D polygon
+jf.maths.utils.sin(a)  .cos(a)    // exact 0 and 1 at quarter turns
+jf.maths.utils.solve2Linear  .intersect  .interpolateBetween2DPointsForY  .aboutEqualNormals
 ```
 
-The vector and matrix functions take the output first, as in
-`@jscad/modeling`:
+Modeling has no vec1 functions (a vec1 is a plain number), so there is no
+`jf.maths.vec1`. The functions that build a value take the output first, as
+in `@jscad/modeling`:
 
 ```js
 const { vec3, mat4 } = jf.maths
 const mid = vec3.lerp(vec3.create(), [0, 0, 0], [10, 0, 0], 0.5)   // [5, 0, 0]
 part.transform(mat4.fromZRotation(mat4.create(), Math.PI / 4))
+
+const { plane } = jf.maths
+const ground = plane.fromPoints(plane.create(), [0, 0, 0], [1, 0, 0], [0, 1, 0])
+plane.signedDistanceToPoint(ground, [2, 2, 5])   // 5
 ```
 
 ## Wrapper classes

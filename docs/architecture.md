@@ -32,8 +32,14 @@ its geometry type through a partial that sets the method's shape:
 A method's optional `doc` array in `methods.json` holds its JSDoc lines. They
 land in the generated classes and in `dist/gen/*.d.ts`, where jscadui's docs
 index reads them. Methods whose shape no partial fits (`extrudeFromSlices`,
-`project`, path `expand`, which returns a `FluentGeom2`) are written out in the
-class template with their JSDoc.
+`project`, `scission`, `invert`, `clone`, path `expand`, which returns a
+`FluentGeom2`) are written out in the class template with their JSDoc.
+
+The namespaces in `src/index.ts` keep a JSDoc block on each member for the
+same reason. A member assigned straight from modeling declares as
+`typeof maths.vec2`, which the docs index lists as a value. A number would
+declare as plain `number`, so `jf.maths.constants` asserts each constant
+`as typeof constants.TAU` to keep it listed.
 
 | Template | Class |
 |---|---|

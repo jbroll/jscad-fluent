@@ -51,6 +51,9 @@ import type {
   VectorTextOptions,
 } from './types';
 
+// Modeling's declarations leave out TAU.
+const constants = maths.constants as typeof maths.constants & { TAU: number };
+
 function wrapShape(geometry: Geometry): FluentGeom2 | FluentGeom3 | FluentPath2 {
   if (geometries.geom2.isA(geometry)) return new FluentGeom2(geometry);
   if (geometries.path2.isA(geometry)) return new FluentPath2(geometry);
@@ -754,19 +757,34 @@ const jscadFluent = {
   },
 
   /**
-   * Vector and matrix math from `@jscad/modeling`'s maths. The vec2, vec3 and
-   * mat4 functions take the output first: `vec3.add(vec3.create(), a, b)`.
+   * Vector, matrix, line and plane math from `@jscad/modeling`'s maths. The
+   * functions that build a value take the output first: `vec3.add(vec3.create(), a, b)`.
    */
   maths: {
     /**
-     * Numeric constants: `TAU` (2 * PI), `EPS` (geometry tolerance), `NEPS`
-     * and `spatialResolution`.
+     * Numeric constants.
      */
-    constants: maths.constants as {
-      TAU: number;
-      EPS: number;
-      NEPS: number;
-      spatialResolution: number;
+    // `as typeof` makes the declarations name each constant, so a docs index can list it as a value.
+    constants: {
+      /**
+       * 2 * PI, a full turn in radians.
+       */
+      TAU: constants.TAU as typeof constants.TAU,
+
+      /**
+       * The tolerance modeling uses when comparing points and planes, 1e-5.
+       */
+      EPS: constants.EPS as typeof constants.EPS,
+
+      /**
+       * A smaller tolerance for near-zero distances, 1e-13, used to compare coplanar polygons.
+       */
+      NEPS: constants.NEPS as typeof constants.NEPS,
+
+      /**
+       * The resolution of space, 1e5 steps per unit; 1 / EPS.
+       */
+      spatialResolution: constants.spatialResolution as typeof constants.spatialResolution,
     },
 
     /**
@@ -786,6 +804,37 @@ const jscadFluent = {
      * `fromScaling`, `multiply`, ...) for `.transform(matrix)`.
      */
     mat4: maths.mat4,
+
+    /**
+     * 4D vector functions (`create`, `fromValues`, `add`, `scale`, `dot`,
+     * `transform`, ...), each taking the output vector first. A plane is a vec4.
+     */
+    vec4: maths.vec4,
+
+    /**
+     * 2D infinite lines as [nx, ny, distance] (`create`, `fromPoints`, `direction`,
+     * `distanceToPoint`, `closestPoint`, `intersectPointOfLines`, ...).
+     */
+    line2: maths.line2,
+
+    /**
+     * 3D infinite lines as [origin, direction] (`create`, `fromPoints`,
+     * `distanceToPoint`, `closestPoint`, `intersectPointOfLineAndPlane`, ...).
+     */
+    line3: maths.line3,
+
+    /**
+     * Planes as [nx, ny, nz, distance] (`create`, `fromPoints`, `fromNormalAndPoint`,
+     * `signedDistanceToPoint`, `projectionOfPoint`, `flip`, ...).
+     */
+    plane: maths.plane,
+
+    /**
+     * Helpers: `area(points)` of a 2D polygon, `sin` and `cos` that return exact
+     * 0 and 1 at quarter turns, `solve2Linear`, `intersect` of 2D segments,
+     * `interpolateBetween2DPointsForY` and `aboutEqualNormals`.
+     */
+    utils: maths.utils,
   },
 };
 

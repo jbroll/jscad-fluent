@@ -146,8 +146,10 @@ jf.utils.degToRad(degrees) -> radians
 jf.utils.radToDeg(radians) -> degrees
 jf.utils.radiusToSegments(radius, minimumLength, minimumAngle) -> number  // at least 4; 0 ignores a limit
 jf.utils.flatten(nestedArrays) -> flat array
-jf.maths.constants.TAU                              // also EPS, NEPS, spatialResolution
-jf.maths.vec2.* / jf.maths.vec3.* / jf.maths.mat4.* // output first: vec3.add(vec3.create(), a, b)
+jf.maths.constants.TAU                              // also EPS (1e-5), NEPS (1e-13), spatialResolution (1e5)
+jf.maths.vec2.* / vec3.* / vec4.* / mat4.*          // output first: vec3.add(vec3.create(), a, b)
+jf.maths.line2.* / line3.* / plane.*                // line2 [nx,ny,d], line3 [origin,dir], plane [nx,ny,nz,d]
+jf.maths.utils.area(points) / .sin / .cos / .solve2Linear / .intersect
 // part.transform(jf.maths.mat4.fromZRotation(jf.maths.mat4.create(), Math.PI / 4))
 
 ## BOOLEANS & COMBINING -> new instance (inputs must match geometry type)
