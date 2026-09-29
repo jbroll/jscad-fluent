@@ -70,7 +70,15 @@ function normalizeRadius(radius: FlexRadius | undefined, defaultValue = 1): [Poi
  * - Pipes with wall thickness (inner calculated from outer - wall)
  * - Partial arc cylinders
  *
- * @param options - Cylinder configuration options
+ * @param {Object} options - Cylinder configuration options
+ * @param {Number} [options.height=1] - height along Z, centered on center
+ * @param {Number} [options.segments=32] - segments per full circle
+ * @param {Array} [options.center=[0,0,0]] - center of the cylinder
+ * @param {Array} [options.angle=[0,TAU]] - start and end angles in radians, for a partial cylinder
+ * @param {Number|Array} [options.radius=1] - radius; [start, end] tapers, with start at the -Z end; [[x1, y1], [x2, y2]] is elliptical
+ * @param {Number|Array} [options.outer=radius] - outer radius of a hollow cylinder, in the same forms as radius
+ * @param {Number|Array} [options.inner] - inner radius; makes the cylinder hollow
+ * @param {Number|Array} [options.wall] - wall thickness; inner is outer minus wall
  * @returns A FluentGeom3 cylinder geometry
  *
  * @example
