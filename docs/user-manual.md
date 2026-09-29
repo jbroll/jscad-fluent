@@ -99,6 +99,27 @@ jf.polygon(arch.reverse())                 // counter-clockwise for positive are
 jf.polyhedron(jf.hullPoints3(points))
 ```
 
+### Text
+
+Single-stroke (Hershey simplex) text as open paths, one per stroke. Give the
+strokes width with `expand` or `extrudeRectangular`, which path arrays apply
+to every stroke.
+
+```
+jf.vectorText({ xOffset?: number=0, yOffset?: number=0, height?: number=14, lineSpacing?: number=2.142857, letterSpacing?: number=1, align?: 'left'|'center'|'right'='left', extrudeOffset?: number=0, input?: string }, text?: string) -> FluentPath2Array
+jf.vectorChar({ xOffset?: number=0, yOffset?: number=0, height?: number=14, extrudeOffset?: number=0, input?: string }, char?: string) -> { width, height, segments: FluentPath2Array }
+```
+
+`height` is the height of a lowercase letter; uppercase letters are 1.5 times
+taller. `lineSpacing` and `letterSpacing` are multiples of `height`, and lines
+split on newlines. The text may be the only argument: `jf.vectorText('Hi')`.
+`vectorChar`'s `width` is the distance to the next character.
+
+```js
+const label = jf.union(jf.vectorText({ height: 8 }, 'JSCAD').expand({ delta: 1, corners: 'round' }))
+  .extrudeLinear({ height: 2 })
+```
+
 ## 3D primitives
 
 Each returns a `FluentGeom3`.
@@ -213,7 +234,8 @@ jf.union([part1, part2, part3])
 jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))   // rounded cube
 ```
 
-The top-level functions throw when called with no geometry.
+The top-level functions also take a `FluentGeom2Array` or `FluentGeom3Array`
+and throw when called with no geometry.
 
 ### Splitting
 

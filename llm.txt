@@ -45,6 +45,14 @@ jf.path({ closed?: boolean=false }, points: Vec2[])
 .reverse()
 // closed path -> area: jf.polygon(path.toPoints())
 
+## TEXT (single-stroke font -> FluentPath2Array, one open path per stroke)
+
+jf.vectorText({ xOffset?: number=0, yOffset?: number=0, height?: number=14, lineSpacing?: number=2.142857, letterSpacing?: number=1, align?: 'left'|'center'|'right'='left', extrudeOffset?: number=0 }, text: string)
+jf.vectorText(text: string)
+jf.vectorChar(options, char) -> { width, height, segments: FluentPath2Array }   // width = advance to next char
+// height = lowercase height; uppercase is 1.5x. Give strokes width, then union:
+// jf.union(jf.vectorText({ height: 8 }, 'JSCAD').expand({ delta: 1, corners: 'round' })).extrudeLinear({ height: 2 })
+
 ## CURVES AND HULL POINTS (data for jf.polygon / jf.polyhedron)
 
 jf.curves.bezier.create(points) -> bezier
@@ -151,7 +159,7 @@ jf.maths.vec2.* / jf.maths.vec3.* / jf.maths.mat4.* // output first: vec3.add(ve
 .minkowski(...others)       // a.minkowski(b), a.minkowski(b, c) - 3D only
 
 // Top-level functions - for combining multiple geometries
-jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c])
+jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c]), jf.union(fluentArray)
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 

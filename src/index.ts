@@ -8,6 +8,7 @@ import {
   maths,
   measurements,
   primitives,
+  text as textModule,
   transforms,
   utils,
 } from '@jbroll/jscad-anchors';
@@ -43,6 +44,9 @@ import type {
   SubtractOptions,
   TorusOptions,
   TriangleOptions,
+  Vec2,
+  VectorCharOptions,
+  VectorTextOptions,
 } from './types';
 
 type FluentShape = FluentGeom2 | FluentGeom3 | FluentPath2;
@@ -53,11 +57,24 @@ function wrapShape(geometry: Geometry): FluentShape {
   return new FluentGeom3(geometry as Geom3);
 }
 
+function strokesToPaths(strokes: Vec2[][]): FluentPath2Array {
+  return FluentPath2Array.create(
+    ...strokes.map((stroke) => new FluentPath2(geometries.path2.fromPoints({}, stroke))),
+  );
+}
+
 // Overloaded boolean functions for type-safe returns
-function union(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
-function union(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function union(...geometries: (FluentGeom2 | FluentGeom2[] | FluentGeom2Array)[]): FluentGeom2;
+function union(...geometries: (FluentGeom3 | FluentGeom3[] | FluentGeom3Array)[]): FluentGeom3;
 function union(
-  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+  ...geometries: (
+    | FluentGeom2
+    | FluentGeom3
+    | FluentGeom2[]
+    | FluentGeom3[]
+    | FluentGeom2Array
+    | FluentGeom3Array
+  )[]
 ): FluentGeom2 | FluentGeom3 {
   if (geometries.length === 0) {
     throw new Error('union requires at least one geometry');
@@ -69,10 +86,22 @@ function union(
   return new FluentGeom3(booleans.union(geometries as FluentGeom3[]));
 }
 
-function subtract(...geometries: (FluentGeom2 | FluentGeom2[] | SubtractOptions)[]): FluentGeom2;
-function subtract(...geometries: (FluentGeom3 | FluentGeom3[] | SubtractOptions)[]): FluentGeom3;
 function subtract(
-  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[] | SubtractOptions)[]
+  ...geometries: (FluentGeom2 | FluentGeom2[] | FluentGeom2Array | SubtractOptions)[]
+): FluentGeom2;
+function subtract(
+  ...geometries: (FluentGeom3 | FluentGeom3[] | FluentGeom3Array | SubtractOptions)[]
+): FluentGeom3;
+function subtract(
+  ...geometries: (
+    | FluentGeom2
+    | FluentGeom3
+    | FluentGeom2[]
+    | FluentGeom3[]
+    | FluentGeom2Array
+    | FluentGeom3Array
+    | SubtractOptions
+  )[]
 ): FluentGeom2 | FluentGeom3 {
   if (geometries.length === 0) {
     throw new Error('subtract requires at least one geometry');
@@ -85,10 +114,17 @@ function subtract(
   return new FluentGeom3(booleans.subtract(...(geometries as FluentGeom3[])));
 }
 
-function intersect(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
-function intersect(...geometries: (FluentGeom3 | FluentGeom3[])[]): FluentGeom3;
+function intersect(...geometries: (FluentGeom2 | FluentGeom2[] | FluentGeom2Array)[]): FluentGeom2;
+function intersect(...geometries: (FluentGeom3 | FluentGeom3[] | FluentGeom3Array)[]): FluentGeom3;
 function intersect(
-  ...geometries: (FluentGeom2 | FluentGeom3 | FluentGeom2[] | FluentGeom3[])[]
+  ...geometries: (
+    | FluentGeom2
+    | FluentGeom3
+    | FluentGeom2[]
+    | FluentGeom3[]
+    | FluentGeom2Array
+    | FluentGeom3Array
+  )[]
 ): FluentGeom2 | FluentGeom3 {
   if (geometries.length === 0) {
     throw new Error('intersect requires at least one geometry');
@@ -501,6 +537,55 @@ const jscadFluent = {
        */
       arcLengthToT: curves.bezier.arcLengthToT,
     },
+  },
+
+  /**
+   * Text in a single-stroke (Hershey simplex) font, as one open path per
+   * stroke. Expand or extrudeRectangular the paths to give them width.
+   * @param {Object|String} options - text options, or the text itself
+   * @param {Number} [options.xOffset=0] - X of the first character's left edge
+   * @param {Number} [options.yOffset=0] - Y of the first line's baseline
+   * @param {Number} [options.height=14] - height of a lowercase letter; uppercase letters are 1.5 times taller
+   * @param {Number} [options.lineSpacing=2.142857] - distance between baselines, as a multiple of height
+   * @param {Number} [options.letterSpacing=1] - extra space between letters, as a multiple of height
+   * @param {String} [options.align='left'] - alignment of multi-line text: 'left', 'center' or 'right'
+   * @param {Number} [options.extrudeOffset=0] - planned stroke width; shrinks the letters so they keep their height once expanded
+   * @param {String} [options.input='?'] - the text, when not given as the second argument
+   * @param {String} [text] - the text; lines split on newlines
+   * @returns {FluentPath2Array} the strokes
+   * @example
+   * jf.union(jf.vectorText({ height: 10 }, 'JSCAD').expand({ delta: 1, corners: 'round' })).extrudeLinear({ height: 2 })
+   */
+  vectorText(options: VectorTextOptions | string, text?: string): FluentPath2Array {
+    const strokes =
+      text === undefined
+        ? textModule.vectorText(options as VectorTextOptions)
+        : textModule.vectorText(options as Omit<VectorTextOptions, 'input'>, text);
+    return strokesToPaths(strokes);
+  },
+
+  /**
+   * One character in the single-stroke font, with its size for placing the next.
+   * @param {Object|String} options - character options, or the character itself
+   * @param {Number} [options.xOffset=0] - X of the character's left edge
+   * @param {Number} [options.yOffset=0] - Y of the baseline
+   * @param {Number} [options.height=14] - height of a lowercase letter; uppercase letters are 1.5 times taller
+   * @param {Number} [options.extrudeOffset=0] - planned stroke width; shrinks the character so it keeps its height once expanded
+   * @param {String} [options.input='?'] - the character, when not given as the second argument
+   * @param {String} [char] - the character
+   * @returns {Object} { width, height, segments }: the advance width, the height, and the strokes as a FluentPath2Array
+   * @example
+   * const { width, segments } = jf.vectorChar({ height: 10 }, 'A')
+   */
+  vectorChar(
+    options: VectorCharOptions | string,
+    char?: string,
+  ): { width: number; height: number; segments: FluentPath2Array } {
+    const { width, height, segments } =
+      char === undefined
+        ? textModule.vectorChar(options as VectorCharOptions)
+        : textModule.vectorChar(options as Omit<VectorCharOptions, 'input'>, char);
+    return { width, height, segments: strokesToPaths(segments) };
   },
 
   // Array constructors

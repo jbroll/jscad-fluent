@@ -39,6 +39,7 @@ import type {
   TorusOptions,
   TriangleOptions,
 } from '@jscad/modeling/src/primitives';
+import type { VectorCharOptions, VectorTextOptions } from '@jscad/modeling/src/text';
 export { mat4 };
 
 export type {
@@ -94,6 +95,8 @@ export type {
   StarOptions,
   TorusOptions,
   TriangleOptions,
+  VectorCharOptions,
+  VectorTextOptions,
 };
 
 // Re-export vector and matrix types from JSCAD
