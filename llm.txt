@@ -6,7 +6,8 @@ Fluent wrapper for JSCAD. All methods chainable. REQUIRE NOT IMPORT: `const jf =
 ## CRITICAL CONSTRAINTS
 - Angles: RADIANS (not degrees). Use Math.PI
 - Colors: 0-1 range (not 0-255)
-- Booleans: all inputs must be same type (all 2D or all 3D)
+- Booleans: all inputs must be same type (all 2D or all 3D); non-geometry throws TypeError
+- { points, faces } is data, not a solid: jf.polyhedron({ points, faces }), never new jf.FluentGeom3({ points, faces })
 - All operations return NEW objects (immutable, like standard JSCAD)
 - Measurements return values (not chainable)
 

@@ -11,6 +11,7 @@ import {
   modifiers,
   transforms,
 } from '@jbroll/jscad-anchors';
+import { checkGeometry, checkOperands } from '../checkGeometry';
 import { copyGeometry } from '../copyGeometry';
 import type {
   AlignOptions,
@@ -39,6 +40,9 @@ import { FluentGeom2 } from './FluentGeom2';
 import { FluentGeom3Array } from './FluentGeom3Array';
 
 const { geom3 } = geometries;
+const KIND = 'geom3';
+const NAME = 'FluentGeom3';
+let wrapping = false;
 
 export class FluentGeom3 implements Geom3 {
   readonly type: 'geom3' = 'geom3';
@@ -49,12 +53,19 @@ export class FluentGeom3 implements Geom3 {
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom3) {
-    copyGeometry(this, geometry ?? geom3.create());
+    if (!wrapping) checkGeometry(geometry, KIND, NAME);
+    copyGeometry(this, geometry);
   }
 
+  // Only caller input is checked: an operation's result is the backend's own geometry.
   // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
   private _wrap(geometry: any): this {
-    return new (this.constructor as new (g: Geom3) => this)(geometry);
+    wrapping = true;
+    try {
+      return new (this.constructor as new (g: Geom3) => this)(geometry);
+    } finally {
+      wrapping = false;
+    }
   }
 
   append(geometry: Geom3): FluentGeom3Array {
@@ -154,12 +165,15 @@ export class FluentGeom3 implements Geom3 {
   }
 
   union(...others: (this | this[])[]): this {
+    checkOperands(`${NAME}.union`, others, false, KIND);
     return this._wrap(booleans.union(this, ...others));
   }
   subtract(...others: (this | this[] | SubtractOptions)[]): this {
+    checkOperands(`${NAME}.subtract`, others, true, KIND);
     return this._wrap(booleans.subtract(this, ...others));
   }
   intersect(...others: (this | this[])[]): this {
+    checkOperands(`${NAME}.intersect`, others, false, KIND);
     return this._wrap(booleans.intersect(this, ...others));
   }
 

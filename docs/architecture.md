@@ -7,6 +7,7 @@
 | `src/index.ts` | The default export `jscadFluent`: primitive factories, top-level `union`/`subtract`/`intersect`, array constructors, the `colors`, `utils` and `maths` namespaces, and the `FluentGeom2`/`FluentGeom3` classes |
 | `src/scission2.ts` | geom2 scission: groups outlines into outers and the holes inside them, since modeling's `scission` returns 2D input unchanged |
 | `src/cylinder.ts` | The `cylinder` factory: solid, tapered, elliptical, hollow, and partial cylinders built on `cylinderElliptic` |
+| `src/checkGeometry.ts` | Input checks for the `FluentGeom2`/`FluentGeom3` constructors and the booleans. They test fields with `in` rather than `isA`, which would read `polygons` and make lazy (manifold) geometry build its mesh. Rewrapping an operation's result skips the check |
 | `src/types.ts` | Type re-exports from `@jscad/modeling` and `@jbroll/jscad-anchors`, plus local tuple types and `FrameInput` |
 | `src/gen/` | Generated wrapper classes; never edited by hand |
 | `templates/` | Mustache templates, partials, and `methods.json` that produce `src/gen/` |

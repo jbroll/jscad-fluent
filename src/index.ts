@@ -12,6 +12,7 @@ import {
   transforms,
   utils,
 } from '@jbroll/jscad-anchors';
+import { checkOperands } from './checkGeometry';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -82,8 +83,7 @@ function union(
   if (geometries.length === 0) {
     throw new Error('union requires at least one geometry');
   }
-  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
-  if (first instanceof FluentGeom2) {
+  if (checkOperands('jf.union', geometries, false) === 'geom2') {
     return new FluentGeom2(booleans.union(geometries as FluentGeom2[]));
   }
   return new FluentGeom3(booleans.union(geometries as FluentGeom3[]));
@@ -109,9 +109,8 @@ function subtract(
   if (geometries.length === 0) {
     throw new Error('subtract requires at least one geometry');
   }
-  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
   // Spread, not one array: subtractAnchored only reads { carry } from its last argument.
-  if (first instanceof FluentGeom2) {
+  if (checkOperands('jf.subtract', geometries, true) === 'geom2') {
     return new FluentGeom2(booleans.subtract(...(geometries as FluentGeom2[])));
   }
   return new FluentGeom3(booleans.subtract(...(geometries as FluentGeom3[])));
@@ -132,8 +131,7 @@ function intersect(
   if (geometries.length === 0) {
     throw new Error('intersect requires at least one geometry');
   }
-  const first = Array.isArray(geometries[0]) ? geometries[0][0] : geometries[0];
-  if (first instanceof FluentGeom2) {
+  if (checkOperands('jf.intersect', geometries, false) === 'geom2') {
     return new FluentGeom2(booleans.intersect(geometries as FluentGeom2[]));
   }
   return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));

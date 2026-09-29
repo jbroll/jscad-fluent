@@ -41,7 +41,11 @@ import type {
 } from '../types';
 
 const { geom2 } = geometries;
+const KIND = 'geom2';
+const NAME = 'FluentGeom2';
+let wrapping = false;
 
+import { checkGeometry, checkOperands } from '../checkGeometry';
 import { copyGeometry } from '../copyGeometry';
 import { scission2 } from '../scission2';
 import { FluentGeom2Array } from './FluentGeom2Array';
@@ -56,12 +60,19 @@ export class FluentGeom2 implements Geom2 {
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom2) {
-    copyGeometry(this, geometry ?? geom2.create());
+    if (!wrapping) checkGeometry(geometry, KIND, NAME);
+    copyGeometry(this, geometry);
   }
 
+  // Only caller input is checked: an operation's result is the backend's own geometry.
   // biome-ignore lint/suspicious/noExplicitAny: Required for polymorphic wrapper
   private _wrap(geometry: any): this {
-    return new (this.constructor as new (g: Geom2) => this)(geometry);
+    wrapping = true;
+    try {
+      return new (this.constructor as new (g: Geom2) => this)(geometry);
+    } finally {
+      wrapping = false;
+    }
   }
 
   append(geometry: Geom2): FluentGeom2Array {
@@ -158,12 +169,15 @@ export class FluentGeom2 implements Geom2 {
   }
 
   union(...others: (this | this[])[]): this {
+    checkOperands(`${NAME}.union`, others, false, KIND);
     return this._wrap(booleans.union(this, ...others));
   }
   subtract(...others: (this | this[] | SubtractOptions)[]): this {
+    checkOperands(`${NAME}.subtract`, others, true, KIND);
     return this._wrap(booleans.subtract(this, ...others));
   }
   intersect(...others: (this | this[])[]): this {
+    checkOperands(`${NAME}.intersect`, others, false, KIND);
     return this._wrap(booleans.intersect(this, ...others));
   }
 

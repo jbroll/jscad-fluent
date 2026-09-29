@@ -237,6 +237,12 @@ jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))   // rounded cube
 The top-level functions also take a `FluentGeom2Array` or `FluentGeom3Array`
 and throw when called with no geometry.
 
+Operands are fluent shapes or raw modeling geometry of the same type as the
+first: a geom3 method takes geom3 operands, and `jf.union` takes the type of
+its first operand. Anything else throws a `TypeError` naming the method and
+what it got. Raw `{ points, faces }` data is not a solid; build it with
+`jf.polyhedron({ points, faces })` first.
+
 ### Splitting
 
 ```
@@ -569,3 +575,6 @@ plane.signedDistanceToPoint(ground, [2, 2, 5])   // 5
 
 `jf.FluentGeom2` and `jf.FluentGeom3` are the classes the factories return.
 Embedders can wrap raw modeling geometry with `new jf.FluentGeom3(geometry)`.
+The constructor takes a geom3 (`FluentGeom2`, a geom2) and throws a `TypeError`
+for anything else, including `null`, `undefined` and `{ points, faces }` data,
+which `jf.polyhedron` builds.
