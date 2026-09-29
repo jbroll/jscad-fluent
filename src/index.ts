@@ -1,4 +1,4 @@
-import { booleans, colors, primitives } from '@jbroll/jscad-anchors';
+import { booleans, colors, maths, primitives, utils } from '@jbroll/jscad-anchors';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -300,6 +300,81 @@ const jscadFluent = {
      * jscadFluent.colors.css.lightblue  // [0.68, 0.85, 0.9]
      */
     css: colors.cssColors,
+  },
+
+  /**
+   * Unit conversions and helpers from `@jscad/modeling`'s utils.
+   */
+  utils: {
+    /**
+     * Convert degrees to radians.
+     * @param degrees - angle in degrees
+     * @returns angle in radians
+     * @example
+     * jf.utils.degToRad(90)  // Math.PI / 2
+     */
+    degToRad: utils.degToRad,
+
+    /**
+     * Convert radians to degrees.
+     * @param radians - angle in radians
+     * @returns angle in degrees
+     */
+    radToDeg: utils.radToDeg,
+
+    /**
+     * Number of segments for a round shape of the given radius, from a minimum
+     * segment length or a minimum angle between segments; at least 4.
+     * @param radius - radius of the shape
+     * @param minimumLength - minimum segment length; 0 to ignore
+     * @param minimumAngle - minimum angle between segments in radians; 0 to ignore
+     * @returns segment count
+     * @example
+     * jf.circle({ radius: 10, segments: jf.utils.radiusToSegments(10, 0.5, 0) })
+     */
+    radiusToSegments: utils.radiusToSegments,
+
+    /**
+     * Flatten nested arrays into one array.
+     * @param arr - array of values or nested arrays
+     * @returns flat array
+     */
+    flatten: utils.flatten,
+  },
+
+  /**
+   * Vector and matrix math from `@jscad/modeling`'s maths. The vec2, vec3 and
+   * mat4 functions take the output first: `vec3.add(vec3.create(), a, b)`.
+   */
+  maths: {
+    /**
+     * Numeric constants: `TAU` (2 * PI), `EPS` (geometry tolerance), `NEPS`
+     * and `spatialResolution`.
+     */
+    constants: maths.constants as {
+      TAU: number;
+      EPS: number;
+      NEPS: number;
+      spatialResolution: number;
+    },
+
+    /**
+     * 2D vector functions (`add`, `subtract`, `scale`, `length`, `normalize`,
+     * `rotate`, `fromAngleRadians`, ...), each taking the output vector first.
+     */
+    vec2: maths.vec2,
+
+    /**
+     * 3D vector functions (`add`, `subtract`, `scale`, `cross`, `dot`,
+     * `length`, `normalize`, ...), each taking the output vector first.
+     */
+    vec3: maths.vec3,
+
+    /**
+     * 4x4 matrix functions (`create`, `fromTranslation`, `fromXRotation`,
+     * `fromScaling`, `multiply`, ...) for `.transform(matrix)`.
+     */
+    mat4: maths.mat4,
   },
 };
 

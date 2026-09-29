@@ -299,6 +299,29 @@ Geom2 only; returns a `FluentGeom3`.
 .validate()                                // throws if invalid
 ```
 
+## Utilities and math
+
+```
+jf.utils.degToRad(degrees)        -> radians
+jf.utils.radToDeg(radians)        -> degrees
+jf.utils.radiusToSegments(radius, minimumLength, minimumAngle) -> number   // at least 4; 0 ignores a limit
+jf.utils.flatten(nestedArrays)    -> flat array
+
+jf.maths.constants                // { TAU, EPS, NEPS, spatialResolution }
+jf.maths.vec2.*                   // @jscad/modeling vec2 functions
+jf.maths.vec3.*                   // @jscad/modeling vec3 functions
+jf.maths.mat4.*                   // @jscad/modeling mat4 functions, for .transform(matrix)
+```
+
+The vector and matrix functions take the output first, as in
+`@jscad/modeling`:
+
+```js
+const { vec3, mat4 } = jf.maths
+const mid = vec3.lerp(vec3.create(), [0, 0, 0], [10, 0, 0], 0.5)   // [5, 0, 0]
+part.transform(mat4.fromZRotation(mat4.create(), Math.PI / 4))
+```
+
 ## Wrapper classes
 
 `jf.FluentGeom2` and `jf.FluentGeom3` are the classes the factories return.

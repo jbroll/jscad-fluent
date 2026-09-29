@@ -105,6 +105,16 @@ jf.colors.rgbToHsl(rgb: RGB) -> [h,s,l]
 jf.colors.rgbToHsv(rgb: RGB) -> [h,s,v]
 jf.colors.css.<name>                                // 150+ CSS colors: .red, .lightblue, etc.
 
+## MATH UTILITIES (jf.utils.*, jf.maths.*)
+
+jf.utils.degToRad(degrees) -> radians
+jf.utils.radToDeg(radians) -> degrees
+jf.utils.radiusToSegments(radius, minimumLength, minimumAngle) -> number  // at least 4; 0 ignores a limit
+jf.utils.flatten(nestedArrays) -> flat array
+jf.maths.constants.TAU                              // also EPS, NEPS, spatialResolution
+jf.maths.vec2.* / jf.maths.vec3.* / jf.maths.mat4.* // output first: vec3.add(vec3.create(), a, b)
+// part.transform(jf.maths.mat4.fromZRotation(jf.maths.mat4.create(), Math.PI / 4))
+
 ## BOOLEANS & COMBINING -> new instance (inputs must match geometry type)
 
 // Method chaining - accepts spread args, arrays, or mixed
