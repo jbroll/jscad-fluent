@@ -30,8 +30,10 @@ import type {
   EllipsoidOptions,
   ExtrudeFromSlicesOptions,
   GeodesicSphereOptions,
+  Geom2,
   Geom3,
   Geometry,
+  Path2,
   Point2,
   Point3,
   RectangleOptions,
@@ -592,6 +594,35 @@ const jscadFluent = {
         ? textModule.vectorChar(options as VectorCharOptions)
         : textModule.vectorChar(options as Omit<VectorCharOptions, 'input'>, char);
     return { width, height, segments: strokesToPaths(segments) };
+  },
+
+  /**
+   * Whether a value is 2D geometry, fluent or raw.
+   * @param {Object} value - the value to test
+   * @returns {Boolean} true for a geom2
+   * @example
+   * const solid = jf.isGeom2(part) ? part.extrudeLinear({ height: 1 }) : part
+   */
+  isGeom2(value: unknown): value is Geom2 {
+    return geometries.geom2.isA(value);
+  },
+
+  /**
+   * Whether a value is a solid (3D geometry), fluent or raw.
+   * @param {Object} value - the value to test
+   * @returns {Boolean} true for a geom3
+   */
+  isGeom3(value: unknown): value is Geom3 {
+    return geometries.geom3.isA(value);
+  },
+
+  /**
+   * Whether a value is a path, fluent or raw.
+   * @param {Object} value - the value to test
+   * @returns {Boolean} true for a path2
+   */
+  isPath2(value: unknown): value is Path2 {
+    return geometries.path2.isA(value);
   },
 
   // Array constructors

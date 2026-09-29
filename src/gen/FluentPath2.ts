@@ -243,6 +243,15 @@ export class FluentPath2 implements Path2 {
   }
 
   /**
+   * A separate copy of the geometry, keeping its color and anchors.
+   * @returns the copy
+   */
+  clone(): this {
+    // A zero move, as jscad-anchors does: a field copy of manifold geometry would share its mesh handle.
+    return this._wrap(transforms.translate([0, 0, 0], this));
+  }
+
+  /**
    * Clean up the geometry: snap, simplify and triangulate, in that order. On geom2 and path2 it returns an unchanged copy.
    * @param {Object} options - which steps to run
    * @param {Boolean} [options.snap=false] - snap vertices to the geometry's precision (measureEpsilon)

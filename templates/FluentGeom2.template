@@ -118,6 +118,23 @@ export class FluentGeom2 implements Geom2 {
     return FluentGeom2Array.create(...scission2(this));
   }
 
+  /**
+   * Reverse the direction of every side, so outlines become holes and holes outlines; the area changes sign.
+   * @returns the reversed shape
+   */
+  invert(): this {
+    return this._wrap(geom2.reverse(this));
+  }
+
+  /**
+   * A separate copy of the geometry, keeping its color and anchors.
+   * @returns the copy
+   */
+  clone(): this {
+    // A zero move, as jscad-anchors does: a field copy of manifold geometry would share its mesh handle.
+    return this._wrap(transforms.translate([0, 0, 0], this));
+  }
+
   {{#modifierMethods}}
   {{> methodObject}}
   {{/modifierMethods}}

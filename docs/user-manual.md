@@ -466,6 +466,20 @@ lie in XY.
 `generalize` runs its steps in the order listed and changes only geom3; on a
 geom2 or path2 it returns an unchanged copy. These keep anchors.
 
+```
+.invert()           // geom3: flip every face; geom2: reverse every side (area changes sign)
+.clone()            // a separate copy, with color and anchors
+```
+
+A solid whose `measureVolume()` is negative is inside out, usually a
+`jf.polyhedron` with faces wound clockwise seen from outside; `.invert()`
+fixes it. On a path, `.reverse()` does the same job. Both keep anchors.
+
+```js
+const solid = jf.polyhedron({ points, faces })
+const fixed = solid.measureVolume() < 0 ? solid.invert() : solid
+```
+
 ## Measurements
 
 ```
@@ -507,7 +521,13 @@ const total = jf.measureAggregateVolume(part.scission())
 .toPolygons()   -> { vertices: Vec3[] }[]  // geom3
 .toString()     -> string
 .validate()                                // throws if invalid
+
+jf.isGeom2(value)  jf.isGeom3(value)  jf.isPath2(value)   -> boolean, for fluent or raw geometry
 ```
+
+Modeling's `geom3.fromPoints` is `jf.polyhedron`, and `geom2.fromPoints` is
+`jf.polygon`. The compact-binary functions (`toCompactBinary`,
+`fromCompactBinary`) are serialization and are not wrapped.
 
 ## Utilities and math
 

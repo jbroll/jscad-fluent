@@ -275,6 +275,8 @@ jf.square({ size: 10 }).extrudeFromSlices({ numberOfSlices: 10,
 .generalize({ snap?: boolean=false, simplify?: boolean=false, triangulate?: boolean=false })  // changes 3D only
 .snap()                         // snap vertices to the geometry's precision
 .retessellate()                 // 3D only: merge coplanar polygons
+.invert()                       // 3D: flip faces, fixes an inside-out solid (negative measureVolume); 2D: reverse sides
+.clone()                        // separate copy with color and anchors
 
 ## MEASUREMENTS -> values (not chainable)
 
@@ -303,6 +305,7 @@ jf.measureAggregateEpsilon(...geoms) -> number
 .toOutlines() -> Vec2[][]       // 2D only
 .toSides() -> [Vec2, Vec2][]    // 2D only, for jf.slice.fromSides
 .toPolygons() -> {vertices: Vec3[]}[]  // 3D only
+jf.isGeom2(x) / jf.isGeom3(x) / jf.isPath2(x) -> boolean   // fluent or raw geometry
 
 ## EXAMPLE
 
