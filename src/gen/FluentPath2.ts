@@ -41,6 +41,7 @@ export class FluentPath2 implements Path2 {
   points!: Array<any>;
   transforms!: Mat4;
   isClosed!: boolean;
+  color?: RGBA;
 
   constructor(geometry: Path2) {
     copyGeometry(this, geometry ?? path2.create());

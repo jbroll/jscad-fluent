@@ -33,6 +33,7 @@ export class FluentGeom3 implements Geom3 {
   // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   polygons!: Array<any>;
   transforms!: Mat4;
+  color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom3) {

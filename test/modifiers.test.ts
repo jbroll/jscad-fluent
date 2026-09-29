@@ -1,4 +1,6 @@
+import { geometries } from '@jbroll/jscad-anchors';
 import { FluentGeom2 } from '../src/gen/FluentGeom2';
+import { FluentGeom2Array } from '../src/gen/FluentGeom2Array';
 import { FluentGeom3 } from '../src/gen/FluentGeom3';
 import { FluentGeom3Array } from '../src/gen/FluentGeom3Array';
 import { FluentPath2 } from '../src/gen/FluentPath2';
@@ -20,6 +22,52 @@ describe('scission', () => {
     const pieces = jf.cube({ size: 2 }).scission();
     expect(pieces.length).toBe(1);
     expect(pieces[0]?.measureVolume()).toBeCloseTo(8);
+  });
+});
+
+describe('geom2 scission', () => {
+  const areas = (pieces: FluentGeom2Array) => pieces.measureArea().sort((a, b) => a - b);
+
+  test('splits two separate squares into two shapes', () => {
+    const pair = jf.union(jf.square({ size: 2 }), jf.square({ size: 2 }).translate([5, 0, 0]));
+    const pieces = pair.scission();
+    expect(pieces).toBeInstanceOf(FluentGeom2Array);
+    expect(pieces.length).toBe(2);
+    expect(pieces[0]).toBeInstanceOf(FluentGeom2);
+    expect(areas(pieces)[0]).toBeCloseTo(4);
+    expect(areas(pieces)[1]).toBeCloseTo(4);
+    const centers = pieces
+      .measureCenter()
+      .map(([x]) => x)
+      .sort((a, b) => a - b);
+    expect(centers[0]).toBeCloseTo(0);
+    expect(centers[1]).toBeCloseTo(5);
+  });
+
+  test('keeps a hole with the outline around it', () => {
+    const ring = jf.square({ size: 10 }).subtract(jf.square({ size: 4 }));
+    const pieces = ring.scission();
+    expect(pieces.length).toBe(1);
+    expect(pieces[0]?.toOutlines().length).toBe(2);
+    expect(pieces[0]?.measureArea()).toBeCloseTo(84);
+  });
+
+  test('gives a hole to the smallest outline that contains it, for nested islands', () => {
+    const ring = jf.square({ size: 20 }).subtract(jf.square({ size: 12 }));
+    const island = jf.square({ size: 6 }).subtract(jf.square({ size: 2 }));
+    const pieces = jf.union(ring, island).scission();
+    expect(pieces.length).toBe(2);
+    expect(areas(pieces)[0]).toBeCloseTo(32);
+    expect(areas(pieces)[1]).toBeCloseTo(256);
+    for (const piece of pieces) expect(piece.toOutlines().length).toBe(2);
+  });
+
+  test('keeps the color and returns an empty array for an empty shape', () => {
+    const red = jf
+      .union(jf.square({ size: 2 }), jf.square({ size: 2 }).translate([5, 0, 0]))
+      .colorize([1, 0, 0]);
+    for (const piece of red.scission()) expect(piece.color).toEqual([1, 0, 0, 1]);
+    expect(new FluentGeom2(geometries.geom2.create()).scission().length).toBe(0);
   });
 });
 

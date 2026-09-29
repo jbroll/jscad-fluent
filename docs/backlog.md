@@ -13,9 +13,3 @@ The UMD bundle reads `@jbroll/jscad-anchors` from a global `jscadAnchors`
 `jscad-fluent.umd.cjs` from jsDelivr in a page therefore fails. The options are
 a UMD build of jscad-anchors, or bundling jscad-anchors into jscad-fluent's
 browser bundle.
-
-## geom2 scission
-
-`FluentGeom3.scission()` has no geom2 counterpart because modeling's
-`scission` returns 2D geometry unchanged. Splitting a geom2 would need its
-outlines grouped with the holes inside them.

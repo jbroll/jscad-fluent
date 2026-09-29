@@ -241,10 +241,18 @@ and throw when called with no geometry.
 
 ```
 .scission() -> FluentGeom3Array    // geom3: one FluentGeom3 per disconnected piece
+.scission() -> FluentGeom2Array    // geom2: one FluentGeom2 per separate area, with its holes
 ```
+
+A geom2 splits into one shape per outer (counter-clockwise) outline. Each
+hole (clockwise outline) goes to the smallest outline that contains it, so an
+island inside a hole is a shape of its own and keeps its own holes. A hole
+with no outline around it becomes a shape by itself. The pieces keep the
+shape's color.
 
 ```js
 const [left, right] = jf.union(a, b).scission()
+const areas = jf.union(ring, island).scission().measureArea()   // [ring, island]
 ```
 
 ## Anchors

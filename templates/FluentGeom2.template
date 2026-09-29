@@ -32,6 +32,7 @@ import type {
 const { geom2 } = geometries;
 
 import { copyGeometry } from '../copyGeometry';
+import { scission2 } from '../scission2';
 import { FluentGeom2Array } from './FluentGeom2Array';
 import { FluentGeom3 } from './FluentGeom3';
 
@@ -40,6 +41,7 @@ export class FluentGeom2 implements Geom2 {
   // biome-ignore lint/suspicious/noExplicitAny: Required by JSCAD geometry type
   sides!: Array<any>;
   transforms!: Mat4;
+  color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
   constructor(geometry: Geom2) {
@@ -103,6 +105,17 @@ export class FluentGeom2 implements Geom2 {
    */
   extrudeFromSlices(options: ExtrudeFromSlicesOptions<FluentGeom2>): FluentGeom3 {
     return new FluentGeom3(extrusions.extrudeFromSlices(options, this));
+  }
+
+  /**
+   * Split the shape into its separate areas: one shape per outer outline, with the holes inside it.
+   * A hole goes to the smallest outline around it, so an island inside a hole is a shape of its own.
+   * @returns {FluentGeom2Array} one shape per area
+   * @example
+   * const [left, right] = jf.union(a, b).scission()
+   */
+  scission(): FluentGeom2Array {
+    return FluentGeom2Array.create(...scission2(this));
   }
 
   {{#modifierMethods}}

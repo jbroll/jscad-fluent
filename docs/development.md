@@ -3,7 +3,7 @@
 ## Layout
 
 ```
-src/index.ts, src/cylinder.ts, src/types.ts   hand-written source
+src/*.ts                                      hand-written source
 src/gen/                                      generated wrapper classes
 templates/                                    templates, partials, methods.json
 test/                                         Vitest tests

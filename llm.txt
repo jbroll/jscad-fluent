@@ -163,7 +163,8 @@ jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c]), jf.union(
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 
-.scission() -> FluentGeom3Array  // 3D only: split into disconnected pieces
+.scission() -> FluentGeom3Array  // 3D: split into disconnected pieces
+.scission() -> FluentGeom2Array  // 2D: one shape per outer outline with the holes inside it
 // const [left, right] = jf.union(a, b).scission()
 
 // Minkowski sum - useful for rounding edges, collision volumes, swept shapes
