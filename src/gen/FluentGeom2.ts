@@ -7,6 +7,7 @@ import {
   geometries,
   hulls,
   measurements,
+  modifiers,
   transforms,
 } from '@jbroll/jscad-anchors';
 import type {
@@ -26,6 +27,7 @@ import type {
   Frame,
   FrameInput,
   Frames,
+  GeneralizeOptions,
   Geom2,
   Mat4,
   MirrorOptions,
@@ -239,6 +241,27 @@ export class FluentGeom2 implements Geom2 {
    */
   extrudeFromSlices(options: ExtrudeFromSlicesOptions<FluentGeom2>): FluentGeom3 {
     return new FluentGeom3(extrusions.extrudeFromSlices(options, this));
+  }
+
+  /**
+   * Clean up the geometry: snap, simplify and triangulate, in that order. On geom2 and path2 it returns an unchanged copy.
+   * @param {Object} options - which steps to run
+   * @param {Boolean} [options.snap=false] - snap vertices to the geometry's precision (measureEpsilon)
+   * @param {Boolean} [options.simplify=false] - merge coplanar polygons
+   * @param {Boolean} [options.triangulate=false] - split polygons into triangles
+   * @returns the cleaned geometry
+   * @example
+   * part.generalize({ snap: true, triangulate: true })
+   */
+  generalize(options: GeneralizeOptions): this {
+    return this._wrap(modifiers.generalize(options, this));
+  }
+  /**
+   * Snap every vertex to the geometry's precision (measureEpsilon), dropping edges that collapse.
+   * @returns the snapped geometry
+   */
+  snap(): this {
+    return this._wrap(modifiers.snap(this));
   }
 
   measureBoundingBox(): BoundingBox {

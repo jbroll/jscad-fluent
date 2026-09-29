@@ -149,6 +149,16 @@ jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))   // rounded cube
 
 The top-level functions throw when called with no geometry.
 
+### Splitting
+
+```
+.scission() -> FluentGeom3Array    // geom3: one FluentGeom3 per disconnected piece
+```
+
+```js
+const [left, right] = jf.union(a, b).scission()
+```
+
 ## Anchors
 
 Anchors are named frames stored on a geom2 or geom3, provided by
@@ -233,7 +243,8 @@ const plate = jf.cuboid({ size: [40, 40, 5] }).subtract(hole, { carry: { bolt1: 
 plate.anchor('bolt1.axis')
 ```
 
-Hull, expand, offset, extrusion, and minkowski results carry no frames.
+Hull, expand, offset, extrusion, minkowski, and scission results carry no
+frames.
 
 ## Geometry arrays
 
@@ -344,6 +355,17 @@ jf.slice.toEdges(slice)  jf.slice.toPolygons(slice)  jf.slice.equals(a, b)  jf.s
 
 Flattens a solid onto the plane through `origin` normal to `axis`, rotated to
 lie in XY.
+
+## Cleanup
+
+```
+.generalize({ snap?: boolean=false, simplify?: boolean=false, triangulate?: boolean=false })
+.snap()             // snap vertices to the geometry's precision (measureEpsilon)
+.retessellate()     // geom3: merge coplanar polygons into larger convex ones
+```
+
+`generalize` runs its steps in the order listed and changes only geom3; on a
+geom2 or path2 it returns an unchanged copy. These keep anchors.
 
 ## Measurements
 

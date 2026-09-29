@@ -12,6 +12,7 @@ import type {
   ProjectOptions,
 } from '@jscad/modeling/src/operations/extrusions';
 import type { Slice } from '@jscad/modeling/src/operations/extrusions/slice';
+import type { GeneralizeOptions } from '@jscad/modeling/src/operations/modifiers/generalize';
 import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 import type {
   ArcOptions,
@@ -69,6 +70,7 @@ export type {
   ExtrudeLinearOptions,
   ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
+  GeneralizeOptions,
   GeodesicSphereOptions,
   MirrorOptions,
   OffsetOptions,

@@ -8,6 +8,7 @@ import {
   hulls,
   measurements,
   minkowski,
+  modifiers,
   transforms,
 } from '@jbroll/jscad-anchors';
 import { copyGeometry } from '../copyGeometry';
@@ -23,6 +24,7 @@ import type {
   Frame,
   FrameInput,
   Frames,
+  GeneralizeOptions,
   Geom3,
   Mat4,
   MirrorOptions,
@@ -181,6 +183,47 @@ export class FluentGeom3 implements Geom3 {
    */
   project(options: ProjectOptions): FluentGeom2 {
     return new FluentGeom2(extrusions.project(options, this as Geom3));
+  }
+
+  /**
+   * Split the solid into its disconnected pieces.
+   * @returns {FluentGeom3Array} one solid per piece
+   * @example
+   * const [left, right] = jf.union(a, b).scission()
+   */
+  scission(): FluentGeom3Array {
+    return FluentGeom3Array.create(
+      ...[booleans.scission(this)].flat().map((piece) => new FluentGeom3(piece)),
+    );
+  }
+
+  /**
+   * Clean up the geometry: snap, simplify and triangulate, in that order. On geom2 and path2 it returns an unchanged copy.
+   * @param {Object} options - which steps to run
+   * @param {Boolean} [options.snap=false] - snap vertices to the geometry's precision (measureEpsilon)
+   * @param {Boolean} [options.simplify=false] - merge coplanar polygons
+   * @param {Boolean} [options.triangulate=false] - split polygons into triangles
+   * @returns the cleaned geometry
+   * @example
+   * part.generalize({ snap: true, triangulate: true })
+   */
+  generalize(options: GeneralizeOptions): this {
+    return this._wrap(modifiers.generalize(options, this));
+  }
+  /**
+   * Snap every vertex to the geometry's precision (measureEpsilon), dropping edges that collapse.
+   * @returns the snapped geometry
+   */
+  snap(): this {
+    return this._wrap(modifiers.snap(this));
+  }
+
+  /**
+   * Merge coplanar polygons into larger convex ones, as booleans do.
+   * @returns the retessellated solid
+   */
+  retessellate(): this {
+    return this._wrap(modifiers.retessellate(this));
   }
 
   measureBoundingBox(): BoundingBox {

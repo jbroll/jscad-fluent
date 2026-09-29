@@ -1,4 +1,4 @@
-import { anchors, expansions, extrusions, geometries, hulls, measurements, minkowski, transforms, booleans, colors } from '@jbroll/jscad-anchors';
+import { anchors, expansions, extrusions, geometries, hulls, measurements, minkowski, transforms, booleans, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
   Anchorable,
@@ -17,6 +17,7 @@ import type {
   RGBA,
   BoundingBox,
   CenterOptions,
+  GeneralizeOptions,
   MirrorOptions,
   ProjectOptions,
 } from '../types';
@@ -80,6 +81,26 @@ export class FluentGeom3 implements Geom3 {
   project(options: ProjectOptions): FluentGeom2 {
     return new FluentGeom2(extrusions.project(options, this as Geom3));
   }
+
+  /**
+   * Split the solid into its disconnected pieces.
+   * @returns {FluentGeom3Array} one solid per piece
+   * @example
+   * const [left, right] = jf.union(a, b).scission()
+   */
+  scission(): FluentGeom3Array {
+    return FluentGeom3Array.create(
+      ...[booleans.scission(this)].flat().map((piece) => new FluentGeom3(piece)),
+    );
+  }
+
+  {{#modifierMethods}}
+  {{> methodObject}}
+  {{/modifierMethods}}
+
+  {{#retessellateMethods}}
+  {{> methodObject}}
+  {{/retessellateMethods}}
 
   {{#measurementMethods}}
   {{> methodValue}}

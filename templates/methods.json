@@ -102,6 +102,31 @@
     { "ns": "path2", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
     { "ns": "path2", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
   ],
+  "modifierMethods": [
+    { "ns": "modifiers", "name": "generalize", "params": [ { "name": "options", "type": "GeneralizeOptions", "last": true } ], "returnType": "this",
+      "doc": [
+        "Clean up the geometry: snap, simplify and triangulate, in that order. On geom2 and path2 it returns an unchanged copy.",
+        "@param {Object} options - which steps to run",
+        "@param {Boolean} [options.snap=false] - snap vertices to the geometry's precision (measureEpsilon)",
+        "@param {Boolean} [options.simplify=false] - merge coplanar polygons",
+        "@param {Boolean} [options.triangulate=false] - split polygons into triangles",
+        "@returns the cleaned geometry",
+        "@example",
+        "part.generalize({ snap: true, triangulate: true })"
+      ] },
+    { "ns": "modifiers", "name": "snap", "params": [], "returnType": "this",
+      "doc": [
+        "Snap every vertex to the geometry's precision (measureEpsilon), dropping edges that collapse.",
+        "@returns the snapped geometry"
+      ] }
+  ],
+  "retessellateMethods": [
+    { "ns": "modifiers", "name": "retessellate", "params": [], "returnType": "this",
+      "doc": [
+        "Merge coplanar polygons into larger convex ones, as booleans do.",
+        "@returns the retessellated solid"
+      ] }
+  ],
   "minkowskiMethods": [
     { "name": "minkowski", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" }
   ],

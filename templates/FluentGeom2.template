@@ -1,4 +1,4 @@
-import { anchors, expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors } from '@jbroll/jscad-anchors';
+import { anchors, expansions, geometries, hulls, measurements, transforms, extrusions, booleans, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
   Anchorable,
@@ -17,6 +17,7 @@ import type {
   RGBA,
   BoundingBox,
   CenterOptions,
+  GeneralizeOptions,
   ExpandOptions,
   ExtrudeFromSlicesOptions,
   ExtrudeHelicalOptions,
@@ -102,6 +103,10 @@ export class FluentGeom2 implements Geom2 {
   extrudeFromSlices(options: ExtrudeFromSlicesOptions<FluentGeom2>): FluentGeom3 {
     return new FluentGeom3(extrusions.extrudeFromSlices(options, this));
   }
+
+  {{#modifierMethods}}
+  {{> methodObject}}
+  {{/modifierMethods}}
 
   {{#measurementMethods}}
   {{> methodValue}}

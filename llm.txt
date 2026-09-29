@@ -128,6 +128,9 @@ jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c])
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
 
+.scission() -> FluentGeom3Array  // 3D only: split into disconnected pieces
+// const [left, right] = jf.union(a, b).scission()
+
 // Minkowski sum - useful for rounding edges, collision volumes, swept shapes
 // Example: rounded cube
 jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))
@@ -143,7 +146,7 @@ jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))
 .alignTo(parent, direction, { inset?: number=0, inside?: boolean=false }) -> new instance  // translate only
 .subtract(...tools, { carry: { prefix: tool } })       // keeps tool's frames as 'prefix.name'
 // union keeps first operand's frames plus new names from the rest; subtract/intersect keep the first operand's only
-// hull, expand, offset, extrude, minkowski results have no frames
+// hull, expand, offset, extrude, minkowski, scission results have no frames
 
 // Example: plate with a bolt hole, then a bolt pushed 5mm down into it from the top face
 const hole = jf.cylinder({ radius: 2, height: 10 }).withAnchors({ axis: { origin: [0,0,2.5], z: [0,0,1] } }).translate([10, 0, 0]);
@@ -228,6 +231,12 @@ jf.arc({ radius: 20, endAngle: Math.PI }).extrudeRectangular({ size: 1, height: 
 const { mat4 } = jf.maths;
 jf.square({ size: 10 }).extrudeFromSlices({ numberOfSlices: 10,
   callback: (t, i, base) => jf.slice.transform(mat4.fromTranslation(mat4.create(), [0, 0, t * 20]), jf.slice.fromSides(base.toSides())) })
+
+## CLEANUP -> new instance
+
+.generalize({ snap?: boolean=false, simplify?: boolean=false, triangulate?: boolean=false })  // changes 3D only
+.snap()                         // snap vertices to the geometry's precision
+.retessellate()                 // 3D only: merge coplanar polygons
 
 ## MEASUREMENTS -> values (not chainable)
 

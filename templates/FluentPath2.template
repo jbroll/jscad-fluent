@@ -1,4 +1,4 @@
-import { expansions, extrusions, geometries, hulls, measurements, transforms, colors } from '@jbroll/jscad-anchors';
+import { expansions, extrusions, geometries, hulls, measurements, transforms, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
   Centroid,
   Path2,
@@ -9,6 +9,7 @@ import type {
   RGBA,
   BoundingBox,
   CenterOptions,
+  GeneralizeOptions,
   ExpandOptions,
   ExtrudeRectangularOptions,
   MirrorOptions,
@@ -83,6 +84,10 @@ export class FluentPath2 implements Path2 {
   {{> methodObject}}
   {{/hullMethods}}
   
+  {{#modifierMethods}}
+  {{> methodObject}}
+  {{/modifierMethods}}
+
   {{#measurementMethods}}
   {{> methodValue}}
   {{/measurementMethods}}
