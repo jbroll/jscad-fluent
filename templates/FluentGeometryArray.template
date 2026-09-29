@@ -1,5 +1,16 @@
-import { transforms, colors } from '@jbroll/jscad-anchors';
-import type { AlignOptions, Geometry, Vec3, Mat4, RGB, RGBA, CenterOptions, MirrorOptions } from '../types';
+import { colors, measurements, transforms } from '@jbroll/jscad-anchors';
+import type {
+  AlignOptions,
+  BoundingBox,
+  CenterOptions,
+  Centroid,
+  Geometry,
+  Mat4,
+  MirrorOptions,
+  RGB,
+  RGBA,
+  Vec3,
+} from '../types';
 
 export class FluentGeometryArray<T extends Geometry> extends Array<T> {
   constructor(...items: T[]) {
@@ -12,17 +23,13 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
     return Array.from(this, (value, index) => callback.call(thisArg, value, index, this));
   }
 
-  {{#arrayMethods}}
-  {{> methodArrayGeneric}}
-  {{/arrayMethods}}
-
   {{#transformMethods}}
   {{> methodArrayObject}}
   {{/transformMethods}}
 
-  {{#measurementMethods}}
+  {{#arrayMeasurementMethods}}
   {{> methodArrayValue}}
-  {{/measurementMethods}}
+  {{/arrayMeasurementMethods}}
 
   toString(): string {
     return `FluentGeometryArray(${this.length})[${

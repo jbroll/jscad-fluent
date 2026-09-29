@@ -58,3 +58,68 @@ describe('array items are fluent', () => {
     expect(volumes[1]).toBeCloseTo(64);
   });
 });
+
+describe('array measurements return one result per item', () => {
+  const solids = jf.array(jf.cube({ size: 2 }), jf.cube({ size: 4 }).translate([10, 0, 0]));
+
+  test('bounding boxes, centers and dimensions', () => {
+    expect(solids.measureBoundingBox()).toEqual([
+      [
+        [-1, -1, -1],
+        [1, 1, 1],
+      ],
+      [
+        [8, -2, -2],
+        [12, 2, 2],
+      ],
+    ]);
+    expect(solids.measureCenter()).toEqual([
+      [0, 0, 0],
+      [10, 0, 0],
+    ]);
+    expect(solids.measureDimensions()).toEqual([
+      [2, 2, 2],
+      [4, 4, 4],
+    ]);
+  });
+
+  test('bounding spheres and epsilons', () => {
+    const spheres = solids.measureBoundingSphere();
+    expect(spheres.length).toBe(2);
+    expect(spheres[1]?.[0]).toEqual([10, 0, 0]);
+    expect(spheres[1]?.[1]).toBeCloseTo(Math.sqrt(12));
+    const epsilons = solids.measureEpsilon();
+    expect(epsilons.length).toBe(2);
+    expect(epsilons[1]).toBeGreaterThan(epsilons[0] ?? 0);
+  });
+
+  test('area, volume and center of mass on solids', () => {
+    const [a, b] = solids.measureArea();
+    expect(a).toBeCloseTo(24);
+    expect(b).toBeCloseTo(96);
+    const [v, w] = solids.measureVolume();
+    expect(v).toBeCloseTo(8);
+    expect(w).toBeCloseTo(64);
+    expect(solids.measureCenterOfMass()[1]?.[0]).toBeCloseTo(10);
+  });
+
+  test('area and center of mass on 2D shapes; paths have no area', () => {
+    const shapes = jf.array(jf.square({ size: 2 }), jf.square({ size: 3 }).translate([5, 0, 0]));
+    expect(shapes.measureArea()[1]).toBeCloseTo(9);
+    expect(shapes.measureCenterOfMass()[1]?.[0]).toBeCloseTo(5);
+    const paths = jf.path2Array(
+      jf.path({ closed: true }, [
+        [0, 0],
+        [2, 0],
+        [2, 2],
+        [0, 2],
+      ]),
+    );
+    expect(paths.measureArea()).toEqual([0]);
+  });
+
+  test('a one-item array still returns a list, and an empty one an empty list', () => {
+    expect(jf.array(jf.cube({ size: 2 })).measureVolume().length).toBe(1);
+    expect(jf.geom3Array().measureBoundingBox()).toEqual([]);
+  });
+});

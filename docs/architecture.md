@@ -25,7 +25,7 @@ its geometry type through a partial that sets the method's shape:
 | `methodExtrude.mustache` | extrudes a geom2 and returns a `FluentGeom3` |
 | `methodValue.mustache` | returns the result of `ns.name(this)` unchanged |
 | `methodAnchors.mustache` | `withAnchors`, `anchor`, `attachTo`, `alignTo` (geom2 and geom3) |
-| `methodArray*.mustache` | array-class variants |
+| `methodArray*.mustache` | array-class variants; `methodArrayValue` measures each item and returns the list |
 | `methodDoc.mustache` | the JSDoc block from a method's `doc` lines, included by the other partials |
 
 A method's optional `doc` array in `methods.json` holds its JSDoc lines. They

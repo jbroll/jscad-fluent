@@ -1,6 +1,7 @@
-import { extrusions, hulls } from '@jbroll/jscad-anchors';
+import { extrusions, hulls, measurements } from '@jbroll/jscad-anchors';
 import type {
   Geom2,
+  Vec3,
   ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
   ExtrudeRectangularOptions,
@@ -38,6 +39,10 @@ export class FluentGeom2Array extends FluentGeometryArray<ThisScalar> {
   {{> methodArrayExtrude}}
   {{/extrudeMethods}}
   
+  {{#solidArrayMeasurementMethods}}
+  {{> methodArrayValue}}
+  {{/solidArrayMeasurementMethods}}
+
   {{#hullMethods}}
   {{> methodArrayReduce}}
   {{/hullMethods}}

@@ -14,12 +14,6 @@ The UMD bundle reads `@jbroll/jscad-anchors` from a global `jscadAnchors`
 a UMD build of jscad-anchors, or bundling jscad-anchors into jscad-fluent's
 browser bundle.
 
-## Array measurements
-
-`FluentGeometryArray.template` renders `measurementMethods` through a
-`methodArrayValue` partial that doesn't exist, so arrays have no measure
-methods. `jf.measureAggregate*` covers the group case.
-
 ## geom2 scission
 
 `FluentGeom3.scission()` has no geom2 counterpart because modeling's

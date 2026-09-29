@@ -1,5 +1,5 @@
-import { hulls } from '@jbroll/jscad-anchors';
-import type { Geom3 } from '../types';
+import { hulls, measurements } from '@jbroll/jscad-anchors';
+import type { Geom3, Vec3 } from '../types';
 import { FluentGeom3 as ThisScalar } from './FluentGeom3';
 import { FluentGeometryArray } from './FluentGeometryArray';
 
@@ -24,6 +24,22 @@ export class FluentGeom3Array extends FluentGeometryArray<ThisScalar> {
   append(geometry: Geom3): this {
     this.push(geometry);
     return this;
+  }
+
+  /**
+   * Each item's center of mass, in order; Z is 0 for 2D shapes.
+   * @returns {Array} one Vec3 per item
+   */
+  measureCenterOfMass(): Vec3[] {
+    return Array.from(this, (item) => measurements.measureCenterOfMass(item));
+  }
+
+  /**
+   * Each solid's volume, in order. For the total, jf.measureAggregateVolume(array).
+   * @returns {Array} one number per item
+   */
+  measureVolume(): number[] {
+    return Array.from(this, (item) => measurements.measureVolume(item));
   }
 
   hull(): ThisScalar {

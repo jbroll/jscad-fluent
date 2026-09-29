@@ -1,10 +1,11 @@
-import { extrusions, hulls } from '@jbroll/jscad-anchors';
+import { extrusions, hulls, measurements } from '@jbroll/jscad-anchors';
 import type {
   ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
   ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
   Geom2,
+  Vec3,
 } from '../types';
 import { FluentGeom2 as ThisScalar } from './FluentGeom2';
 import { FluentGeom3 } from './FluentGeom3';
@@ -93,6 +94,14 @@ export class FluentGeom2Array extends FluentGeometryArray<ThisScalar> {
         (geom) => new FluentGeom3(extrusions.extrudeRectangular({ ...options }, geom)),
       ),
     );
+  }
+
+  /**
+   * Each item's center of mass, in order; Z is 0 for 2D shapes.
+   * @returns {Array} one Vec3 per item
+   */
+  measureCenterOfMass(): Vec3[] {
+    return Array.from(this, (item) => measurements.measureCenterOfMass(item));
   }
 
   hull(): ThisScalar {

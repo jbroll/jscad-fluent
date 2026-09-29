@@ -51,6 +51,52 @@
         "@returns {Number} the epsilon"
       ] }
   ],
+  "arrayMeasurementMethods": [
+    { "ns": "measurements", "name": "measureBoundingBox", "returnType": "BoundingBox",
+      "doc": [
+        "One bounding box per item, in order. For one box around them all, jf.measureAggregateBoundingBox(array).",
+        "@returns {Array} [[minX, minY, minZ], [maxX, maxY, maxZ]] for each item"
+      ] },
+    { "ns": "measurements", "name": "measureBoundingSphere", "returnType": "[Centroid, number]",
+      "doc": [
+        "One bounding sphere per item, in order.",
+        "@returns {Array} [center, radius] for each item"
+      ] },
+    { "ns": "measurements", "name": "measureCenter", "returnType": "Vec3",
+      "doc": [
+        "The center of each item's bounding box, in order.",
+        "@returns {Array} one Vec3 per item"
+      ] },
+    { "ns": "measurements", "name": "measureDimensions", "returnType": "Vec3",
+      "doc": [
+        "The size of each item's bounding box, in order.",
+        "@returns {Array} [width, depth, height] for each item"
+      ] },
+    { "ns": "measurements", "name": "measureEpsilon", "returnType": "number",
+      "doc": [
+        "Each item's precision, in order. For one value for the group, jf.measureAggregateEpsilon(array).",
+        "@returns {Array} one number per item"
+      ] },
+    { "ns": "measurements", "name": "measureArea", "returnType": "number",
+      "doc": [
+        "Each item's area, in order: geom2 area, geom3 surface area, 0 for a path. For the total, jf.measureAggregateArea(array).",
+        "@returns {Array} one number per item"
+      ] }
+  ],
+  "solidArrayMeasurementMethods": [
+    { "ns": "measurements", "name": "measureCenterOfMass", "returnType": "Vec3",
+      "doc": [
+        "Each item's center of mass, in order; Z is 0 for 2D shapes.",
+        "@returns {Array} one Vec3 per item"
+      ] }
+  ],
+  "geom3ArrayMeasurementMethods": [
+    { "ns": "measurements", "name": "measureVolume", "returnType": "number",
+      "doc": [
+        "Each solid's volume, in order. For the total, jf.measureAggregateVolume(array).",
+        "@returns {Array} one number per item"
+      ] }
+  ],
   "booleanMethods": [
     { "name": "union", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
     { "name": "subtract", "params": [ { "name": "...others", "type": "(this | this[] | SubtractOptions)[]", "last": true } ], "returnType": "this" },

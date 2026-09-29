@@ -465,7 +465,7 @@ geom2 or path2 it returns an unchanged copy. These keep anchors.
 .measureBoundingSphere()   -> [center: Vec3, radius: number]
 .measureCenter()           -> Vec3
 .measureDimensions()       -> [width, depth, height]
-.measureArea()             -> number   // geom2 area, path2 area, geom3 surface area
+.measureArea()             -> number   // geom2 area, geom3 surface area; 0 for path2
 .measureVolume()           -> number   // geom3
 .measureCenterOfMass()     -> Vec3     // geom2 and geom3; Z is 0 for geom2
 .measureEpsilon()          -> number   // precision used when comparing points
@@ -478,6 +478,17 @@ jf.measureAggregateEpsilon(...geometries)      -> number
 
 The aggregate functions take shapes spread or in arrays and measure them as
 one group.
+
+On a geometry array each measurement returns a list with one result per item,
+in order, even for one item; an empty array gives `[]`. Arrays of every type
+have `measureBoundingBox`, `measureBoundingSphere`, `measureCenter`,
+`measureDimensions`, `measureEpsilon` and `measureArea`. Geom2 and geom3
+arrays add `measureCenterOfMass`, and geom3 arrays `measureVolume`.
+
+```js
+const volumes = part.scission().measureVolume()   // [8, 64]
+const total = jf.measureAggregateVolume(part.scission())
+```
 
 ## Conversion and validation
 

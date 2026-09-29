@@ -1,7 +1,9 @@
-import { colors, transforms } from '@jbroll/jscad-anchors';
+import { colors, measurements, transforms } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
+  BoundingBox,
   CenterOptions,
+  Centroid,
   Geometry,
   Mat4,
   MirrorOptions,
@@ -168,6 +170,54 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
     return new (this.constructor as new (...items: T[]) => this)(
       ...([colors.colorize(color, this)].flat() as T[]),
     );
+  }
+
+  /**
+   * One bounding box per item, in order. For one box around them all, jf.measureAggregateBoundingBox(array).
+   * @returns {Array} [[minX, minY, minZ], [maxX, maxY, maxZ]] for each item
+   */
+  measureBoundingBox(): BoundingBox[] {
+    return Array.from(this, (item) => measurements.measureBoundingBox(item));
+  }
+
+  /**
+   * One bounding sphere per item, in order.
+   * @returns {Array} [center, radius] for each item
+   */
+  measureBoundingSphere(): [Centroid, number][] {
+    return Array.from(this, (item) => measurements.measureBoundingSphere(item));
+  }
+
+  /**
+   * The center of each item's bounding box, in order.
+   * @returns {Array} one Vec3 per item
+   */
+  measureCenter(): Vec3[] {
+    return Array.from(this, (item) => measurements.measureCenter(item));
+  }
+
+  /**
+   * The size of each item's bounding box, in order.
+   * @returns {Array} [width, depth, height] for each item
+   */
+  measureDimensions(): Vec3[] {
+    return Array.from(this, (item) => measurements.measureDimensions(item));
+  }
+
+  /**
+   * Each item's precision, in order. For one value for the group, jf.measureAggregateEpsilon(array).
+   * @returns {Array} one number per item
+   */
+  measureEpsilon(): number[] {
+    return Array.from(this, (item) => measurements.measureEpsilon(item));
+  }
+
+  /**
+   * Each item's area, in order: geom2 area, geom3 surface area, 0 for a path. For the total, jf.measureAggregateArea(array).
+   * @returns {Array} one number per item
+   */
+  measureArea(): number[] {
+    return Array.from(this, (item) => measurements.measureArea(item));
   }
 
   toString(): string {
