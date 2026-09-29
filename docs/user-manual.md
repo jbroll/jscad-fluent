@@ -374,9 +374,19 @@ geom2 or path2 it returns an unchanged copy. These keep anchors.
 .measureBoundingSphere()   -> [center: Vec3, radius: number]
 .measureCenter()           -> Vec3
 .measureDimensions()       -> [width, depth, height]
-.measureArea()             -> number   // geom2 and path2
+.measureArea()             -> number   // geom2 area, path2 area, geom3 surface area
 .measureVolume()           -> number   // geom3
+.measureCenterOfMass()     -> Vec3     // geom2 and geom3; Z is 0 for geom2
+.measureEpsilon()          -> number   // precision used when comparing points
+
+jf.measureAggregateArea(...geometries)         -> number
+jf.measureAggregateVolume(...geometries)       -> number
+jf.measureAggregateBoundingBox(...geometries)  -> [[minX, minY, minZ], [maxX, maxY, maxZ]]
+jf.measureAggregateEpsilon(...geometries)      -> number
 ```
+
+The aggregate functions take shapes spread or in arrays and measure them as
+one group.
 
 ## Conversion and validation
 

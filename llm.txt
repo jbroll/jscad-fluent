@@ -244,8 +244,16 @@ jf.square({ size: 10 }).extrudeFromSlices({ numberOfSlices: 10,
 .measureBoundingSphere() -> [centroid: Vec3, radius: number]
 .measureCenter() -> Vec3
 .measureDimensions() -> [width, depth, height]
-.measureArea() -> number        // 2D only
+.measureArea() -> number        // 2D area; 3D surface area
 .measureVolume() -> number      // 3D only
+.measureCenterOfMass() -> Vec3  // 2D and 3D (not paths)
+.measureEpsilon() -> number     // precision used when comparing points
+
+// Several shapes at once (spread or arrays):
+jf.measureAggregateArea(...geoms) -> number
+jf.measureAggregateVolume(...geoms) -> number
+jf.measureAggregateBoundingBox(...geoms) -> [[minX,minY,minZ], [maxX,maxY,maxZ]]
+jf.measureAggregateEpsilon(...geoms) -> number
 
 ## UTILITY
 

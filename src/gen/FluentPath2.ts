@@ -196,6 +196,14 @@ export class FluentPath2 implements Path2 {
     return measurements.measureDimensions(this);
   }
 
+  /**
+   * The geometry's precision: the tolerance modeling uses when comparing its points, scaled from its size.
+   * @returns {Number} the epsilon
+   */
+  measureEpsilon(): number {
+    return measurements.measureEpsilon(this);
+  }
+
   measureArea(): number {
     return measurements.measureArea(this);
   }

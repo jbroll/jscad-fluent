@@ -280,6 +280,22 @@ export class FluentGeom2 implements Geom2 {
     return measurements.measureDimensions(this);
   }
 
+  /**
+   * The geometry's precision: the tolerance modeling uses when comparing its points, scaled from its size.
+   * @returns {Number} the epsilon
+   */
+  measureEpsilon(): number {
+    return measurements.measureEpsilon(this);
+  }
+
+  /**
+   * The center of mass, treating the geometry as uniformly dense; Z is 0 for a 2D shape.
+   * @returns {Vec3} the center of mass
+   */
+  measureCenterOfMass(): Vec3 {
+    return measurements.measureCenterOfMass(this);
+  }
+
   measureArea(): number {
     return measurements.measureArea(this);
   }

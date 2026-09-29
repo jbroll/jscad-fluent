@@ -32,7 +32,12 @@
     { "ns": "measurements", "name": "measureBoundingBox", "params": [], "returnType": "BoundingBox", "isVoid": false },
     { "ns": "measurements", "name": "measureBoundingSphere", "params": [], "returnType": "[Centroid, number]", "isVoid": false },
     { "ns": "measurements", "name": "measureCenter", "params": [], "returnType": "Vec3", "isVoid": false },
-    { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3", "isVoid": false }
+    { "ns": "measurements", "name": "measureDimensions", "params": [], "returnType": "Vec3", "isVoid": false },
+    { "ns": "measurements", "name": "measureEpsilon", "params": [], "returnType": "number", "isVoid": false,
+      "doc": [
+        "The geometry's precision: the tolerance modeling uses when comparing its points, scaled from its size.",
+        "@returns {Number} the epsilon"
+      ] }
   ],
   "booleanMethods": [
     { "name": "union", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" },
@@ -85,6 +90,11 @@
       ] }
   ],
   "geom2Methods": [
+    { "ns": "measurements", "name": "measureCenterOfMass", "params": [], "returnType": "Vec3", "isVoid": false,
+      "doc": [
+        "The center of mass, treating the geometry as uniformly dense; Z is 0 for a 2D shape.",
+        "@returns {Vec3} the center of mass"
+      ] },
     { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number", "isVoid": false },
     { "ns": "geom2", "name": "toPoints", "params": [], "returnType": "Vec2[]", "isVoid": false },
     { "ns": "geom2", "name": "toOutlines", "params": [], "returnType": "Vec2[][]", "isVoid": false },
@@ -131,6 +141,16 @@
     { "name": "minkowski", "params": [ { "name": "...others", "type": "(this | this[])[]", "last": true } ], "returnType": "this" }
   ],
   "geom3Methods": [
+    { "ns": "measurements", "name": "measureCenterOfMass", "params": [], "returnType": "Vec3", "isVoid": false,
+      "doc": [
+        "The center of mass, treating the geometry as uniformly dense; Z is 0 for a 2D shape.",
+        "@returns {Vec3} the center of mass"
+      ] },
+    { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number", "isVoid": false,
+      "doc": [
+        "The total surface area of the solid.",
+        "@returns {Number} the area"
+      ] },
     { "ns": "measurements", "name": "measureVolume", "params": [], "returnType": "number", "isVoid": false },
     { "ns": "geom3", "name": "toPolygons", "params": [], "returnType": "Array<{vertices: Vec3[]}>" , "isVoid": false },
     { "ns": "geom3", "name": "validate", "params": [], "returnType": "void", "isVoid": true },

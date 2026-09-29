@@ -1,4 +1,12 @@
-import { booleans, colors, extrusions, maths, primitives, utils } from '@jbroll/jscad-anchors';
+import {
+  booleans,
+  colors,
+  extrusions,
+  maths,
+  measurements,
+  primitives,
+  utils,
+} from '@jbroll/jscad-anchors';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -319,6 +327,36 @@ const jscadFluent = {
   union,
   subtract,
   intersect,
+
+  /**
+   * Total area of several shapes: geom2 area, or geom3 surface area.
+   * @param {...Object} geometries - shapes, or arrays of shapes
+   * @returns {Number} the summed area
+   * @example
+   * jf.measureAggregateArea(a, b, c)
+   */
+  measureAggregateArea: measurements.measureAggregateArea,
+
+  /**
+   * Total volume of several solids.
+   * @param {...Object} geometries - solids, or arrays of solids
+   * @returns {Number} the summed volume
+   */
+  measureAggregateVolume: measurements.measureAggregateVolume,
+
+  /**
+   * One bounding box around several shapes.
+   * @param {...Object} geometries - shapes, or arrays of shapes
+   * @returns {Array} [[minX, minY, minZ], [maxX, maxY, maxZ]]
+   */
+  measureAggregateBoundingBox: measurements.measureAggregateBoundingBox,
+
+  /**
+   * One precision (epsilon) for several shapes, from their combined bounds.
+   * @param {...Object} geometries - shapes, or arrays of shapes
+   * @returns {Number} the epsilon
+   */
+  measureAggregateEpsilon: measurements.measureAggregateEpsilon,
 
   // Array constructors
   array,

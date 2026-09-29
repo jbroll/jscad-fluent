@@ -242,6 +242,30 @@ export class FluentGeom3 implements Geom3 {
     return measurements.measureDimensions(this);
   }
 
+  /**
+   * The geometry's precision: the tolerance modeling uses when comparing its points, scaled from its size.
+   * @returns {Number} the epsilon
+   */
+  measureEpsilon(): number {
+    return measurements.measureEpsilon(this);
+  }
+
+  /**
+   * The center of mass, treating the geometry as uniformly dense; Z is 0 for a 2D shape.
+   * @returns {Vec3} the center of mass
+   */
+  measureCenterOfMass(): Vec3 {
+    return measurements.measureCenterOfMass(this);
+  }
+
+  /**
+   * The total surface area of the solid.
+   * @returns {Number} the area
+   */
+  measureArea(): number {
+    return measurements.measureArea(this);
+  }
+
   measureVolume(): number {
     return measurements.measureVolume(this);
   }
