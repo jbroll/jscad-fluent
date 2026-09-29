@@ -97,7 +97,7 @@ export class FluentPath2 implements Path2 {
    * @param {...Object} paths - paths to append, in order
    * @returns the joined path
    * @example
-   * jf.line([[0, 0], [10, 0]]).concat(jf.arc({ center: [10, 5], radius: 5, startAngle: -Math.PI / 2, endAngle: Math.PI / 2 }))
+   * jf.line([[0, 0], [10, 0]]).concat(jf.line([[10, 0], [10, 10]]), jf.line([[10, 10], [0, 10]]))
    */
   concat(...paths: Path2[]): this {
     return this._wrap(path2.concat(this, ...paths));

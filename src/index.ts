@@ -49,9 +49,7 @@ import type {
   VectorTextOptions,
 } from './types';
 
-type FluentShape = FluentGeom2 | FluentGeom3 | FluentPath2;
-
-function wrapShape(geometry: Geometry): FluentShape {
+function wrapShape(geometry: Geometry): FluentGeom2 | FluentGeom3 | FluentPath2 {
   if (geometries.geom2.isA(geometry)) return new FluentGeom2(geometry);
   if (geometries.path2.isA(geometry)) return new FluentPath2(geometry);
   return new FluentGeom3(geometry as Geom3);
@@ -435,7 +433,15 @@ const jscadFluent = {
    * @example
    * const [base, lid] = jf.align({ modes: ['center', 'center', 'min'], grouped: true }, base0, lid0)
    */
-  align(options: AlignOptions, ...geometries: (FluentShape | FluentShape[])[]): FluentShape[] {
+  align(
+    options: AlignOptions,
+    ...geometries: (
+      | FluentGeom2
+      | FluentGeom3
+      | FluentPath2
+      | (FluentGeom2 | FluentGeom3 | FluentPath2)[]
+    )[]
+  ): (FluentGeom2 | FluentGeom3 | FluentPath2)[] {
     return ([transforms.align(options, ...geometries)].flat() as Geometry[]).map(wrapShape);
   },
 

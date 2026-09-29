@@ -5,6 +5,11 @@ geometry, with named anchors from
 [jscad-anchors](https://github.com/jbroll/jscad-anchors) for placing parts
 against each other.
 
+It covers `@jscad/modeling`'s model-building API: primitives, booleans,
+transforms, every extrusion, expansions, hulls, modifiers, measurements,
+curves, vector text, and the maths and utils helpers, so model code needs no
+modeling import.
+
 ```js
 const jf = require('@jbroll/jscad-fluent')
 
