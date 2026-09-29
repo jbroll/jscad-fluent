@@ -34,6 +34,29 @@ jf.triangle({ type?: 'SSS'|'AAS'|'ASA'|'SAS'|'SSA'='SSS', values?: [number,numbe
 
 jf.arc({ center?: Vec2=[0,0], radius?: number=1, startAngle?: number=0, endAngle?: number=2*PI, segments?: number=32, makeTangent?: boolean=false })
 jf.line(points: Vec2[])
+jf.path({ closed?: boolean=false }, points: Vec2[])
+
+// Building paths -> new FluentPath2
+.appendPoints(points: Vec2[])
+.appendArc({ endpoint: Vec2, radius?: Vec2=[0,0], xaxisrotation?: number=0, clockwise?: boolean=false, large?: boolean=false, segments?: number=16 })  // SVG-style arc to endpoint
+.appendBezier({ controlPoints: Vec2[], segments?: number=16 })   // last control point is the end
+.close()
+.concat(...paths)
+.reverse()
+// closed path -> area: jf.polygon(path.toPoints())
+
+## CURVES AND HULL POINTS (data for jf.polygon / jf.polyhedron)
+
+jf.curves.bezier.create(points) -> bezier
+jf.curves.bezier.valueAt(t, bezier) -> point      // t in 0..1
+jf.curves.bezier.tangentAt(t, bezier) -> vector
+jf.curves.bezier.length(segments, bezier) -> number
+jf.curves.bezier.lengths(segments, bezier) -> number[]
+jf.curves.bezier.arcLengthToT({ distance?: number=0, segments?: number=100 }, bezier) -> t
+jf.hullPoints2(points: Vec2[]) -> Vec2[]                          // counter-clockwise
+jf.hullPoints3(points: Vec3[]) -> { points, faces }               // jf.polyhedron(jf.hullPoints3(pts))
+// const c = jf.curves.bezier.create([[0,0],[5,10],[10,0]]);
+// jf.polygon(Array.from({ length: 17 }, (_, i) => jf.curves.bezier.valueAt(i / 16, c)).reverse())  // CCW
 
 ## 3D PRIMITIVES -> FluentGeom3
 

@@ -1,8 +1,10 @@
 import {
   booleans,
   colors,
+  curves,
   extrusions,
   geometries,
+  hulls,
   maths,
   measurements,
   primitives,
@@ -30,6 +32,7 @@ import type {
   Geom3,
   Geometry,
   Point2,
+  Point3,
   RectangleOptions,
   RoundedCuboidOptions,
   RoundedCylinderOptions,
@@ -144,6 +147,19 @@ const jscadFluent = {
 
   line(points: Point2[]): FluentPath2 {
     return new FluentPath2(primitives.line(points));
+  },
+
+  /**
+   * Make a path from points, open or closed.
+   * @param {Object} options - path options
+   * @param {Boolean} [options.closed=false] - join the last point back to the first
+   * @param {Array} points - 2D points in order
+   * @returns {FluentPath2} the path
+   * @example
+   * jf.path({ closed: true }, [[0, 0], [10, 0], [5, 8]])
+   */
+  path({ closed = false }: { closed?: boolean }, points: Point2[]): FluentPath2 {
+    return new FluentPath2(geometries.path2.fromPoints({ closed }, points));
   },
 
   // 2D Primitives
@@ -385,6 +401,106 @@ const jscadFluent = {
    */
   align(options: AlignOptions, ...geometries: (FluentShape | FluentShape[])[]): FluentShape[] {
     return ([transforms.align(options, ...geometries)].flat() as Geometry[]).map(wrapShape);
+  },
+
+  /**
+   * Convex hull of 2D points, for jf.polygon.
+   * @param {Array} points - 2D points
+   * @returns {Array} the hull's points, counter-clockwise
+   * @example
+   * jf.polygon(jf.hullPoints2(points))
+   */
+  hullPoints2: hulls.hullPoints2,
+
+  /**
+   * Convex hull of 3D points as the points and faces jf.polyhedron takes.
+   * @param {Array} points - 3D points
+   * @returns {Object} { points, faces }: the hull's points, and faces as index lists wound outward
+   * @example
+   * jf.polyhedron(jf.hullPoints3(points))
+   */
+  hullPoints3(points: Point3[]): { points: Point3[]; faces: number[][] } {
+    const index = new Map<string, number>();
+    const hullPoints: Point3[] = [];
+    const faces = hulls.hullPoints3(points).map((polygon) =>
+      polygon.vertices.map((vertex) => {
+        const key = vertex.join(',');
+        let at = index.get(key);
+        if (at === undefined) {
+          at = hullPoints.length;
+          index.set(key, at);
+          hullPoints.push([vertex[0], vertex[1], vertex[2]]);
+        }
+        return at;
+      }),
+    );
+    return { points: hullPoints, faces };
+  },
+
+  /**
+   * Curves as data. Sample one with `valueAt` for jf.polygon or jf.line, or
+   * add one to a path with `path.appendBezier()`.
+   */
+  curves: {
+    /**
+     * Bezier curves of any order and dimension. `create` takes the control
+     * points; the other functions take the curve it returns.
+     */
+    bezier: {
+      /**
+       * Create a Bezier curve from its control points: numbers for a 1D easing
+       * curve, or 2D or 3D points.
+       * @param points - control points; the first and last are the ends
+       * @returns the curve
+       * @example
+       * const curve = jf.curves.bezier.create([[0, 0], [5, 10], [10, 0]])
+       */
+      create: curves.bezier.create,
+
+      /**
+       * The point on a curve at t.
+       * @param t - position along the curve, 0 to 1
+       * @param bezier - the curve
+       * @returns a number or point, matching the control points
+       * @example
+       * const points = Array.from({ length: 17 }, (_, i) => jf.curves.bezier.valueAt(i / 16, curve))
+       */
+      valueAt: curves.bezier.valueAt,
+
+      /**
+       * The tangent (derivative) of a curve at t.
+       * @param t - position along the curve, 0 to 1
+       * @param bezier - the curve
+       * @returns a number or vector, matching the control points
+       */
+      tangentAt: curves.bezier.tangentAt,
+
+      /**
+       * Approximate length of a curve.
+       * @param segments - number of straight segments to measure along
+       * @param bezier - the curve
+       * @returns the length
+       */
+      length: curves.bezier.length,
+
+      /**
+       * Cumulative lengths along a curve, one per segment end, starting at 0.
+       * @param segments - number of straight segments to measure along
+       * @param bezier - the curve
+       * @returns segments + 1 lengths
+       */
+      lengths: curves.bezier.lengths,
+
+      /**
+       * The t at which a curve has run a given distance, for even spacing.
+       * @param {Object} options - options
+       * @param {Number} [options.distance=0] - distance along the curve
+       * @param {Number} [options.segments=100] - number of segments used to measure
+       * @param bezier - the curve
+       * @returns t, 0 to 1
+       */
+      arcLengthToT: curves.bezier.arcLengthToT,
+    },
   },
 
   // Array constructors

@@ -1,4 +1,6 @@
 import type { maths } from '@jscad/modeling';
+import type { Bezier } from '@jscad/modeling/src/curves/bezier';
+import type { AppendArcOptions, AppendBezierOptions } from '@jscad/modeling/src/geometries/path2';
 import type { Geom2, Geom3, Geometry, Path2 } from '@jscad/modeling/src/geometries/types';
 import { mat4 } from '@jscad/modeling/src/maths';
 import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
@@ -55,6 +57,9 @@ export type FrameInput = { origin: Vec3; z: Vec3; x?: Vec3 };
 // Re-export JSCAD types that we need
 export type {
   AlignOptions,
+  AppendArcOptions,
+  AppendBezierOptions,
+  Bezier,
   Geometry,
   Geom2,
   Geom3,

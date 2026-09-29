@@ -10,6 +10,8 @@ import {
 } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
+  AppendArcOptions,
+  AppendBezierOptions,
   BoundingBox,
   CenterOptions,
   Centroid,
@@ -172,6 +174,71 @@ export class FluentPath2 implements Path2 {
   }
   hullChain(): this {
     return this._wrap(hulls.hullChain(this));
+  }
+
+  /**
+   * Add points to the end of the path.
+   * @param {Array} points - 2D points to append
+   * @returns the longer path
+   * @example
+   * jf.line([[0, 0], [10, 0]]).appendPoints([[10, 10], [0, 10]]).close()
+   */
+  appendPoints(points: Vec2[]): this {
+    return this._wrap(path2.appendPoints(points, this));
+  }
+  /**
+   * Add an elliptical arc from the path's last point to an endpoint, as in SVG's arc command.
+   * @param {Object} options - arc options
+   * @param {Array} options.endpoint - 2D end point of the arc (required)
+   * @param {Array} [options.radius=[0,0]] - X and Y radius; [0,0] draws a straight line
+   * @param {Number} [options.xaxisrotation=0] - rotation of the ellipse's X axis in radians
+   * @param {Boolean} [options.clockwise=false] - draw the arc clockwise
+   * @param {Boolean} [options.large=false] - take the arc longer than half a turn
+   * @param {Number} [options.segments=16] - segments per full rotation
+   * @returns the longer path
+   * @example
+   * jf.line([[0, 0], [10, 0]]).appendArc({ endpoint: [10, 10], radius: [5, 5] })
+   */
+  appendArc(options: AppendArcOptions): this {
+    return this._wrap(path2.appendArc(options, this));
+  }
+  /**
+   * Add a Bezier curve from the path's last point through the control points; the last control point is the end.
+   * @param {Object} options - curve options
+   * @param {Array} options.controlPoints - 2D control points (required); a null first entry mirrors the previous curve's last control point, for a smooth join
+   * @param {Number} [options.segments=16] - segments per full rotation of the curve's direction
+   * @returns the longer path
+   * @example
+   * jf.line([[0, 0], [10, 0]]).appendBezier({ controlPoints: [[15, 0], [15, 10], [10, 10]] })
+   */
+  appendBezier(options: AppendBezierOptions): this {
+    return this._wrap(path2.appendBezier(options, this));
+  }
+  /**
+   * Close the path, joining its last point to its first.
+   * @returns the closed path
+   */
+  close(): this {
+    return this._wrap(path2.close(this));
+  }
+  /**
+   * Reverse the order of the path's points.
+   * @returns the reversed path
+   */
+  reverse(): this {
+    return this._wrap(path2.reverse(this));
+  }
+
+  /**
+   * Join paths to the end of this one; a shared point at a junction is kept once.
+   * Only the last path may be closed.
+   * @param {...Object} paths - paths to append, in order
+   * @returns the joined path
+   * @example
+   * jf.line([[0, 0], [10, 0]]).concat(jf.arc({ center: [10, 5], radius: 5, startAngle: -Math.PI / 2, endAngle: Math.PI / 2 }))
+   */
+  concat(...paths: Path2[]): this {
+    return this._wrap(path2.concat(this, ...paths));
   }
 
   /**

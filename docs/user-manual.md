@@ -47,6 +47,56 @@ Each returns a `FluentPath2`.
 ```
 jf.arc({ center?: Vec2=[0,0], radius?: number=1, startAngle?: number=0, endAngle?: number=2*PI, segments?: number=32, makeTangent?: boolean=false })
 jf.line(points: Vec2[])
+jf.path({ closed?: boolean=false }, points: Vec2[])
+```
+
+### Building paths
+
+Each returns a new `FluentPath2`.
+
+```
+.appendPoints(points: Vec2[])
+.appendArc({ endpoint: Vec2, radius?: Vec2=[0,0], xaxisrotation?: number=0, clockwise?: boolean=false, large?: boolean=false, segments?: number=16 })
+.appendBezier({ controlPoints: (Vec2 | null)[], segments?: number=16 })
+.close()
+.concat(...paths)           // a point shared at a junction is kept once; only the last path may be closed
+.reverse()
+```
+
+`appendArc` follows SVG's arc command: an elliptical arc from the last point
+to `endpoint`. In `appendBezier` the last control point is the end, and a
+`null` first control point mirrors the previous curve's last one for a smooth
+join. A closed path's points make a polygon: `jf.polygon(path.toPoints())`.
+
+```js
+const outline = jf.line([[0, 0], [20, 0]])
+  .appendArc({ endpoint: [20, 10], radius: [5, 5] })
+  .appendBezier({ controlPoints: [[10, 20], [0, 10]] })
+  .close()
+const plate = jf.polygon(outline.toPoints()).extrudeLinear({ height: 2 })
+```
+
+### Curves and hull points
+
+These return data for `jf.polygon`, `jf.line`, `jf.path` and `jf.polyhedron`.
+
+```
+jf.curves.bezier.create(points)                 -> Bezier   // numbers, or 2D or 3D points
+jf.curves.bezier.valueAt(t, bezier)             -> number | point   // t from 0 to 1
+jf.curves.bezier.tangentAt(t, bezier)           -> number | vector
+jf.curves.bezier.length(segments, bezier)       -> number
+jf.curves.bezier.lengths(segments, bezier)      -> number[]  // segments + 1 cumulative lengths
+jf.curves.bezier.arcLengthToT({ distance?: number=0, segments?: number=100 }, bezier) -> t
+
+jf.hullPoints2(points: Vec2[])  -> Vec2[]                            // counter-clockwise
+jf.hullPoints3(points: Vec3[])  -> { points: Vec3[], faces: number[][] }
+```
+
+```js
+const curve = jf.curves.bezier.create([[0, 0], [5, 10], [10, 0]])
+const arch = Array.from({ length: 17 }, (_, i) => jf.curves.bezier.valueAt(i / 16, curve))
+jf.polygon(arch.reverse())                 // counter-clockwise for positive area
+jf.polyhedron(jf.hullPoints3(points))
 ```
 
 ## 3D primitives

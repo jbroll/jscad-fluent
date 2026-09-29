@@ -1,6 +1,8 @@
 import { expansions, extrusions, geometries, hulls, measurements, transforms, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
+  AppendArcOptions,
+  AppendBezierOptions,
   Centroid,
   Path2,
   Vec2,
@@ -85,6 +87,22 @@ export class FluentPath2 implements Path2 {
   {{> methodObject}}
   {{/hullMethods}}
   
+  {{#path2BuildMethods}}
+  {{> methodObject}}
+  {{/path2BuildMethods}}
+
+  /**
+   * Join paths to the end of this one; a shared point at a junction is kept once.
+   * Only the last path may be closed.
+   * @param {...Object} paths - paths to append, in order
+   * @returns the joined path
+   * @example
+   * jf.line([[0, 0], [10, 0]]).concat(jf.arc({ center: [10, 5], radius: 5, startAngle: -Math.PI / 2, endAngle: Math.PI / 2 }))
+   */
+  concat(...paths: Path2[]): this {
+    return this._wrap(path2.concat(this, ...paths));
+  }
+
   {{#modifierMethods}}
   {{> methodObject}}
   {{/modifierMethods}}
