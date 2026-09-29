@@ -11,6 +11,8 @@
   "main": "./dist/jscad-fluent.umd.cjs",
   "module": "./dist/jscad-fluent.js",
   "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/jscad-fluent.browser.js",
+  "unpkg": "./dist/jscad-fluent.browser.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,7 +22,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc --emitDeclarationOnly",
+    "build": "vite build && vite build --mode browser && tsc --emitDeclarationOnly",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

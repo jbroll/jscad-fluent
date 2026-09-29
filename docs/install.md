@@ -49,3 +49,16 @@ import jf from '@jbroll/jscad-fluent'          // ES module bundle
 ```
 
 Both bundles leave `@jbroll/jscad-anchors` and `@jscad/modeling` external.
+
+In a page, load `dist/jscad-fluent.browser.js`, the package's `jsdelivr` and
+`unpkg` entry. It bundles jscad-anchors and reads modeling from the global
+`jscadModeling`, which modeling's `dist/jscad-modeling.min.js` defines. It
+also loads through AMD or CommonJS, requiring only `@jscad/modeling`.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@jbroll/jscad-modeling/dist/jscad-modeling.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jbroll/jscad-fluent"></script>
+<script>
+  const jf = jscadFluent
+</script>
+```

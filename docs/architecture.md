@@ -103,6 +103,11 @@ Its methods still import through the wrapper.
 ## Build
 
 Vite builds ES and UMD bundles from `src/index.ts`, with `@jscad/modeling` and
-`@jbroll/jscad-anchors` external. Both Vite and Vitest alias `@jscad/modeling`
+`@jbroll/jscad-anchors` external, so an importer shares one jscad-anchors with
+its own code. A second pass, `vite build --mode browser`, writes
+`jscad-fluent.browser.js`: a UMD bundle with jscad-anchors inside and only
+modeling external, for pages loading it from a CDN, since jscad-anchors has no
+browser build of its own. jscad-anchors is CommonJS and links from outside
+`node_modules`, so `commonjsOptions.include` names it. Both Vite and Vitest alias `@jscad/modeling`
 to `@jbroll/jscad-modeling`. `tsc --emitDeclarationOnly` writes the
 declarations.

@@ -31,7 +31,7 @@ npm install
 ## Commands
 
 ```bash
-npm run build             # Vite bundles, then tsc declarations
+npm run build             # Vite ES/UMD and browser bundles, then tsc declarations
 npm test                  # Vitest, once
 npm run test:watch
 npm run test:coverage
@@ -69,7 +69,7 @@ API changes also go in `docs/user-manual.md` and `llm.txt`.
 
 Tests live in `test/`, one file per area (`primitives2d`, `primitives3d`,
 `primitivesPath2`, `booleans`, `hull`, `minkowski`, `cylinder`, `anchors`,
-`additional`, `namespaces`, `extrusions`, `modifiers`, `measurements`, `align`, `paths`, `text`, `arrays`, `geometries`). Compare measurements with `toBeCloseTo`.
+`additional`, `namespaces`, `extrusions`, `modifiers`, `measurements`, `align`, `paths`, `text`, `arrays`, `geometries`, and `browser`, which builds the browser bundle and runs it in a bare `vm` context). Compare measurements with `toBeCloseTo`.
 
 ## TypeScript and lint
 
