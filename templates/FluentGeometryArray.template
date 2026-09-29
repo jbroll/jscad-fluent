@@ -6,7 +6,12 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
     super(...items);
     Object.setPrototypeOf(this, FluentGeometryArray.prototype);
   }
-  
+
+  // Array's own map would build the callback's results into this class.
+  map<U>(callback: (value: T, index: number, array: T[]) => U, thisArg?: unknown): U[] {
+    return Array.from(this, (value, index) => callback.call(thisArg, value, index, this));
+  }
+
   {{#arrayMethods}}
   {{> methodArrayGeneric}}
   {{/arrayMethods}}

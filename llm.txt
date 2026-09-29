@@ -212,6 +212,8 @@ array.append(geom3) -> FluentGeom*Array     // adds to array (chainable)
 // path arrays
 .expand(options) -> FluentGeom2Array
 
+// Items are fluent (FluentGeom2/FluentGeom3/FluentPath2): arr[0].translate(...) works
+// filter/slice keep the array class; map returns a plain array
 // Transforms on arrays apply to all elements
 array.translate([x,y,z]) -> FluentGeom*Array
 array.rotate([rx,ry,rz]) -> FluentGeom*Array

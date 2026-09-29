@@ -14,14 +14,6 @@ The UMD bundle reads `@jbroll/jscad-anchors` from a global `jscadAnchors`
 a UMD build of jscad-anchors, or bundling jscad-anchors into jscad-fluent's
 browser bundle.
 
-## Array element types
-
-`FluentGeom3Array` and `FluentGeom2Array` extend `FluentGeometryArray<Geom3>`
-and `<Geom2>`, so TypeScript types their items as raw geometry even when they
-hold fluent objects (`scission()`, path-array `expand`, batch extrusion).
-Calling a fluent method on an item needs a cast. Typing items as the fluent
-classes would also need `append` and the constructors to wrap raw input.
-
 ## Array measurements
 
 `FluentGeometryArray.template` renders `measurementMethods` through a

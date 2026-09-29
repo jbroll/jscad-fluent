@@ -356,7 +356,9 @@ array.append(g)              // adds to the array and returns it
 ```
 
 Transforms on an array apply to every item and return an array of the same
-class.
+class. Items are always fluent objects: the constructors, `append` and `push`
+wrap raw modeling geometry, so `arr[0].translate(...)` chains without a cast.
+`filter` and `slice` return the same array class; `map` returns a plain array.
 
 ```js
 let arr = jf.geom2Array()

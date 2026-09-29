@@ -7,9 +7,13 @@ import { FluentGeom3Array } from './FluentGeom3Array';
 import { FluentGeometryArray } from './FluentGeometryArray';
 import { FluentPath2 as ThisScalar } from './FluentPath2';
 
-export class FluentPath2Array extends FluentGeometryArray<Path2> {
+// A lone number is the length that Array's filter and slice construct with.
+const wrap = (item: Path2): ThisScalar =>
+  item instanceof ThisScalar || typeof item === 'number' ? item : new ThisScalar(item);
+
+export class FluentPath2Array extends FluentGeometryArray<ThisScalar> {
   constructor(...geometries: Path2[]) {
-    super(...geometries);
+    super(...geometries.map(wrap));
     Object.setPrototypeOf(this, FluentPath2Array.prototype);
   }
 
@@ -17,8 +21,12 @@ export class FluentPath2Array extends FluentGeometryArray<Path2> {
     return new FluentPath2Array(...items);
   }
 
+  push(...geometries: Path2[]): number {
+    return super.push(...geometries.map(wrap));
+  }
+
   append(geometry: Path2): this {
-    super.push(geometry);
+    this.push(geometry);
     return this;
   }
 
@@ -34,7 +42,7 @@ export class FluentPath2Array extends FluentGeometryArray<Path2> {
    */
   expand(options: ExpandOptions): FluentGeom2Array {
     return FluentGeom2Array.create(
-      ...Array.from(this, (path) => new FluentGeom2(expansions.expand(options, path))),
+      ...Array.from(this, (path) => new FluentGeom2(expansions.expand(options, path as Path2))),
     );
   }
 

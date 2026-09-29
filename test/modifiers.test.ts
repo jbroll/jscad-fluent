@@ -12,14 +12,14 @@ describe('scission', () => {
     expect(pieces.length).toBe(2);
     for (const piece of pieces) {
       expect(piece).toBeInstanceOf(FluentGeom3);
-      expect((piece as FluentGeom3).measureVolume()).toBeCloseTo(8);
+      expect(piece.measureVolume()).toBeCloseTo(8);
     }
   });
 
   test('returns one piece for a connected solid', () => {
     const pieces = jf.cube({ size: 2 }).scission();
     expect(pieces.length).toBe(1);
-    expect((pieces[0] as FluentGeom3).measureVolume()).toBeCloseTo(8);
+    expect(pieces[0]?.measureVolume()).toBeCloseTo(8);
   });
 });
 

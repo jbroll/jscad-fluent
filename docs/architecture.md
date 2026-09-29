@@ -40,7 +40,7 @@ class template with their JSDoc.
 | `FluentGeom3.template` | `FluentGeom3` |
 | `FluentPath2.template` | `FluentPath2` |
 | `FluentGeometryArray.template` | `FluentGeometryArray<T>`, an `Array` subclass whose transforms apply to every element |
-| `FluentGeom2Array.template`, `FluentGeom3Array.template`, `FluentPath2Array.template` | typed arrays with `hull`/`hullChain`, and batch extrusion on geom2 |
+| `FluentGeom2Array.template`, `FluentGeom3Array.template`, `FluentPath2Array.template` | arrays of `FluentGeom2`, `FluentGeom3` or `FluentPath2` with `hull`/`hullChain`, and batch extrusion on geom2 |
 
 `make gen` renders them with `@jbroll/mustache`. The generated files are
 committed so the package builds without the generator.
@@ -63,6 +63,12 @@ something reads it, and manifold operations given the wrapper find the
 `manifold` object without a conversion. The forwarders are non-enumerable, as
 they are on the source class, so a spread, `Object.assign`, or the viewer
 worker's `postMessage` sees the same fields it would see on the raw geometry.
+
+The array classes' constructors and `push` wrap each raw item in the scalar
+class, so a transform's raw results come back fluent. A lone number passes
+through as a length, because `filter` and `slice` construct the array class
+that way. `map` is overridden to return a plain array, since its results are
+not geometry.
 
 Methods don't mutate. Each returns `this._wrap(result)`, which constructs a new
 instance through `this.constructor`, so the return type stays `this`.
