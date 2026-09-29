@@ -50,7 +50,9 @@ make clean                # remove dist and src/gen
 
 Never edit `src/gen/` by hand; the next `make gen` overwrites it.
 
-- Add or change a method signature in `templates/methods.json`.
+- Add or change a method signature in `templates/methods.json`, with its
+  JSDoc lines in `doc`: a description, then `@param` lines in modeling's
+  `{Type} [options.name=default] - text` form, `@returns`, and `@example`.
 - Change how a kind of method is implemented in its partial,
   `templates/*.mustache`.
 - Change a class's structure, fields, or imports in `templates/*.template`.
@@ -67,7 +69,7 @@ API changes also go in `docs/user-manual.md` and `llm.txt`.
 
 Tests live in `test/`, one file per area (`primitives2d`, `primitives3d`,
 `primitivesPath2`, `booleans`, `hull`, `minkowski`, `cylinder`, `anchors`,
-`additional`, `namespaces`). Compare measurements with `toBeCloseTo`.
+`additional`, `namespaces`, `extrusions`). Compare measurements with `toBeCloseTo`.
 
 ## TypeScript and lint
 

@@ -18,7 +18,10 @@ import type {
   BoundingBox,
   CenterOptions,
   ExpandOptions,
+  ExtrudeFromSlicesOptions,
+  ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
+  ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
   MirrorOptions,
   OffsetOptions
@@ -75,6 +78,30 @@ export class FluentGeom2 implements Geom2 {
   {{#extrudeMethods}}
   {{> methodExtrude}}
   {{/extrudeMethods}}
+
+  /**
+   * Extrude a solid from slices that a callback places along the way; the default
+   * callback extrudes the shape one unit up Z.
+   * @param {Object} options - slice options
+   * @param {Integer} [options.numberOfSlices=2] - number of times the callback is called; at least 2
+   * @param {Boolean} [options.capStart=true] - close the start of the solid
+   * @param {Boolean} [options.capEnd=true] - close the end of the solid
+   * @param {Boolean} [options.close=false] - join the last slice back to the first, for a ring
+   * @param {Boolean} [options.repair=true] - repair gaps in the base slice
+   * @param {Function} [options.callback] - (progress, index, base) => slice or null to skip; progress runs 0 to 1, base is this shape
+   * @returns {FluentGeom3} the extruded solid
+   * @example
+   * const { mat4 } = jf.maths
+   * jf.square({ size: 10 }).extrudeFromSlices({
+   *   numberOfSlices: 10,
+   *   callback: (t, i, base) => jf.slice.transform(
+   *     mat4.multiply(mat4.create(), mat4.fromTranslation(mat4.create(), [0, 0, t * 20]), mat4.fromZRotation(mat4.create(), t)),
+   *     jf.slice.fromSides(base.toSides())),
+   * })
+   */
+  extrudeFromSlices(options: ExtrudeFromSlicesOptions<FluentGeom2>): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeFromSlices(options, this));
+  }
 
   {{#measurementMethods}}
   {{> methodValue}}

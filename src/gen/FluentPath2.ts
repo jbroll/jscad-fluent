@@ -1,6 +1,7 @@
 import {
   colors,
   expansions,
+  extrusions,
   geometries,
   hulls,
   measurements,
@@ -11,6 +12,7 @@ import type {
   CenterOptions,
   Centroid,
   ExpandOptions,
+  ExtrudeRectangularOptions,
   Mat4,
   MirrorOptions,
   OffsetOptions,
@@ -24,6 +26,8 @@ import type {
 const { path2 } = geometries;
 
 import { copyGeometry } from '../copyGeometry';
+import { FluentGeom2 } from './FluentGeom2';
+import { FluentGeom3 } from './FluentGeom3';
 import { FluentPath2Array } from './FluentPath2Array';
 
 export class FluentPath2 implements Path2 {
@@ -113,8 +117,33 @@ export class FluentPath2 implements Path2 {
     return this._wrap(colors.colorize(color, this));
   }
 
-  expand(options: ExpandOptions): this {
-    return this._wrap(expansions.expand(options, this));
+  /**
+   * Expand the path by `delta` on each side into an area; a closed path grows outward and inward.
+   * @param {Object} options - expand options
+   * @param {Number} [options.delta=1] - distance to expand on each side of the path
+   * @param {String} [options.corners='edge'] - corner style: 'edge', 'chamfer' or 'round'
+   * @param {Integer} [options.segments=16] - segments per full circle for round corners
+   * @returns {FluentGeom2} the expanded area
+   * @example
+   * jf.line([[0, 0], [10, 0], [10, 10]]).expand({ delta: 1, corners: 'round' }).extrudeLinear({ height: 2 })
+   */
+  expand(options: ExpandOptions): FluentGeom2 {
+    return new FluentGeom2(expansions.expand(options, this as Path2));
+  }
+
+  /**
+   * Extrude a wall that follows the path: expand it by `size`, then extrude `height`.
+   * @param {Object} options - wall options; also takes expand's corners and segments and extrudeLinear's twistAngle and twistSteps
+   * @param {Number} [options.size=1] - wall thickness on each side of the path
+   * @param {Number} [options.height=1] - wall height
+   * @param {String} [options.corners='edge'] - corner style: 'edge', 'chamfer' or 'round'
+   * @param {Number} [options.segments=16] - segments per full circle for round corners
+   * @returns {FluentGeom3} the extruded wall
+   * @example
+   * jf.arc({ radius: 20, endAngle: Math.PI }).extrudeRectangular({ size: 1, height: 5 })
+   */
+  extrudeRectangular(options: ExtrudeRectangularOptions): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeRectangular({ ...options }, this));
   }
 
   offset(options: OffsetOptions): this {

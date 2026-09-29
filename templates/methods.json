@@ -55,12 +55,44 @@
   ],
   "extrudeMethods": [
     { "name": "extrudeLinear", "params": [ { "name": "options", "type": "ExtrudeLinearOptions", "last": true } ], "returnType": "FluentGeom3" },
-    { "name": "extrudeRotate", "params": [ { "name": "options", "type": "ExtrudeRotateOptions", "last": true } ], "returnType": "FluentGeom3" }
+    { "name": "extrudeRotate", "params": [ { "name": "options", "type": "ExtrudeRotateOptions", "last": true } ], "returnType": "FluentGeom3" },
+    { "name": "extrudeHelical", "params": [ { "name": "options", "type": "ExtrudeHelicalOptions", "last": true } ], "returnType": "FluentGeom3",
+      "doc": [
+        "Extrude the shape along a helix about the Z axis, for threads, springs and coils.",
+        "The shape's X is its distance from the axis and its Y becomes Z, so place it at positive X.",
+        "@param {Object} options - helix options",
+        "@param {Number} [options.angle=TAU] - total rotation in radians; positive turns right-handed, negative left-handed",
+        "@param {Number} [options.startAngle=0] - rotation of the first slice in radians",
+        "@param {Number} [options.pitch=10] - rise per full turn",
+        "@param {Number} [options.height=0] - total rise; when nonzero it sets the pitch from angle",
+        "@param {Number} [options.endOffset=0] - change in distance from the axis by the last slice, for a taper or spiral",
+        "@param {Number} [options.segmentsPerRotation=32] - slices per full turn; at least 3",
+        "@returns {FluentGeom3} the extruded solid",
+        "@example",
+        "jf.circle({ radius: 1, center: [5, 0] }).extrudeHelical({ angle: Math.PI * 4, pitch: 3 })"
+      ] },
+    { "name": "extrudeRectangular", "params": [ { "name": "options", "type": "ExtrudeRectangularOptions", "last": true } ], "returnType": "FluentGeom3",
+      "doc": [
+        "Extrude a wall that follows the shape's outlines: expand them by `size`, then extrude `height`.",
+        "@param {Object} options - wall options; also takes expand's corners and segments and extrudeLinear's twistAngle and twistSteps",
+        "@param {Number} [options.size=1] - wall thickness on each side of the outline",
+        "@param {Number} [options.height=1] - wall height",
+        "@param {String} [options.corners='edge'] - corner style: 'edge', 'chamfer' or 'round'",
+        "@param {Number} [options.segments=16] - segments per full circle for round corners",
+        "@returns {FluentGeom3} the extruded walls",
+        "@example",
+        "jf.square({ size: 20 }).extrudeRectangular({ size: 1, height: 10 })"
+      ] }
   ],
   "geom2Methods": [
     { "ns": "measurements", "name": "measureArea", "params": [], "returnType": "number", "isVoid": false },
     { "ns": "geom2", "name": "toPoints", "params": [], "returnType": "Vec2[]", "isVoid": false },
     { "ns": "geom2", "name": "toOutlines", "params": [], "returnType": "Vec2[][]", "isVoid": false },
+    { "ns": "geom2", "name": "toSides", "params": [], "returnType": "Array<[Vec2, Vec2]>", "isVoid": false,
+      "doc": [
+        "The shape's edges as [start, end] point pairs with transforms applied, for jf.slice.fromSides().",
+        "@returns {Array} list of sides"
+      ] },
     { "ns": "geom2", "name": "validate", "params": [], "returnType": "void", "isVoid": true },
     { "ns": "geom2", "name": "toString", "params": [], "returnType": "string", "isVoid": false }
   ],

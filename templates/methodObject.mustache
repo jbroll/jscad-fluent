@@ -1,3 +1,4 @@
+{{> methodDoc}}
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): this {
   return this._wrap({{ns}}.{{name}}({{#params}}{{name}}{{^last}}, {{/last}}, {{/params}}this));
 }

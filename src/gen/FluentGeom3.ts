@@ -3,6 +3,7 @@ import {
   booleans,
   colors,
   expansions,
+  extrusions,
   geometries,
   hulls,
   measurements,
@@ -25,11 +26,13 @@ import type {
   Geom3,
   Mat4,
   MirrorOptions,
+  ProjectOptions,
   RGB,
   RGBA,
   SubtractOptions,
   Vec3,
 } from '../types';
+import { FluentGeom2 } from './FluentGeom2';
 import { FluentGeom3Array } from './FluentGeom3Array';
 
 const { geom3 } = geometries;
@@ -165,6 +168,19 @@ export class FluentGeom3 implements Geom3 {
 
   minkowski(...others: (this | this[])[]): this {
     return this._wrap(minkowski.minkowskiSum(this, ...others.flat()));
+  }
+
+  /**
+   * Project the solid onto a plane, giving its 2D shadow as seen along the plane's axis.
+   * @param {Object} options - plane options
+   * @param {Array} [options.axis=[0,0,1]] - normal of the plane
+   * @param {Array} [options.origin=[0,0,0]] - a point on the plane
+   * @returns {FluentGeom2} the projected shape, rotated to lie in XY
+   * @example
+   * jf.sphere({ radius: 10 }).project({})
+   */
+  project(options: ProjectOptions): FluentGeom2 {
+    return new FluentGeom2(extrusions.project(options, this as Geom3));
   }
 
   measureBoundingBox(): BoundingBox {

@@ -26,6 +26,13 @@ its geometry type through a partial that sets the method's shape:
 | `methodValue.mustache` | returns the result of `ns.name(this)` unchanged |
 | `methodAnchors.mustache` | `withAnchors`, `anchor`, `attachTo`, `alignTo` (geom2 and geom3) |
 | `methodArray*.mustache` | array-class variants |
+| `methodDoc.mustache` | the JSDoc block from a method's `doc` lines, included by the other partials |
+
+A method's optional `doc` array in `methods.json` holds its JSDoc lines. They
+land in the generated classes and in `dist/gen/*.d.ts`, where jscadui's docs
+index reads them. Methods whose shape no partial fits (`extrudeFromSlices`,
+`project`, path `expand`, which returns a `FluentGeom2`) are written out in the
+class template with their JSDoc.
 
 | Template | Class |
 |---|---|

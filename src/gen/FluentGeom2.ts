@@ -18,7 +18,10 @@ import type {
   CenterOptions,
   Centroid,
   ExpandOptions,
+  ExtrudeFromSlicesOptions,
+  ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
+  ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
   Frame,
   FrameInput,
@@ -174,13 +177,68 @@ export class FluentGeom2 implements Geom2 {
   }
 
   extrudeLinear(options: ExtrudeLinearOptions): FluentGeom3 {
-    const extruded = extrusions.extrudeLinear(options, this);
-    return new FluentGeom3(extruded);
+    return new FluentGeom3(extrusions.extrudeLinear({ ...options }, this));
   }
 
   extrudeRotate(options: ExtrudeRotateOptions): FluentGeom3 {
-    const extruded = extrusions.extrudeRotate(options, this);
-    return new FluentGeom3(extruded);
+    return new FluentGeom3(extrusions.extrudeRotate({ ...options }, this));
+  }
+
+  /**
+   * Extrude the shape along a helix about the Z axis, for threads, springs and coils.
+   * The shape's X is its distance from the axis and its Y becomes Z, so place it at positive X.
+   * @param {Object} options - helix options
+   * @param {Number} [options.angle=TAU] - total rotation in radians; positive turns right-handed, negative left-handed
+   * @param {Number} [options.startAngle=0] - rotation of the first slice in radians
+   * @param {Number} [options.pitch=10] - rise per full turn
+   * @param {Number} [options.height=0] - total rise; when nonzero it sets the pitch from angle
+   * @param {Number} [options.endOffset=0] - change in distance from the axis by the last slice, for a taper or spiral
+   * @param {Number} [options.segmentsPerRotation=32] - slices per full turn; at least 3
+   * @returns {FluentGeom3} the extruded solid
+   * @example
+   * jf.circle({ radius: 1, center: [5, 0] }).extrudeHelical({ angle: Math.PI * 4, pitch: 3 })
+   */
+  extrudeHelical(options: ExtrudeHelicalOptions): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeHelical({ ...options }, this));
+  }
+
+  /**
+   * Extrude a wall that follows the shape's outlines: expand them by `size`, then extrude `height`.
+   * @param {Object} options - wall options; also takes expand's corners and segments and extrudeLinear's twistAngle and twistSteps
+   * @param {Number} [options.size=1] - wall thickness on each side of the outline
+   * @param {Number} [options.height=1] - wall height
+   * @param {String} [options.corners='edge'] - corner style: 'edge', 'chamfer' or 'round'
+   * @param {Number} [options.segments=16] - segments per full circle for round corners
+   * @returns {FluentGeom3} the extruded walls
+   * @example
+   * jf.square({ size: 20 }).extrudeRectangular({ size: 1, height: 10 })
+   */
+  extrudeRectangular(options: ExtrudeRectangularOptions): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeRectangular({ ...options }, this));
+  }
+
+  /**
+   * Extrude a solid from slices that a callback places along the way; the default
+   * callback extrudes the shape one unit up Z.
+   * @param {Object} options - slice options
+   * @param {Integer} [options.numberOfSlices=2] - number of times the callback is called; at least 2
+   * @param {Boolean} [options.capStart=true] - close the start of the solid
+   * @param {Boolean} [options.capEnd=true] - close the end of the solid
+   * @param {Boolean} [options.close=false] - join the last slice back to the first, for a ring
+   * @param {Boolean} [options.repair=true] - repair gaps in the base slice
+   * @param {Function} [options.callback] - (progress, index, base) => slice or null to skip; progress runs 0 to 1, base is this shape
+   * @returns {FluentGeom3} the extruded solid
+   * @example
+   * const { mat4 } = jf.maths
+   * jf.square({ size: 10 }).extrudeFromSlices({
+   *   numberOfSlices: 10,
+   *   callback: (t, i, base) => jf.slice.transform(
+   *     mat4.multiply(mat4.create(), mat4.fromTranslation(mat4.create(), [0, 0, t * 20]), mat4.fromZRotation(mat4.create(), t)),
+   *     jf.slice.fromSides(base.toSides())),
+   * })
+   */
+  extrudeFromSlices(options: ExtrudeFromSlicesOptions<FluentGeom2>): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeFromSlices(options, this));
   }
 
   measureBoundingBox(): BoundingBox {
@@ -209,6 +267,14 @@ export class FluentGeom2 implements Geom2 {
 
   toOutlines(): Vec2[][] {
     return geom2.toOutlines(this);
+  }
+
+  /**
+   * The shape's edges as [start, end] point pairs with transforms applied, for jf.slice.fromSides().
+   * @returns {Array} list of sides
+   */
+  toSides(): Array<[Vec2, Vec2]> {
+    return geom2.toSides(this);
   }
 
   validate(): void {

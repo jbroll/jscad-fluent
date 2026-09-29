@@ -249,8 +249,11 @@ array.append(g)              // adds to the array and returns it
 ```
 .hull()                      // convex hull of all items, as one geometry
 .hullChain()                 // union of hulls of consecutive pairs
-.extrudeLinear(options)      // geom2 arrays: FluentGeom3Array
+.extrudeLinear(options)      // geom2 arrays: FluentGeom3Array of FluentGeom3
 .extrudeRotate(options)
+.extrudeHelical(options)
+.extrudeRectangular(options) // geom2 and path2 arrays: FluentGeom3Array
+.expand(options)             // path2 arrays: FluentGeom2Array
 ```
 
 Transforms on an array apply to every item and return an array.
@@ -269,14 +272,78 @@ const shape = arr.hull()
 .offset({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })   // geom2 and path2
 ```
 
+`expand` returns the same type for geom2 and geom3. On a path2 it returns a
+`FluentGeom2`, since expanding a path gives an area:
+
+```js
+jf.line([[0, 0], [10, 0], [10, 10]]).expand({ delta: 1, corners: 'round' }).extrudeLinear({ height: 2 })
+```
+
 ## Extrusion
 
-Geom2 only; returns a `FluentGeom3`.
+Each returns a `FluentGeom3`.
 
 ```
+// geom2
 .extrudeLinear({ height?: number=1, twistAngle?: number=0, twistSteps?: number=1 })
 .extrudeRotate({ angle?: number=2*PI, startAngle?: number=0, segments?: number=12, overflow?: 'cap'='cap' })
+.extrudeHelical({ angle?: number=2*PI, startAngle?: number=0, pitch?: number=10, height?: number=0, endOffset?: number=0, segmentsPerRotation?: number=32 })
+.extrudeRectangular({ size?: number=1, height?: number=1, corners?: Corners='edge', segments?: number=16 })
+.extrudeFromSlices({ numberOfSlices?: number=2, capStart?: boolean=true, capEnd?: boolean=true, close?: boolean=false, repair?: boolean=true, callback?: (progress, index, base) => Slice | null })
+
+// path2
+.extrudeRectangular({ size?: number=1, height?: number=1, corners?: Corners='edge', segments?: number=16 })
+
+jf.extrudeFromSlices(options, baseSlice)
 ```
+
+- `extrudeHelical` sweeps the shape around the Z axis while rising `pitch`
+  per turn. The shape's X is its distance from the axis and its Y becomes Z,
+  so place it at positive X. A nonzero `height` sets the pitch from `angle`.
+  `endOffset` moves the last slice that much further from the axis.
+- `extrudeRectangular` builds a wall along a path or along a shape's
+  outlines: it expands them by `size` on each side, then extrudes `height`.
+  It also accepts `twistAngle` and `twistSteps`.
+- `extrudeFromSlices` calls `callback` `numberOfSlices` times with `progress`
+  from 0 to 1 and joins the slices it returns. On a geom2, `base` is the shape
+  and the default callback extrudes it one unit up Z. `jf.extrudeFromSlices`
+  starts from a slice instead.
+
+```js
+const coil = jf.circle({ radius: 1, center: [6, 0] }).extrudeHelical({ angle: Math.PI * 6, pitch: 3 })
+const wall = jf.arc({ radius: 20, endAngle: Math.PI }).extrudeRectangular({ size: 1, height: 5 })
+
+const { mat4 } = jf.maths
+const twisted = jf.square({ size: 10 }).extrudeFromSlices({
+  numberOfSlices: 10,
+  callback: (t, i, base) => jf.slice.transform(
+    mat4.multiply(mat4.create(), mat4.fromTranslation(mat4.create(), [0, 0, t * 20]), mat4.fromZRotation(mat4.create(), t)),
+    jf.slice.fromSides(base.toSides())),
+})
+```
+
+### Slices
+
+`jf.slice` builds the slices a callback returns. A slice is a closed loop of 3D
+edges.
+
+```
+jf.slice.fromPoints(points)         // 2D or 3D loop
+jf.slice.fromSides(shape.toSides()) // from a geom2
+jf.slice.transform(matrix, slice)   // matrix from jf.maths.mat4
+jf.slice.reverse(slice)
+jf.slice.create(edges?)  jf.slice.clone(slice)  jf.slice.calculatePlane(slice)
+jf.slice.toEdges(slice)  jf.slice.toPolygons(slice)  jf.slice.equals(a, b)  jf.slice.isA(x)
+```
+
+### Projection
+
+```
+.project({ axis?: Vec3=[0,0,1], origin?: Vec3=[0,0,0] }) -> FluentGeom2   // geom3
+```
+
+Flattens a solid onto the plane through `origin` normal to `axis`, rotated to
+lie in XY.
 
 ## Measurements
 
@@ -294,6 +361,7 @@ Geom2 only; returns a `FluentGeom3`.
 ```
 .toPoints()     -> Vec2[]                  // geom2 and path2
 .toOutlines()   -> Vec2[][]                // geom2
+.toSides()      -> [Vec2, Vec2][]          // geom2, for jf.slice.fromSides
 .toPolygons()   -> { vertices: Vec3[] }[]  // geom3
 .toString()     -> string
 .validate()                                // throws if invalid

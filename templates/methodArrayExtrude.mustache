@@ -1,4 +1,5 @@
+{{> methodDoc}}
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): FluentGeom3Array {
-  return FluentGeom3Array.create(...this.map(geom => extrusions.{{name}}(options, geom)));
+  return FluentGeom3Array.create(...Array.from(this, (geom) => new FluentGeom3(extrusions.{{name}}({ ...options }, geom))));
 }
 

@@ -1,4 +1,4 @@
-import { booleans, colors, maths, primitives, utils } from '@jbroll/jscad-anchors';
+import { booleans, colors, extrusions, maths, primitives, utils } from '@jbroll/jscad-anchors';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -7,17 +7,20 @@ import { FluentGeom3Array } from './gen/FluentGeom3Array';
 import { FluentPath2 } from './gen/FluentPath2';
 import { FluentPath2Array } from './gen/FluentPath2Array';
 import type {
+  ArcOptions,
   CircleOptions,
   CubeOptions,
   CuboidOptions,
   CylinderEllipticOptions,
   EllipseOptions,
   EllipsoidOptions,
+  ExtrudeFromSlicesOptions,
   GeodesicSphereOptions,
   Point2,
   RectangleOptions,
   RoundedCuboidOptions,
   RoundedCylinderOptions,
+  Slice,
   SphereOptions,
   SquareOptions,
   StarOptions,
@@ -114,12 +117,7 @@ function path2Array(...items: FluentPath2[]): FluentPath2Array {
  */
 const jscadFluent = {
   // Path2 Primitives
-  arc(options: {
-    center: Point2;
-    radius: number;
-    startAngle: number;
-    endAngle: number;
-  }): FluentPath2 {
+  arc(options: ArcOptions): FluentPath2 {
     return new FluentPath2(primitives.arc(options));
   },
 
@@ -207,6 +205,114 @@ const jscadFluent = {
     faces: number[][];
   }): FluentGeom3 {
     return new FluentGeom3(primitives.polyhedron({ points, faces }));
+  },
+
+  /**
+   * Extrude a solid from slices that a callback places along the way, starting
+   * from a slice (see `jf.slice`). For a 2D shape, `shape.extrudeFromSlices()`.
+   * @param {Object} options - slice options
+   * @param {Integer} [options.numberOfSlices=2] - number of times the callback is called; at least 2
+   * @param {Boolean} [options.capStart=true] - close the start of the solid
+   * @param {Boolean} [options.capEnd=true] - close the end of the solid
+   * @param {Boolean} [options.close=false] - join the last slice back to the first, for a ring
+   * @param {Boolean} [options.repair=true] - repair gaps in the base slice
+   * @param {Function} [options.callback] - (progress, index, base) => slice or null to skip; progress runs 0 to 1
+   * @param {Slice} base - the slice handed to the callback
+   * @returns {FluentGeom3} the extruded solid
+   * @example
+   * const { mat4 } = jf.maths
+   * const base = jf.slice.fromPoints([[0, 0, 0], [10, 0, 0], [10, 10, 0], [0, 10, 0]])
+   * jf.extrudeFromSlices({
+   *   numberOfSlices: 8,
+   *   callback: (t, i, s) => jf.slice.transform(mat4.fromTranslation(mat4.create(), [0, 0, t * 30]), s),
+   * }, base)
+   */
+  extrudeFromSlices(options: ExtrudeFromSlicesOptions<Slice>, base: Slice): FluentGeom3 {
+    return new FluentGeom3(extrusions.extrudeFromSlices(options, base));
+  },
+
+  /**
+   * Slices for extrudeFromSlices: a slice is a closed loop of 3D edges.
+   */
+  slice: {
+    /**
+     * Create a slice from a closed loop of 2D or 3D points.
+     * @param points - the loop's points
+     * @returns a new slice
+     */
+    fromPoints: extrusions.slice.fromPoints,
+
+    /**
+     * Create a slice from geom2 sides, as returned by `shape.toSides()`.
+     * @param sides - list of [start, end] point pairs
+     * @returns a new slice
+     */
+    fromSides: extrusions.slice.fromSides,
+
+    /**
+     * Transform a slice by a matrix from `jf.maths.mat4`.
+     * @param matrix - the transform
+     * @param slice - the slice to transform
+     * @returns a new slice
+     */
+    transform: extrusions.slice.transform,
+
+    /**
+     * Reverse the edges of a slice, flipping which way it faces.
+     * @param slice - the slice to reverse
+     * @returns a new slice
+     */
+    reverse: extrusions.slice.reverse,
+
+    /**
+     * Create a slice from a list of edges, or an empty slice.
+     * @param edges - list of [start, end] 3D point pairs
+     * @returns a new slice
+     */
+    create: extrusions.slice.create,
+
+    /**
+     * Copy a slice.
+     * @param slice - the slice to copy
+     * @returns a new slice
+     */
+    clone: extrusions.slice.clone,
+
+    /**
+     * The plane that a slice lies in.
+     * @param slice - the slice
+     * @returns plane as [nx, ny, nz, distance]
+     */
+    calculatePlane: extrusions.slice.calculatePlane,
+
+    /**
+     * The edges of a slice as [start, end] 3D point pairs.
+     * @param slice - the slice
+     * @returns list of edges
+     */
+    toEdges: extrusions.slice.toEdges,
+
+    /**
+     * The slice as polygons, one per edge fan.
+     * @param slice - the slice
+     * @returns list of polygons
+     */
+    toPolygons: extrusions.slice.toPolygons,
+
+    /**
+     * Whether two slices have the same edges.
+     * @param a - first slice
+     * @param b - second slice
+     * @returns true when equal
+     */
+    equals: extrusions.slice.equals,
+
+    /**
+     * Whether a value is a slice.
+     * @param object - the value to test
+     * @returns true for a slice
+     */
+    isA: extrusions.slice.isA,
   },
 
   // Boolean operations (top-level) - reference overloaded functions

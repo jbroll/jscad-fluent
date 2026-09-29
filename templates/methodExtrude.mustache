@@ -1,5 +1,5 @@
+{{> methodDoc}}
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): {{returnType}} {
-  const extruded = extrusions.{{name}}(options, this);
-  return new FluentGeom3(extruded);
+  return new FluentGeom3(extrusions.{{name}}({ ...options }, this));
 }
 

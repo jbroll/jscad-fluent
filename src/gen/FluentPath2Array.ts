@@ -1,5 +1,9 @@
-import { hulls } from '@jbroll/jscad-anchors';
-import type { Path2 } from '../types';
+import { expansions, extrusions, hulls } from '@jbroll/jscad-anchors';
+import type { ExpandOptions, ExtrudeRectangularOptions, Path2 } from '../types';
+import { FluentGeom2 } from './FluentGeom2';
+import { FluentGeom2Array } from './FluentGeom2Array';
+import { FluentGeom3 } from './FluentGeom3';
+import { FluentGeom3Array } from './FluentGeom3Array';
 import { FluentGeometryArray } from './FluentGeometryArray';
 import { FluentPath2 as ThisScalar } from './FluentPath2';
 
@@ -16,6 +20,40 @@ export class FluentPath2Array extends FluentGeometryArray<Path2> {
   append(geometry: Path2): this {
     super.push(geometry);
     return this;
+  }
+
+  /**
+   * Expand every path into an area; see FluentPath2.expand.
+   * @param {Object} options - expand options
+   * @param {Number} [options.delta=1] - distance to expand on each side of each path
+   * @param {String} [options.corners='edge'] - corner style: 'edge', 'chamfer' or 'round'
+   * @param {Integer} [options.segments=16] - segments per full circle for round corners
+   * @returns {FluentGeom2Array} one area per path
+   * @example
+   * jf.union(jf.vectorText({ height: 10 }, 'JSCAD').expand({ delta: 1, corners: 'round' }))
+   */
+  expand(options: ExpandOptions): FluentGeom2Array {
+    return FluentGeom2Array.create(
+      ...Array.from(this, (path) => new FluentGeom2(expansions.expand(options, path))),
+    );
+  }
+
+  /**
+   * Extrude a wall along every path; see FluentPath2.extrudeRectangular.
+   * @param {Object} options - wall options; also takes expand's corners and segments and extrudeLinear's twistAngle and twistSteps
+   * @param {Number} [options.size=1] - wall thickness on each side of each path
+   * @param {Number} [options.height=1] - wall height
+   * @returns {FluentGeom3Array} one solid per path
+   * @example
+   * jf.union(jf.vectorText({ height: 10 }, 'JSCAD').extrudeRectangular({ size: 1, height: 2 }))
+   */
+  extrudeRectangular(options: ExtrudeRectangularOptions): FluentGeom3Array {
+    return FluentGeom3Array.create(
+      ...Array.from(
+        this,
+        (path) => new FluentGeom3(extrusions.extrudeRectangular({ ...options }, path)),
+      ),
+    );
   }
 
   hull(): ThisScalar {

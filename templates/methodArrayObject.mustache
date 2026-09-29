@@ -1,3 +1,4 @@
+{{> methodDoc}}
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): this {
   return new FluentGeometryArray(
     ...{{ns}}.{{name}}({{#params}}{{name}}{{^last}}, {{/last}},{{/params}} this)

@@ -169,6 +169,10 @@ array.append(geom3) -> FluentGeom*Array     // adds to array (chainable)
 // 2D arrays only - batch extrusion (extrudes each element)
 .extrudeLinear(options) -> FluentGeom3Array
 .extrudeRotate(options) -> FluentGeom3Array
+.extrudeHelical(options) -> FluentGeom3Array
+.extrudeRectangular(options) -> FluentGeom3Array   // also on path arrays
+// path arrays
+.expand(options) -> FluentGeom2Array
 
 // Transforms on arrays apply to all elements
 array.translate([x,y,z]) -> FluentGeom*Array
@@ -197,13 +201,33 @@ const result = arr.hull();
 
 ## EXPANSION -> new instance
 
-.expand({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })
+.expand({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })  // FluentPath2 -> FluentGeom2 (an area)
 .offset({ delta?: number=1, corners?: Corners='edge', segments?: number=16 })  // 2D only
 
-## EXTRUSION (FluentGeom2 -> FluentGeom3)
+## EXTRUSION (-> FluentGeom3)
 
+// FluentGeom2
 .extrudeLinear({ height?: number=1, twistAngle?: number=0, twistSteps?: number=1 })
 .extrudeRotate({ angle?: number=2*PI, startAngle?: number=0, segments?: number=12, overflow?: 'cap'='cap' })
+.extrudeHelical({ angle?: number=2*PI, startAngle?: number=0, pitch?: number=10, height?: number=0, endOffset?: number=0, segmentsPerRotation?: number=32 })
+    // threads, springs: shape X = distance from Z axis, shape Y -> Z; place the shape at positive X
+.extrudeRectangular({ size?: number=1, height?: number=1, corners?: Corners='edge', segments?: number=16 })
+    // wall along the outlines: expand by size each side, extrude height
+.extrudeFromSlices({ numberOfSlices?: number=2, capStart?: boolean=true, capEnd?: boolean=true, close?: boolean=false, repair?: boolean=true, callback?: (progress 0..1, index, base) => slice | null })
+// FluentPath2 (jf.line, jf.arc, jf.path)
+.extrudeRectangular({ size?: number=1, height?: number=1, corners?: Corners='edge', segments?: number=16 })  // wall along the path
+// FluentGeom3 -> FluentGeom2
+.project({ axis?: Vec3=[0,0,1], origin?: Vec3=[0,0,0] })   // shadow on a plane, rotated into XY
+
+jf.extrudeFromSlices(options, baseSlice) -> FluentGeom3
+jf.slice.fromPoints(points) | .fromSides(shape.toSides()) | .transform(mat4, slice) | .reverse(slice) | .create(edges?) | .clone | .calculatePlane | .toEdges | .toPolygons | .equals | .isA
+
+// Examples:
+jf.circle({ radius: 1, center: [6, 0] }).extrudeHelical({ angle: Math.PI * 6, pitch: 3 })  // 3-turn coil
+jf.arc({ radius: 20, endAngle: Math.PI }).extrudeRectangular({ size: 1, height: 5 })       // curved wall
+const { mat4 } = jf.maths;
+jf.square({ size: 10 }).extrudeFromSlices({ numberOfSlices: 10,
+  callback: (t, i, base) => jf.slice.transform(mat4.fromTranslation(mat4.create(), [0, 0, t * 20]), jf.slice.fromSides(base.toSides())) })
 
 ## MEASUREMENTS -> values (not chainable)
 
@@ -220,6 +244,7 @@ const result = arr.hull();
 .toString() -> string
 .toPoints() -> Vec2[]           // 2D only
 .toOutlines() -> Vec2[][]       // 2D only
+.toSides() -> [Vec2, Vec2][]    // 2D only, for jf.slice.fromSides
 .toPolygons() -> {vertices: Vec3[]}[]  // 3D only
 
 ## EXAMPLE

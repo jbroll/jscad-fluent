@@ -4,11 +4,17 @@ import { mat4 } from '@jscad/modeling/src/maths';
 import type { BoundingBox } from '@jscad/modeling/src/measurements/types';
 import type { ExpandOptions, OffsetOptions } from '@jscad/modeling/src/operations/expansions';
 import type {
+  ExtrudeFromSlicesOptions,
+  ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
+  ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
+  ProjectOptions,
 } from '@jscad/modeling/src/operations/extrusions';
+import type { Slice } from '@jscad/modeling/src/operations/extrusions/slice';
 import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
 import type {
+  ArcOptions,
   CircleOptions,
   CubeOptions,
   CuboidOptions,
@@ -47,6 +53,7 @@ export type {
   Geom2,
   Geom3,
   Path2,
+  ArcOptions,
   BoundingBox,
   CenterOptions,
   CircleOptions,
@@ -57,14 +64,19 @@ export type {
   EllipseOptions,
   EllipsoidOptions,
   ExpandOptions,
+  ExtrudeFromSlicesOptions,
+  ExtrudeHelicalOptions,
   ExtrudeLinearOptions,
+  ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
   GeodesicSphereOptions,
   MirrorOptions,
   OffsetOptions,
+  ProjectOptions,
   RectangleOptions,
   RoundedCuboidOptions,
   RoundedCylinderOptions,
+  Slice,
   SphereOptions,
   SquareOptions,
   StarOptions,
