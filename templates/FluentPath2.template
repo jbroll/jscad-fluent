@@ -1,5 +1,6 @@
 import { expansions, extrusions, geometries, hulls, measurements, transforms, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
+  AlignOptions,
   Centroid,
   Path2,
   Vec2,

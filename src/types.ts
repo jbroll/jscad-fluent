@@ -13,7 +13,11 @@ import type {
 } from '@jscad/modeling/src/operations/extrusions';
 import type { Slice } from '@jscad/modeling/src/operations/extrusions/slice';
 import type { GeneralizeOptions } from '@jscad/modeling/src/operations/modifiers/generalize';
-import type { CenterOptions, MirrorOptions } from '@jscad/modeling/src/operations/transforms';
+import type {
+  AlignOptions,
+  CenterOptions,
+  MirrorOptions,
+} from '@jscad/modeling/src/operations/transforms';
 import type {
   ArcOptions,
   CircleOptions,
@@ -36,7 +40,7 @@ import type {
 export { mat4 };
 
 export type {
-  AlignOptions,
+  AlignOptions as AlignToOptions,
   Anchorable,
   AnchorRef,
   AttachOptions,
@@ -50,6 +54,7 @@ export type FrameInput = { origin: Vec3; z: Vec3; x?: Vec3 };
 
 // Re-export JSCAD types that we need
 export type {
+  AlignOptions,
   Geometry,
   Geom2,
   Geom3,

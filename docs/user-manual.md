@@ -106,9 +106,25 @@ All geometry types.
 .center({ axes?: [boolean,boolean,boolean]=[true,true,true], relativeTo?: Vec3=[0,0,0] })
 .centerX()  .centerY()  .centerZ()
 .transform(matrix: Mat4)
+.align({ modes?: Mode[]=['center','center','min'], relativeTo?: (number|null)[]=[0,0,0], grouped?: boolean=false })
+// Mode = 'min' | 'max' | 'center' | 'none'
+
+jf.align(options, ...geometries) -> (FluentGeom2 | FluentGeom3 | FluentPath2)[]
 ```
 
 Scale factors must be positive. Use `mirror` for negative scaling.
+
+`align` translates so the bounding box's min, max, or center meets
+`relativeTo`, one mode per axis; `'none'` leaves that axis alone. A `null` in
+`relativeTo` uses the group's own bounds on that axis. `jf.align` and an
+array's `.align` move each shape on its own, or all by the same amount with
+`grouped: true`. `alignTo` (under Anchors) places a part against another
+part instead of a point.
+
+```js
+part.align({ modes: ['min', 'min', 'min'], relativeTo: [0, 0, 0] })   // corner at the origin
+const [base, lid] = jf.align({ modes: ['center', 'center', 'none'], grouped: true }, base0, lid0)
+```
 
 ## Color
 
@@ -267,7 +283,8 @@ array.append(g)              // adds to the array and returns it
 .expand(options)             // path2 arrays: FluentGeom2Array
 ```
 
-Transforms on an array apply to every item and return an array.
+Transforms on an array apply to every item and return an array of the same
+class.
 
 ```js
 let arr = jf.geom2Array()

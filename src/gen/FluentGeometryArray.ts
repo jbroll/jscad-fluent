@@ -1,5 +1,14 @@
 import { colors, transforms } from '@jbroll/jscad-anchors';
-import type { CenterOptions, Geometry, Mat4, MirrorOptions, RGB, RGBA, Vec3 } from '../types';
+import type {
+  AlignOptions,
+  CenterOptions,
+  Geometry,
+  Mat4,
+  MirrorOptions,
+  RGB,
+  RGBA,
+  Vec3,
+} from '../types';
 
 export class FluentGeometryArray<T extends Geometry> extends Array<T> {
   constructor(...items: T[]) {
@@ -8,91 +17,152 @@ export class FluentGeometryArray<T extends Geometry> extends Array<T> {
   }
 
   translate(offset: Vec3): this {
-    return new FluentGeometryArray(...transforms.translate(offset, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.translate(offset, this)].flat() as T[]),
+    );
   }
 
   translateX(offset: number): this {
-    return new FluentGeometryArray(...transforms.translateX(offset, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.translateX(offset, this)].flat() as T[]),
+    );
   }
 
   translateY(offset: number): this {
-    return new FluentGeometryArray(...transforms.translateY(offset, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.translateY(offset, this)].flat() as T[]),
+    );
   }
 
   translateZ(offset: number): this {
-    return new FluentGeometryArray(...transforms.translateZ(offset, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.translateZ(offset, this)].flat() as T[]),
+    );
   }
 
   rotate(angle: Vec3): this {
-    return new FluentGeometryArray(...transforms.rotate(angle, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.rotate(angle, this)].flat() as T[]),
+    );
   }
 
   rotateX(angle: number): this {
-    return new FluentGeometryArray(...transforms.rotateX(angle, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.rotateX(angle, this)].flat() as T[]),
+    );
   }
 
   rotateY(angle: number): this {
-    return new FluentGeometryArray(...transforms.rotateY(angle, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.rotateY(angle, this)].flat() as T[]),
+    );
   }
 
   rotateZ(angle: number): this {
-    return new FluentGeometryArray(...transforms.rotateZ(angle, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.rotateZ(angle, this)].flat() as T[]),
+    );
   }
 
   scale(factor: Vec3): this {
-    return new FluentGeometryArray(...transforms.scale(factor, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.scale(factor, this)].flat() as T[]),
+    );
   }
 
   scaleX(factor: number): this {
-    return new FluentGeometryArray(...transforms.scaleX(factor, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.scaleX(factor, this)].flat() as T[]),
+    );
   }
 
   scaleY(factor: number): this {
-    return new FluentGeometryArray(...transforms.scaleY(factor, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.scaleY(factor, this)].flat() as T[]),
+    );
   }
 
   scaleZ(factor: number): this {
-    return new FluentGeometryArray(...transforms.scaleZ(factor, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.scaleZ(factor, this)].flat() as T[]),
+    );
   }
 
   mirror(options: MirrorOptions): this {
-    return new FluentGeometryArray(...transforms.mirror(options, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.mirror(options, this)].flat() as T[]),
+    );
   }
 
   mirrorX(): this {
-    return new FluentGeometryArray(...transforms.mirrorX(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.mirrorX(this)].flat() as T[]),
+    );
   }
 
   mirrorY(): this {
-    return new FluentGeometryArray(...transforms.mirrorY(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.mirrorY(this)].flat() as T[]),
+    );
   }
 
   mirrorZ(): this {
-    return new FluentGeometryArray(...transforms.mirrorZ(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.mirrorZ(this)].flat() as T[]),
+    );
   }
 
   center(axes: CenterOptions): this {
-    return new FluentGeometryArray(...transforms.center(axes, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.center(axes, this)].flat() as T[]),
+    );
   }
 
   centerX(): this {
-    return new FluentGeometryArray(...transforms.centerX(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.centerX(this)].flat() as T[]),
+    );
   }
 
   centerY(): this {
-    return new FluentGeometryArray(...transforms.centerY(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.centerY(this)].flat() as T[]),
+    );
   }
 
   centerZ(): this {
-    return new FluentGeometryArray(...transforms.centerZ(this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.centerZ(this)].flat() as T[]),
+    );
+  }
+
+  /**
+   * Translate so the bounding box meets a point, per axis: its min, max or center lands on relativeTo.
+   * On an array, each item moves on its own unless grouped is true.
+   * @param {Object} options - alignment options
+   * @param {Array} [options.modes=['center','center','min']] - per axis 'min', 'max', 'center' or 'none' (leave that axis alone)
+   * @param {Array} [options.relativeTo=[0,0,0]] - per axis target coordinate; null uses the group's own bounds
+   * @param {Boolean} [options.grouped=false] - move an array's items together, keeping their spacing
+   * @returns the moved geometry
+   * @example
+   * part.align({ modes: ['min', 'center', 'min'], relativeTo: [0, 0, 0] })
+   */
+  align(options: AlignOptions): this {
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.align(options, this)].flat() as T[]),
+    );
   }
 
   transform(matrix: Mat4): this {
-    return new FluentGeometryArray(...transforms.transform(matrix, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([transforms.transform(matrix, this)].flat() as T[]),
+    );
   }
 
   colorize(color: RGB | RGBA): this {
-    return new FluentGeometryArray(...colors.colorize(color, this)) as this;
+    return new (this.constructor as new (...items: T[]) => this)(
+      ...([colors.colorize(color, this)].flat() as T[]),
+    );
   }
 
   toString(): string {

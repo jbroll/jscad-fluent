@@ -1,7 +1,7 @@
 {{> methodDoc}}
 {{name}}({{#params}}{{name}}: {{type}}{{^last}}, {{/last}}{{/params}}): this {
-  return new FluentGeometryArray(
-    ...{{ns}}.{{name}}({{#params}}{{name}}{{^last}}, {{/last}},{{/params}} this)
-  ) as this;
+  return new (this.constructor as new (...items: T[]) => this)(
+    ...([{{ns}}.{{name}}({{#params}}{{name}}{{^last}}, {{/last}},{{/params}} this)].flat() as T[])
+  );
 }
 

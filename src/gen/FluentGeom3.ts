@@ -14,6 +14,7 @@ import {
 import { copyGeometry } from '../copyGeometry';
 import type {
   AlignOptions,
+  AlignToOptions,
   Anchorable,
   AnchorRef,
   AttachOptions,
@@ -119,6 +120,20 @@ export class FluentGeom3 implements Geom3 {
   centerZ(): this {
     return this._wrap(transforms.centerZ(this));
   }
+  /**
+   * Translate so the bounding box meets a point, per axis: its min, max or center lands on relativeTo.
+   * On an array, each item moves on its own unless grouped is true.
+   * @param {Object} options - alignment options
+   * @param {Array} [options.modes=['center','center','min']] - per axis 'min', 'max', 'center' or 'none' (leave that axis alone)
+   * @param {Array} [options.relativeTo=[0,0,0]] - per axis target coordinate; null uses the group's own bounds
+   * @param {Boolean} [options.grouped=false] - move an array's items together, keeping their spacing
+   * @returns the moved geometry
+   * @example
+   * part.align({ modes: ['min', 'center', 'min'], relativeTo: [0, 0, 0] })
+   */
+  align(options: AlignOptions): this {
+    return this._wrap(transforms.align(options, this));
+  }
   transform(matrix: Mat4): this {
     return this._wrap(transforms.transform(matrix, this));
   }
@@ -164,7 +179,7 @@ export class FluentGeom3 implements Geom3 {
     return this._wrap(anchors.attach(this, childAnchor, parent, parentAnchor, options));
   }
 
-  alignTo(parent: Anchorable, direction: AnchorRef, options?: AlignOptions): this {
+  alignTo(parent: Anchorable, direction: AnchorRef, options?: AlignToOptions): this {
     return this._wrap(anchors.alignTo(this, parent, direction, options));
   }
 

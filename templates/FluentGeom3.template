@@ -1,6 +1,7 @@
 import { anchors, expansions, extrusions, geometries, hulls, measurements, minkowski, transforms, booleans, colors, modifiers } from '@jbroll/jscad-anchors';
 import type {
   AlignOptions,
+  AlignToOptions,
   Anchorable,
   AnchorRef,
   AttachOptions,

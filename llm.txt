@@ -89,6 +89,10 @@ jf.polyhedron({ points: Vec3[], faces: number[][], colors?: RGBA[], orientation?
 .centerY()
 .centerZ()
 .transform(matrix: Mat4)
+.align({ modes?: ('min'|'max'|'center'|'none')[]=['center','center','min'], relativeTo?: (number|null)[]=[0,0,0], grouped?: boolean=false })
+    // move so bounding box min/max/center meets relativeTo per axis; 'none' leaves an axis alone
+jf.align(options, ...geometries) -> [FluentGeom2|FluentGeom3|FluentPath2, ...]   // grouped: true keeps spacing
+// part.align({ modes: ['min', 'min', 'min'], relativeTo: [0, 0, 0] })   // corner at origin
 
 ## COLOR -> new instance
 

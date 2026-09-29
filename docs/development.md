@@ -69,7 +69,7 @@ API changes also go in `docs/user-manual.md` and `llm.txt`.
 
 Tests live in `test/`, one file per area (`primitives2d`, `primitives3d`,
 `primitivesPath2`, `booleans`, `hull`, `minkowski`, `cylinder`, `anchors`,
-`additional`, `namespaces`, `extrusions`, `modifiers`, `measurements`). Compare measurements with `toBeCloseTo`.
+`additional`, `namespaces`, `extrusions`, `modifiers`, `measurements`, `align`). Compare measurements with `toBeCloseTo`.
 
 ## TypeScript and lint
 

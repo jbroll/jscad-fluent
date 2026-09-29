@@ -2,9 +2,11 @@ import {
   booleans,
   colors,
   extrusions,
+  geometries,
   maths,
   measurements,
   primitives,
+  transforms,
   utils,
 } from '@jbroll/jscad-anchors';
 import { cylinder } from './cylinder';
@@ -15,6 +17,7 @@ import { FluentGeom3Array } from './gen/FluentGeom3Array';
 import { FluentPath2 } from './gen/FluentPath2';
 import { FluentPath2Array } from './gen/FluentPath2Array';
 import type {
+  AlignOptions,
   ArcOptions,
   CircleOptions,
   CubeOptions,
@@ -24,6 +27,8 @@ import type {
   EllipsoidOptions,
   ExtrudeFromSlicesOptions,
   GeodesicSphereOptions,
+  Geom3,
+  Geometry,
   Point2,
   RectangleOptions,
   RoundedCuboidOptions,
@@ -36,6 +41,14 @@ import type {
   TorusOptions,
   TriangleOptions,
 } from './types';
+
+type FluentShape = FluentGeom2 | FluentGeom3 | FluentPath2;
+
+function wrapShape(geometry: Geometry): FluentShape {
+  if (geometries.geom2.isA(geometry)) return new FluentGeom2(geometry);
+  if (geometries.path2.isA(geometry)) return new FluentPath2(geometry);
+  return new FluentGeom3(geometry as Geom3);
+}
 
 // Overloaded boolean functions for type-safe returns
 function union(...geometries: (FluentGeom2 | FluentGeom2[])[]): FluentGeom2;
@@ -357,6 +370,22 @@ const jscadFluent = {
    * @returns {Number} the epsilon
    */
   measureAggregateEpsilon: measurements.measureAggregateEpsilon,
+
+  /**
+   * Align several shapes: translate each so its bounding box meets a point,
+   * per axis. With grouped: true they move together and keep their spacing.
+   * @param {Object} options - alignment options
+   * @param {Array} [options.modes=['center','center','min']] - per axis 'min', 'max', 'center' or 'none' (leave that axis alone)
+   * @param {Array} [options.relativeTo=[0,0,0]] - per axis target coordinate; null uses the group's own bounds
+   * @param {Boolean} [options.grouped=false] - move all shapes by the same amount
+   * @param {...Object} geometries - shapes, or arrays of shapes, of any type
+   * @returns {Array} the moved shapes in order, each wrapped in its fluent class
+   * @example
+   * const [base, lid] = jf.align({ modes: ['center', 'center', 'min'], grouped: true }, base0, lid0)
+   */
+  align(options: AlignOptions, ...geometries: (FluentShape | FluentShape[])[]): FluentShape[] {
+    return ([transforms.align(options, ...geometries)].flat() as Geometry[]).map(wrapShape);
+  },
 
   // Array constructors
   array,

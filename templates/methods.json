@@ -25,6 +25,18 @@
     { "ns": "transforms", "name": "centerY", "params": null, "returnType": "this" },
     { "ns": "transforms", "name": "centerZ", "params": null, "returnType": "this" },
 
+    { "ns": "transforms", "name": "align", "params": [ { "name": "options", "type": "AlignOptions", "last": true } ], "returnType": "this",
+      "doc": [
+        "Translate so the bounding box meets a point, per axis: its min, max or center lands on relativeTo.",
+        "On an array, each item moves on its own unless grouped is true.",
+        "@param {Object} options - alignment options",
+        "@param {Array} [options.modes=['center','center','min']] - per axis 'min', 'max', 'center' or 'none' (leave that axis alone)",
+        "@param {Array} [options.relativeTo=[0,0,0]] - per axis target coordinate; null uses the group's own bounds",
+        "@param {Boolean} [options.grouped=false] - move an array's items together, keeping their spacing",
+        "@returns the moved geometry",
+        "@example",
+        "part.align({ modes: ['min', 'center', 'min'], relativeTo: [0, 0, 0] })"
+      ] },
     { "ns": "transforms", "name": "transform", "params": [ { "name": "matrix", "type": "Mat4", "last": true } ], "returnType": "this" },
     { "ns": "colors", "name": "colorize", "params": [ { "name": "color", "type": "RGB | RGBA", "last": true } ], "returnType": "this" }
   ],
