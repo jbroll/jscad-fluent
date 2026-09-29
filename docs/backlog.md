@@ -2,8 +2,8 @@
 
 ## 0.7.0 release plan
 
-The plan is to publish 0.7.0 from `local-packages` (anchor methods plus the
-manifold wrapper fix in `src/copyGeometry.ts`). `make publish`
+The plan is to publish 0.7.0 from `main` (anchor methods, the manifold
+wrapper fix in `src/copyGeometry.ts`, and the modeling-parity API). `make publish`
 (`Makefile`'s `publish` target) bumps the patch version, so 0.7.0 needs a
 manual `npm version 0.7.0` first, then `npm run build`, `npm publish`, and a
 jsdelivr purge. Publish only after the jscadui viewer deploy: the currently
