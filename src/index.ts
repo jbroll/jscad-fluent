@@ -12,7 +12,7 @@ import {
   transforms,
   utils,
 } from '@jbroll/jscad-anchors';
-import { checkOperands } from './checkGeometry';
+import { checkOperands, isTreeNode } from './checkGeometry';
 import { cylinder } from './cylinder';
 import { FluentGeom2 } from './gen/FluentGeom2';
 import { FluentGeom2Array } from './gen/FluentGeom2Array';
@@ -46,6 +46,7 @@ import type {
   StarOptions,
   SubtractOptions,
   TorusOptions,
+  TreeNode,
   TriangleOptions,
   Vec2,
   VectorCharOptions,
@@ -55,7 +56,10 @@ import type {
 // Modeling's declarations leave out TAU.
 const constants = maths.constants as typeof maths.constants & { TAU: number };
 
-function wrapShape(geometry: Geometry): FluentGeom2 | FluentGeom3 | FluentPath2 {
+function wrapShape(geometry: Geometry | TreeNode): FluentGeom2 | FluentGeom3 | FluentPath2 {
+  if (isTreeNode(geometry)) {
+    return geometry.dim === 2 ? new FluentGeom2(geometry) : new FluentGeom3(geometry);
+  }
   if (geometries.geom2.isA(geometry)) return new FluentGeom2(geometry);
   if (geometries.path2.isA(geometry)) return new FluentPath2(geometry);
   return new FluentGeom3(geometry as Geom3);

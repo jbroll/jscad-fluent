@@ -21,6 +21,7 @@ import type {
   GeneralizeOptions,
   MirrorOptions,
   ProjectOptions,
+  TreeNode,
 } from '../types';
 import { checkGeometry, checkOperands } from '../checkGeometry';
 import { copyGeometry } from '../copyGeometry';
@@ -40,7 +41,7 @@ export class FluentGeom3 implements Geom3 {
   color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
-  constructor(geometry: Geom3) {
+  constructor(geometry: Geom3 | TreeNode) {
     if (!wrapping) checkGeometry(geometry, KIND, NAME);
     copyGeometry(this, geometry);
   }

@@ -26,7 +26,8 @@ import type {
   ExtrudeRectangularOptions,
   ExtrudeRotateOptions,
   MirrorOptions,
-  OffsetOptions
+  OffsetOptions,
+  TreeNode
 } from '../types';
 
 const { geom2 } = geometries;
@@ -48,7 +49,7 @@ export class FluentGeom2 implements Geom2 {
   color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
-  constructor(geometry: Geom2) {
+  constructor(geometry: Geom2 | TreeNode) {
     if (!wrapping) checkGeometry(geometry, KIND, NAME);
     copyGeometry(this, geometry);
   }
