@@ -225,12 +225,15 @@ Operands may be spread, passed as arrays, or mixed.
 jf.union(...geometries)
 jf.subtract(base, ...tools, { carry }?)
 jf.intersect(...geometries)
+jf.hull(...geometries)           // convex hull of them all
+jf.hullChain(...geometries)      // hull of each neighbouring pair, unioned
 ```
 
 ```js
 a.union(b, c)
 block.subtract([hole1, hole2])
 jf.union([part1, part2, part3])
+jf.hull(jf.sphere({ radius: 5 }), jf.sphere({ radius: 3 }).translate([20, 0, 0]))
 jf.cube({ size: 10 }).minkowski(jf.sphere({ radius: 1 }))   // rounded cube
 ```
 
@@ -577,4 +580,5 @@ plane.signedDistanceToPoint(ground, [2, 2, 5])   // 5
 Embedders can wrap raw modeling geometry with `new jf.FluentGeom3(geometry)`.
 The constructor takes a geom3 (`FluentGeom2`, a geom2) and throws a `TypeError`
 for anything else, including `null`, `undefined` and `{ points, faces }` data,
-which `jf.polyhedron` builds.
+which `jf.polyhedron` builds. `FluentGeom2` also takes a list of three or more
+`[x, y]` points and makes the polygon, as `jf.polygon(points)` does.

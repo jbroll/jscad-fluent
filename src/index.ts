@@ -141,6 +141,48 @@ function intersect(
   return new FluentGeom3(booleans.intersect(geometries as FluentGeom3[]));
 }
 
+function hull(...geometries: (FluentGeom2 | FluentGeom2[] | FluentGeom2Array)[]): FluentGeom2;
+function hull(...geometries: (FluentGeom3 | FluentGeom3[] | FluentGeom3Array)[]): FluentGeom3;
+function hull(
+  ...geometries: (
+    | FluentGeom2
+    | FluentGeom3
+    | FluentGeom2[]
+    | FluentGeom3[]
+    | FluentGeom2Array
+    | FluentGeom3Array
+  )[]
+): FluentGeom2 | FluentGeom3 {
+  if (geometries.length === 0) {
+    throw new Error('hull requires at least one geometry');
+  }
+  if (checkOperands('jf.hull', geometries, false) === 'geom2') {
+    return new FluentGeom2(hulls.hull(geometries as FluentGeom2[]));
+  }
+  return new FluentGeom3(hulls.hull(geometries as FluentGeom3[]));
+}
+
+function hullChain(...geometries: (FluentGeom2 | FluentGeom2[] | FluentGeom2Array)[]): FluentGeom2;
+function hullChain(...geometries: (FluentGeom3 | FluentGeom3[] | FluentGeom3Array)[]): FluentGeom3;
+function hullChain(
+  ...geometries: (
+    | FluentGeom2
+    | FluentGeom3
+    | FluentGeom2[]
+    | FluentGeom3[]
+    | FluentGeom2Array
+    | FluentGeom3Array
+  )[]
+): FluentGeom2 | FluentGeom3 {
+  if (geometries.length === 0) {
+    throw new Error('hullChain requires at least one geometry');
+  }
+  if (checkOperands('jf.hullChain', geometries, false) === 'geom2') {
+    return new FluentGeom2(hulls.hullChain(geometries as FluentGeom2[]));
+  }
+  return new FluentGeom3(hulls.hullChain(geometries as FluentGeom3[]));
+}
+
 // Array constructors - infers type from first argument
 function array(...items: FluentGeom2[]): FluentGeom2Array;
 function array(...items: FluentGeom3[]): FluentGeom3Array;
@@ -397,6 +439,26 @@ const jscadFluent = {
   union,
   subtract,
   intersect,
+
+  /**
+   * Convex hull of several shapes, all 2D or all 3D: the smallest convex shape
+   * holding them all. Same as `jf.geom3Array(a, b).hull()`.
+   * @param {...Object} geometries - shapes, or arrays of shapes
+   * @returns {FluentGeom2|FluentGeom3} the hull
+   * @example
+   * jf.hull(jf.sphere({ radius: 5 }), jf.sphere({ radius: 3 }).translate([20, 0, 0]))
+   */
+  hull,
+
+  /**
+   * Hull each neighbouring pair of shapes in order and union the hulls, for a
+   * rounded path through them. Same as `jf.geom3Array(a, b, c).hullChain()`.
+   * @param {...Object} geometries - shapes in order, or arrays of shapes
+   * @returns {FluentGeom2|FluentGeom3} the chained hull
+   * @example
+   * jf.hullChain(...corners.map((p) => jf.circle({ radius: 2 }).translate(p)))
+   */
+  hullChain,
 
   /**
    * Total area of several shapes: geom2 area, or geom3 surface area.

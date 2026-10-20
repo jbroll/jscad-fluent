@@ -152,3 +152,41 @@ describe('Hull Operations', () => {
     });
   });
 });
+
+describe('jf.hull and jf.hullChain', () => {
+  test('hull several 2D shapes into one, as union combines them', () => {
+    const result = jscadFluent.hull(
+      jscadFluent.rectangle({ size: [10, 10] }),
+      jscadFluent.rectangle({ size: [10, 10] }).translate([20, 0, 0]),
+    );
+    expect(result).toBeInstanceOf(jscadFluent.FluentGeom2);
+    expect(result.measureArea()).toBeCloseTo(300);
+  });
+
+  test('hull several 3D shapes, given apart or as a list', () => {
+    const a = jscadFluent.cube({ size: 10 });
+    const b = jscadFluent.cube({ size: 10 }).translate([20, 0, 0]);
+    expect(jscadFluent.hull(a, b)).toBeInstanceOf(jscadFluent.FluentGeom3);
+    expect(jscadFluent.hull(a, b).measureVolume()).toBeCloseTo(3000);
+    expect(jscadFluent.hull([a, b]).measureVolume()).toBeCloseTo(3000);
+    expect(jscadFluent.hull(jscadFluent.geom3Array(a, b)).measureVolume()).toBeCloseTo(3000);
+  });
+
+  test('hullChain hulls each neighbouring pair and unions them', () => {
+    const c = (x: number, y: number) => jscadFluent.circle({ radius: 5 }).translate([x, y, 0]);
+    const chained = jscadFluent.hullChain(c(0, 0), c(15, 0), c(15, 15));
+    expect(chained.measureArea()).toBeCloseTo(
+      c(0, 0).append(c(15, 0)).append(c(15, 15)).hullChain().measureArea(),
+    );
+    expect(chained.measureArea()).toBeLessThan(
+      jscadFluent.hull(c(0, 0), c(15, 0), c(15, 15)).measureArea(),
+    );
+  });
+
+  test('needs at least one shape', () => {
+    expect(() => (jscadFluent.hull as any)()).toThrowError('hull requires at least one geometry');
+    expect(() => (jscadFluent.hullChain as any)()).toThrowError(
+      'hullChain requires at least one geometry',
+    );
+  });
+});

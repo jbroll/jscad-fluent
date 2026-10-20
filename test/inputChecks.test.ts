@@ -53,6 +53,41 @@ describe('constructors reject non-geometry', () => {
     rejects(() => new jf.FluentGeom2(primitives.cube({ size: 1 }) as any), /got a geom3/);
   });
 
+  test('FluentGeom2 makes a polygon from a list of [x, y] points, as jf.polygon does', () => {
+    const points: [number, number][] = [
+      [0, 0],
+      [4, 0],
+      [4, 3],
+    ];
+    const shape = new jf.FluentGeom2(points);
+    expect(shape.measureArea()).toBeCloseTo(6);
+    expect(shape.measureArea()).toBeCloseTo(jf.polygon(points).measureArea());
+  });
+
+  test.each([
+    [
+      'too few points',
+      [
+        [0, 0],
+        [1, 0],
+      ],
+    ],
+    [
+      '3D points',
+      [
+        [0, 0, 0],
+        [1, 0, 0],
+        [0, 1, 0],
+      ],
+    ],
+    ['numbers', [1, 2, 3]],
+  ])('FluentGeom2 still rejects an array of %s', (_, value) => {
+    rejects(
+      () => new jf.FluentGeom2(value as any),
+      /FluentGeom2 expected a geom2 \(fluent or raw\), got an array/,
+    );
+  });
+
   test('accept raw modeling geometry and fluent shapes', () => {
     expect(new jf.FluentGeom3(primitives.cube({ size: 2 })).measureVolume()).toBeCloseTo(8);
     expect(new jf.FluentGeom3(jf.cube({ size: 2 })).measureVolume()).toBeCloseTo(8);
@@ -110,7 +145,7 @@ describe('boolean methods reject non-geometry', () => {
 });
 
 describe('top-level booleans reject non-geometry', () => {
-  const ops = ['union', 'subtract', 'intersect'] as const;
+  const ops = ['union', 'subtract', 'intersect', 'hull', 'hullChain'] as const;
 
   test.each(ops)('jf.%s names jf.polyhedron for { points, faces } data', (op) => {
     const fn = jf[op] as any;
