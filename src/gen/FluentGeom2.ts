@@ -8,6 +8,7 @@ import {
   hulls,
   measurements,
   modifiers,
+  primitives,
   transforms,
 } from '@jbroll/jscad-anchors';
 import type {
@@ -36,6 +37,7 @@ import type {
   RGB,
   RGBA,
   SubtractOptions,
+  TreeNode,
   Vec2,
   Vec3,
 } from '../types';
@@ -44,6 +46,12 @@ const { geom2 } = geometries;
 const KIND = 'geom2';
 const NAME = 'FluentGeom2';
 let wrapping = false;
+
+// Three or more finite [x, y] pairs: a polygon's outline, as jf.polygon takes it.
+const isPointList = (value: unknown): value is Vec2[] =>
+  Array.isArray(value) &&
+  value.length >= 3 &&
+  value.every((p) => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite));
 
 import { checkGeometry, checkOperands } from '../checkGeometry';
 import { copyGeometry } from '../copyGeometry';
@@ -59,9 +67,11 @@ export class FluentGeom2 implements Geom2 {
   color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
-  constructor(geometry: Geom2) {
-    if (!wrapping) checkGeometry(geometry, KIND, NAME);
-    copyGeometry(this, geometry);
+  constructor(geometry: Geom2 | TreeNode | Vec2[]) {
+    const source =
+      !wrapping && isPointList(geometry) ? primitives.polygon({ points: geometry }) : geometry;
+    if (!wrapping) checkGeometry(source, KIND, NAME);
+    copyGeometry(this, source as Geom2 | TreeNode);
   }
 
   // Only caller input is checked: an operation's result is the backend's own geometry.

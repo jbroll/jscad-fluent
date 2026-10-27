@@ -118,3 +118,15 @@ export type Corners = 'edge' | 'chamfer' | 'round';
 
 // Array type for collections
 export type GeometryArray<T extends Geometry> = T[];
+
+// A deferred model-tree node: a geometry operation recorded for later
+// evaluation. Fluent wrappers copy these props, so a wrapper duck-types as a
+// node and downstream consumers accept either.
+export type TreeNode = {
+  isTreeNode: true;
+  op: string;
+  dim?: 2 | 3;
+  params?: unknown;
+  children?: unknown[];
+  [key: string]: unknown;
+};

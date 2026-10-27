@@ -27,7 +27,7 @@ jf.roundedRectangle({ size?: Vec2=[2,2], center?: Vec2=[0,0], roundRadius?: numb
 jf.square({ size?: number=2, center?: Vec2=[0,0] })
 jf.circle({ radius?: number=1, center?: Vec2=[0,0], startAngle?: number=0, endAngle?: number=2*PI, segments?: number=32 })
 jf.ellipse({ radius?: Vec2=[1,1], center?: Vec2=[0,0], startAngle?: number=0, endAngle?: number=2*PI, segments?: number=32 })
-jf.polygon(points: Vec2[])  // counter-clockwise for extrusion
+jf.polygon(points: Vec2[])  // counter-clockwise for extrusion; new jf.FluentGeom2(points) does the same
 jf.star({ vertices?: number=5, outerRadius?: number=1, innerRadius?: number=0, density?: number=2, startAngle?: number=0, center?: Vec2=[0,0] })
 jf.triangle({ type?: 'SSS'|'AAS'|'ASA'|'SAS'|'SSA'='SSS', values?: [number,number,number]=[1,1,1] })  // A=angle (radians), S=side length
 
@@ -165,6 +165,8 @@ jf.maths.utils.area(points) / .sin / .cos / .solve2Linear / .intersect
 jf.union(...geometries)     // jf.union(a, b, c), jf.union([a, b, c]), jf.union(fluentArray)
 jf.subtract(...geometries)  // jf.subtract(base, hole1, hole2), jf.subtract(base, [holes])
 jf.intersect(...geometries) // jf.intersect(a, b, c), jf.intersect([a, b, c])
+jf.hull(...geometries)      // jf.hull(a, b), jf.hull([a, b]): convex hull, same as jf.geom3Array(a, b).hull()
+jf.hullChain(...geometries) // jf.hullChain(a, b, c): hull each neighbouring pair, unioned
 
 .scission() -> FluentGeom3Array  // 3D: split into disconnected pieces
 .scission() -> FluentGeom2Array  // 2D: one shape per outer outline with the holes inside it

@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "esnext",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vite/client"]
   },
   "include": ["test/**/*", "vitest.config.ts"],
   "exclude": []

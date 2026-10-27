@@ -34,6 +34,7 @@ import type {
   RGB,
   RGBA,
   SubtractOptions,
+  TreeNode,
   Vec3,
 } from '../types';
 import { FluentGeom2 } from './FluentGeom2';
@@ -52,7 +53,7 @@ export class FluentGeom3 implements Geom3 {
   color?: RGBA;
   anchors?: { frames: Frames; basis: unknown };
 
-  constructor(geometry: Geom3) {
+  constructor(geometry: Geom3 | TreeNode) {
     if (!wrapping) checkGeometry(geometry, KIND, NAME);
     copyGeometry(this, geometry);
   }
