@@ -6,7 +6,7 @@ import { describe, expect, test, vi } from 'vitest';
 // namespace built from `JSCAD_MODEL_TREE` when set; otherwise it skips. With no
 // frames in play an anchored wrapper reduces to its wrapped tree constructor.
 vi.mock('@jbroll/jscad-anchors', async () => {
-  const spec = process.env.JSCAD_MODEL_TREE;
+  const spec = import.meta.env.JSCAD_MODEL_TREE;
   if (!spec) {
     // Nothing under test loads without the tree: return a namespace shaped
     // enough for the module graph to initialize; the tests skip.
@@ -41,7 +41,7 @@ import { FluentGeom2 } from '../src/gen/FluentGeom2';
 import { FluentGeom3 } from '../src/gen/FluentGeom3';
 import jf from '../src/index';
 
-const modelTreeSpec = process.env.JSCAD_MODEL_TREE ?? '@jscadui/model-tree';
+const modelTreeSpec = import.meta.env.JSCAD_MODEL_TREE ?? '@jscadui/model-tree';
 const modelTree: any = await (async () => {
   try {
     return await import(/* @vite-ignore */ modelTreeSpec);
