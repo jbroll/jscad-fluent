@@ -49,7 +49,6 @@
     "vitest": "^1.0.4"
   },
   "peerDependencies": {
-    "@jbroll/jscad-anchors": "^0.1.0",
-    "@jbroll/jscad-modeling": "^2.13.4"
+    "@jbroll/jscad-anchors": "^0.2.0"
   }
 }

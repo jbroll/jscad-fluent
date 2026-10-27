@@ -2,44 +2,26 @@
 
 ## Requirements
 
-Peer dependencies:
-
-- `@jbroll/jscad-modeling` `^2.13.4`, the `fork-main` branch of
-  [jbroll/OpenJSCAD.org](https://github.com/jbroll/OpenJSCAD.org)'s
-  `packages/modeling`
-- `@jbroll/jscad-anchors` `^0.1.0`, from
-  [jbroll/jscad-anchors](https://github.com/jbroll/jscad-anchors)
-
-`@jbroll/jscad-anchors` is not on npm yet, and npm's latest
-`@jbroll/jscad-modeling` is 2.13.3, so both currently come from sibling
-checkouts.
+The peer dependency is `@jbroll/jscad-anchors` `^0.2.0`, from
+[jbroll/jscad-anchors](https://github.com/jbroll/jscad-anchors). Its own peer
+is `@jscad/modeling`, aliased to `@jbroll/jscad-modeling` `^2.13.4`, the
+`fork-main` branch of
+[jbroll/OpenJSCAD.org](https://github.com/jbroll/OpenJSCAD.org)'s
+`packages/modeling`.
 
 ## Consumer setup
 
-Check out the three repositories side by side and link them:
-
-```json
-{
-  "dependencies": {
-    "@jbroll/jscad-fluent": "file:../jscad-fluent",
-    "@jbroll/jscad-anchors": "file:../jscad-anchors",
-    "@jbroll/jscad-modeling": "file:../OpenJSCAD.org/packages/modeling",
-    "@jscad/modeling": "file:../OpenJSCAD.org/packages/modeling"
-  },
-  "overrides": {
-    "@jscad/modeling": "$@jscad/modeling"
-  }
-}
+```bash
+npm install @jbroll/jscad-fluent
 ```
 
-jscad-anchors requires `@jscad/modeling`, and it must resolve to the same
-copy jscad-fluent uses. Two copies break the identity checks jscad-anchors uses
-to detect stale frames. The `overrides` entry forces every nested
-`@jscad/modeling` onto the root one. jscad-anchors' `docs/install.md` has more
-detail.
+npm installs both peers, with the modeling fork under the name
+`@jscad/modeling`. jscad-fluent reaches modeling only through jscad-anchors,
+so they share that one copy. Two copies would break the identity checks
+jscad-anchors uses to detect stale frames. A project that pins upstream
+`@jscad/modeling` itself gets a peer conflict from npm.
 
-Build jscad-fluent once in its checkout (`npm install && npm run build`); the
-package entry points are in `dist/`.
+To work against sibling checkouts instead, see `docs/development.md`.
 
 ## Loading
 

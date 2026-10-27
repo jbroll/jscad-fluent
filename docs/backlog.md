@@ -1,18 +1,12 @@
 # Backlog
 
-## 0.7.0 release plan
+## 0.7.1 release
 
-0.7.0 publishes from `main` (anchor methods, the manifold wrapper fix in
-`src/copyGeometry.ts`, the modeling-parity API, model-tree nodes, `jf.hull`
-and `jf.hullChain`). `main` carries the `v0.7.0` version and tag. Left to do,
-in order:
-
-1. Publish `@jbroll/jscad-modeling` 2.13.4 from the fork's `fork-main`. npm's
-   latest is 2.13.3, below the `^2.13.4` peer range, so npm consumers can't
-   satisfy the peer until it is out. `@jbroll/jscad-anchors` 0.1.0 is
-   already on npm.
-2. `npm run build`, `npm publish` (not `make publish`, which bumps the patch
-   version), and a jsdelivr purge.
+0.7.0 on npm runs upstream `@jscad/modeling`: jscad-anchors 0.1.0's peer
+resolves to it, not the fork. 0.7.1 peers on jscad-anchors 0.2.0, whose peer
+aliases `@jscad/modeling` to `@jbroll/jscad-modeling`. Publish jscad-anchors
+0.2.0 first, then this package with `npm run build`, `npm publish` (not
+`make publish`, which bumps the patch version), and a jsdelivr purge.
 
 ## `copyGeometry` method check matches inherited names
 

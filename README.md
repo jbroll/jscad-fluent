@@ -27,9 +27,12 @@ const bolt = jf.cylinder({ radius: 1.8, height: 20 })
 
 ## Install
 
-The peers aren't on npm yet, so link sibling checkouts of
-[OpenJSCAD.org](https://github.com/jbroll/OpenJSCAD.org) (`fork-main`),
-[jscad-anchors](https://github.com/jbroll/jscad-anchors), and this repository.
+```bash
+npm install @jbroll/jscad-fluent
+```
+
+npm also installs [jscad-anchors](https://github.com/jbroll/jscad-anchors) and
+the [`@jbroll/jscad-modeling`](https://github.com/jbroll/OpenJSCAD.org) fork.
 See [docs/install.md](docs/install.md). In a page, load
 `dist/jscad-fluent.browser.js` after modeling's browser build; it defines
 `jscadFluent`.
